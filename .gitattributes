@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.md whitespace=-blank-at-eol
+*.png binary
+*.webp binary
+*.jpg binary
+*.jpeg binary
+*.ico binary

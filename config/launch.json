@@ -1,0 +1,33 @@
+{
+  "businessStatus": "proposed",
+  "brandName": "",
+  "legalName": "",
+  "providerRole": "",
+  "phoneMode": "demo",
+  "supportPhone": "+12045550100",
+  "displayPhone": "204-555-0100",
+  "supportEmail": "",
+  "canonicalDomain": "",
+  "pilotMarket": "winnipeg-bridgwater",
+  "serviceHours": "",
+  "physicalOfficeVerified": false,
+  "areas": [],
+  "offers": [],
+  "prices": [],
+  "certifications": [],
+  "operatorDetails": "",
+  "approvedIndexableRoutes": [],
+  "approvals": {
+    "identity": false,
+    "monitoredCanadianPhone": false,
+    "partnerCoverage": false,
+    "provincialCompliance": false,
+    "partnerCredentialsAndInsurance": false,
+    "ratesAndConsent": false,
+    "privacyAndRetention": false,
+    "legalTexts": false,
+    "callbackStaffing": false,
+    "restrictedHighwayHandling": false,
+    "analytics": false
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "roadside-assistance",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "tsx scripts/build.ts production",
+    "build:preview": "tsx scripts/build.ts preview",
+    "build:pages": "tsx scripts/build-pages.ts",
+    "test:pages": "tsx scripts/test-pages.ts",
+    "start": "next start --hostname 127.0.0.1",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "check:launch": "tsx scripts/check-launch.ts",
+    "test:smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "lucide-react": "1.61.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.2",
+    "typescript": "6.0.3",
+    "tsx": "4.23.15"
+  }
+}
