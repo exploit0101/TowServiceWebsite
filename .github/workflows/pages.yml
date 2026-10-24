@@ -1,4 +1,4 @@
-name: Deploy demo to GitHub Pages
+name: Deploy website to GitHub Pages
 
 on:
   push:
@@ -38,14 +38,18 @@ jobs:
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-      - name: Build the static demo
+      - name: Build the guarded static site
         run: npm run build:pages
         env:
           GITHUB_PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          GITHUB_PAGES_PRODUCTION: ${{ vars.PRODUCTION_SITE == 'true' && '1' || '0' }}
+          CANONICAL_DOMAIN: ${{ vars.CANONICAL_DOMAIN }}
       - name: Verify the exported site
         run: npm run test:pages
         env:
           GITHUB_PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          GITHUB_PAGES_PRODUCTION: ${{ vars.PRODUCTION_SITE == 'true' && '1' || '0' }}
+          CANONICAL_DOMAIN: ${{ vars.CANONICAL_DOMAIN }}
       - name: Browser and mobile checks
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}

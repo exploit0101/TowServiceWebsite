@@ -18,13 +18,24 @@ test('24/7 badge distinguishes documented dispatch coverage from call answering 
   assert.ok(!html.includes('guarantee') && !html.includes('minutes'));
 });
 
-test('public reviews state does not invent a score, reviews or aggregate rating', () => {
-  assert.equal(hasPublishableReviews(customerReviews),false);
-  const html=renderToStaticMarkup(createElement(CustomerReviews));
+test('unverified feedback stays unpublished', () => {
+  const unverified={...customerReviews,verified:false};
+  assert.equal(hasPublishableReviews(unverified),false);
+  const html=renderToStaticMarkup(createElement(CustomerReviews,{reviews:unverified}));
   assert.match(html,/id="reviews"/);
   assert.match(html,/Share your feedback/);
   assert.ok(!html.includes('4.9') && !html.includes('review-summary') && !html.includes('review-card'));
   assert.ok(!html.includes('aggregateRating') && !html.includes('application/ld+json'));
+});
+
+test('owner-supplied feedback preserves three actual quotes without fabricated authors, dates or counts', () => {
+  assert.equal(hasPublishableReviews(customerReviews),true);
+  const html=renderToStaticMarkup(createElement(CustomerReviews));
+  assert.equal((html.match(/class="review-card"/g)||[]).length,3);
+  for (const review of customerReviews.entries) assert.ok(html.includes(review.text));
+  assert.match(html,/4\.9/); assert.match(html,/Rating and customer feedback supplied by EasyTowing/);
+  assert.ok(!html.includes('<time') && !html.includes('From 3 customer reviews'));
+  assert.ok(!html.includes('aggregateRating') && !html.includes('ratingValue'));
 });
 
 test('genuine review fixture renders only with explicit verification, source and valid feedback', () => {

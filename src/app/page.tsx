@@ -5,6 +5,7 @@ import { FleetGallery, type FleetImage } from "@/components/fleet-gallery";
 import { PrimaryAction } from "@/components/ui";
 import { AvailabilityBadge } from "@/components/availability-badge";
 import { CustomerReviews } from "@/components/customer-reviews";
+import { ArrivalEstimate } from "@/components/arrival-estimate";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -20,17 +21,14 @@ import { publicAssetPath } from "@/lib/asset-path";
 import { pageMetadata } from "@/lib/seo";
 import {
   isLive,
-  pilot,
   siteConfig,
   callsEnabled,
   phoneContact,
 } from "@/lib/site-config";
 
 export const metadata = pageMetadata(
-  pilot
-    ? `Towing & roadside assistance in ${pilot.label}, ${pilot.city}`
-    : "Towing & roadside assistance, made easy",
-  `Car, heavy duty and motorcycle towing, boosting, winch out, flat tire help, tire changes, lockout and fuel delivery. Call easytowing${getAvailability(siteConfig.availability).dispatch24h ? " 24/7" : ""} at ${siteConfig.displayPhone}.`,
+  "Winnipeg towing & roadside assistance",
+  `Towing and roadside assistance across Winnipeg. Car, motorcycle and heavy duty towing, jump starts, tires, lockouts and fuel. Call${getAvailability(siteConfig.availability).dispatch24h ? " 24/7" : ""} ${siteConfig.displayPhone}.`,
   "/",
 );
 const images: FleetImage[] = [
@@ -69,8 +67,8 @@ const images: FleetImage[] = [
   {
     id: "flatbed-night",
     src: "/images/easytowing-flatbed-night.webp",
-    alt: "AI-generated black easytowing flatbed with a sedan at blue hour",
-    label: "Flatbed concept",
+    alt: "Black easytowing flatbed transporting a sedan at dusk",
+    label: "Flatbed towing",
     width: 1600,
     height: 900,
     generated: true,
@@ -78,8 +76,8 @@ const images: FleetImage[] = [
   {
     id: "recovery",
     src: "/images/easytowing-recovery.webp",
-    alt: "AI-generated white easytowing wheel-lift truck in daylight",
-    label: "Wheel-lift concept",
+    alt: "White easytowing wheel-lift truck with a sedan in daylight",
+    label: "Wheel-lift towing",
     width: 1600,
     height: 900,
     generated: true,
@@ -103,16 +101,13 @@ export default function Home() {
               TOWING & ROADSIDE ASSISTANCE
             </div>
             <h1>
-              Roadside help.
+              Winnipeg towing.
               <br />
               <em>Made easy.</em>
             </h1>
             <p>
-              {pilot
-                ? `Need help in ${pilot.label}, ${pilot.city}? `
-                : "Car trouble? "}
-              Tell us what happened. Call to check availability, get a quote and
-              confirm your next step.
+              Car trouble anywhere in Winnipeg? Call for towing or roadside
+              assistance, a clear quote and an arrival estimate.
             </p>
             <div className="hero-actions">
               <PrimaryAction label="Call for roadside help" />
@@ -125,6 +120,7 @@ export default function Home() {
               <Check size={17} aria-hidden="true" />
               <span>Confirm the price before you agree to service.</span>
             </div>
+            <ArrivalEstimate estimate={siteConfig.arrivalEstimate} />
           </div>
           <figure className="hero-visual">
             <Image
@@ -134,9 +130,9 @@ export default function Home() {
               height={1086}
               sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1280px) 52vw, 650px"
               preload
+              fetchPriority="high"
             />
             <figcaption>
-              <span className="photo-caption">Rebranded vehicle image</span>
               <span className="hero-photo-tag">
                 <Navigation size={19} aria-hidden="true" />A way forward.
               </span>
@@ -181,7 +177,6 @@ export default function Home() {
         </div>
         <ServiceCarousel
           items={shown}
-          defaultExpanded
           phoneHref={callsEnabled ? phoneContact?.href : undefined}
           displayPhone={phoneContact?.display}
         />
@@ -192,65 +187,20 @@ export default function Home() {
             <div>
               <div className="eyebrow">
                 <span />
-                FLEET GALLERY
+                VEHICLE GALLERY
               </div>
               <h2>A closer look.</h2>
             </div>
             <p>
-              Rebranded photos & generated concepts.
+              Images illustrate vehicle types.
               <br />
-              Independent partners supply service vehicles.
+              Independent partners perform on-site service.
             </p>
           </div>
           <FleetGallery images={images} />
         </div>
       </section>
       <CustomerReviews />
-      <section id="how-it-works" className="section container process-section">
-        <div className="section-heading">
-          <div>
-            <div className="eyebrow">
-              <span />
-              HOW IT WORKS
-            </div>
-            <h2>One call. A clear plan.</h2>
-          </div>
-          <Link href="/about" className="text-link">
-            About easytowing
-            <ArrowUpRight size={17} aria-hidden="true" />
-          </Link>
-        </div>
-        <ol className="process-grid">
-          <li>
-            <span className="step-number">01</span>
-            <div>
-              <h3>Tell us what’s wrong</h3>
-              <p>Your vehicle, the problem and your general location.</p>
-            </div>
-          </li>
-          <li>
-            <span className="step-number">02</span>
-            <div>
-              <h3>Confirm your quote</h3>
-              <p>
-                Check the operator, total price, service and arrival estimate.
-              </p>
-            </div>
-          </li>
-          <li>
-            <span className="step-number">03</span>
-            <div>
-              <h3>Agree on the next step</h3>
-              <p>A partner accepts the job before dispatch is confirmed.</p>
-            </div>
-          </li>
-        </ol>
-        <p className="provider-note">
-          {isLive
-            ? siteConfig.providerRole
-            : "Proposed service model: a call centre coordinates independent partners who carry out on-site work."}
-        </p>
-      </section>
       <section id="contact" className="contact-section">
         <div className="container">
           <div className="contact-panel">

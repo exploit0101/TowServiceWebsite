@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import "@/components/service-carousel.css";
 import { Header } from "@/components/header";
 import { Phone, ArrowUpRight, Truck } from "@/components/icons";
 import { Consent } from "@/components/consent";
@@ -11,7 +12,7 @@ import {
   phoneContact,
   siteConfig,
 } from "@/lib/site-config";
-import { JsonLd } from "@/lib/seo";
+import { JsonLd, canonicalSiteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: {
@@ -78,8 +79,8 @@ export default function RootLayout({
             </div>
             <p className="footer-disclosure">
               {isLive
-                ? `${siteConfig.legalName}. ${siteConfig.providerRole} ${siteConfig.operatorDetails}`
-                : "Pre-launch preview. Business and service-zone details are being finalized. A call does not confirm a booking or dispatch."}
+                ? `${siteConfig.legalName}. ${siteConfig.providerRole}`
+                : siteConfig.providerRole}
             </p>
             <div className="footer-bottom">
               <span>
@@ -97,7 +98,6 @@ export default function RootLayout({
           <a
             className="floating-call"
             href={phoneContact.href}
-            aria-label={`Call easytowing at ${phoneContact.display}`}
           >
             <span className="floating-call-icon">
               <Phone size={22} aria-hidden="true" />
@@ -115,12 +115,14 @@ export default function RootLayout({
             data={{
               "@context": "https://schema.org",
               "@type": "Organization",
-              "@id": `${siteConfig.canonicalDomain}/#organization`,
+              "@id": `${canonicalSiteUrl("/")}#organization`,
               name: brand,
               legalName: siteConfig.legalName,
-              url: siteConfig.canonicalDomain,
+              url: canonicalSiteUrl("/"),
               telephone: siteConfig.supportPhone,
-              email: siteConfig.supportEmail,
+              ...(siteConfig.supportEmail
+                ? { email: siteConfig.supportEmail }
+                : {}),
               description: siteConfig.providerRole,
             }}
           />

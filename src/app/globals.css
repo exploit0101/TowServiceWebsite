@@ -339,7 +339,7 @@ h3 {
   margin-left: 4px;
 }
 .hero h1 {
-  font-size: clamp(48px, 5.2vw, 72px);
+  font-size: clamp(46px, 4.8vw, 66px);
   font-weight: 800;
   letter-spacing: -3.9px;
   line-height: 1.055;
@@ -373,6 +373,30 @@ h3 {
 }
 .hero-promise svg {
   color: #936608;
+}
+.arrival-estimate {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  max-width: 380px;
+  margin-top: 21px;
+  padding-top: 17px;
+  border-top: 1px solid var(--line);
+}
+.arrival-estimate > svg {
+  color: #865c10;
+  margin-top: 2px;
+}
+.arrival-estimate strong {
+  display: block;
+  font-size: 12px;
+}
+.arrival-estimate small {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  line-height: 1.7;
+  color: var(--muted);
 }
 .hero-visual {
   position: relative;
@@ -762,7 +786,7 @@ html:has(.fleet-lightbox[open]) {
 }
 /* A short explanation and one unambiguous way to get in touch. */
 .reviews-section {
-  padding: 56px 0 0;
+  padding: 56px 0 54px;
 }
 .reviews-section h2 {
   font-size: 35px;
@@ -876,6 +900,11 @@ html:has(.fleet-lightbox[open]) {
   border-radius: 50%;
   color: var(--navy);
   font-weight: 750;
+}
+.review-source {
+  margin-top: 15px;
+  color: var(--muted);
+  font-size: 10px;
 }
 .process-grid {
   display: grid;

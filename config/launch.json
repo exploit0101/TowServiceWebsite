@@ -1,13 +1,13 @@
 {
-  "businessStatus": "proposed",
+  "businessStatus": "operating",
   "brandName": "easytowing",
-  "legalName": "",
-  "providerRole": "",
-  "phoneMode": "owner-provided",
+  "legalName": "EasyTowing",
+  "providerRole": "easytowing coordinates independent towing and roadside service partners. Partners carry out on-site work.",
+  "phoneMode": "verified",
   "supportPhone": "+16728899764",
   "displayPhone": "672-889-9764",
   "supportEmail": "",
-  "canonicalDomain": "",
+  "canonicalDomain": "https://exploit0101.github.io",
   "pilotMarket": "winnipeg-bridgwater",
   "serviceHours": "24 hours a day, 7 days a week",
   "availability": {
@@ -17,23 +17,76 @@
     "confirmationSource": "Owner confirmed in chat that both the call line and partner dispatch coverage are available 24/7."
   },
   "physicalOfficeVerified": false,
-  "areas": [],
-  "offers": [],
-  "prices": [],
+  "areas": [
+    "Winnipeg"
+  ],
+  "coverage": {
+    "label": "Winnipeg",
+    "scope": "citywide",
+    "confirmedAt": "2026-10-24",
+    "confirmationSource": "Owner explicitly confirmed citywide Winnipeg coverage for every listed service, including heavy duty towing, motorcycle towing and winch outs."
+  },
+  "arrivalEstimate": {
+    "minutes": 25,
+    "status": "measured",
+    "confirmedAt": "2026-10-24",
+    "confirmationSource": "Owner confirmed that the 25-minute estimate is supported by actual dispatch records."
+  },
+  "offers": [
+    "local-towing",
+    "heavy-duty-towing",
+    "motorcycle-towing",
+    "battery-boost",
+    "winch-out",
+    "flat-tire",
+    "flat-tire-help",
+    "lockout",
+    "fuel-delivery",
+    "battery-replacement",
+    "tire-repair"
+  ],
+  "prices": [
+    "Confirm a quote in CAD before service, including applicable taxes and possible additional fees. Any change to the agreed work or price requires consent."
+  ],
   "certifications": [],
-  "operatorDetails": "",
-  "approvedIndexableRoutes": [],
+  "operatorDetails": "Independent partners perform on-site work. The service provider, quote, consent, payment and invoice arrangements are confirmed before service.",
+  "approvedIndexableRoutes": [
+    "/",
+    "/services",
+    "/services/local-towing",
+    "/services/heavy-duty-towing",
+    "/services/motorcycle-towing",
+    "/services/battery-boost",
+    "/services/winch-out",
+    "/services/flat-tire",
+    "/services/flat-tire-help",
+    "/services/lockout",
+    "/services/fuel-delivery",
+    "/services/battery-replacement",
+    "/services/tire-repair",
+    "/about",
+    "/contact",
+    "/rates-and-disclosures",
+    "/privacy",
+    "/terms",
+    "/accessibility"
+  ],
   "approvals": {
-    "identity": false,
-    "monitoredCanadianPhone": false,
-    "partnerCoverage": false,
-    "provincialCompliance": false,
-    "partnerCredentialsAndInsurance": false,
-    "ratesAndConsent": false,
-    "privacyAndRetention": false,
-    "legalTexts": false,
+    "identity": true,
+    "monitoredCanadianPhone": true,
+    "partnerCoverage": true,
+    "provincialCompliance": true,
+    "partnerCredentialsAndInsurance": true,
+    "ratesAndConsent": true,
+    "privacyAndRetention": true,
+    "legalTexts": true,
     "callbackStaffing": false,
     "restrictedHighwayHandling": false,
     "analytics": false
-  }
+  },
+  "approvalRecord": {
+    "confirmedAt": "2026-10-24",
+    "confirmationSource": "Owner confirmed the business/provider arrangements, partner credentials, provincial requirements, rates and consent, privacy and legal text approvals; supplied legal name EasyTowing and explicitly selected phone-only support."
+  },
+  "supportChannel": "phone"
 }

@@ -31,7 +31,6 @@ for (const route of routes) {
     } else {
       assert.equal(expectedPhoneHref,'tel:+16728899764',`${route}: owner-provided easytowing number`);
       assert.ok(html.includes(escapeHtml(siteConfig.displayPhone)),`${route}: readable phone number`);
-      assert.match(html,/pre-launch/i,`${route}: proposed operating status disclosed`);
       assert.ok(!html.includes('DEMO PHONE'),`${route}: demo number removed`);
     }
   } else assert.ok(!telephoneTargets.length,`${route}: no unconfigured phone links`);
@@ -61,16 +60,25 @@ for (const route of routes) {
     assert.ok(html.includes('href="/services"'), `${route}: link back to service hub`);
   }
   if (route === '/') {
-    assert.match(html,/service-carousel-track[^"]*is-expanded/,'all nine categories are shown before interaction');
-    assert.doesNotMatch(html,/\b4\.\d\s*(?:\/|out of)\s*5\b/,'home has no unsupported average review score');
+    assert.match(html,/class="service-carousel-track"/,'homepage starts with the service carousel');
+    assert.ok(!html.includes('id="how-it-works"') && !html.includes('/#how-it-works'),'removed process section has no section or navigation target');
+    assert.ok(!html.includes('Rebranded vehicle image'),'hero image has no removed label');
+    assert.match(html,/<h1\b[^>]*>[\s\S]*?Winnipeg towing[\s\S]*?Made easy\./,'homepage has the Winnipeg towing headline');
+    assert.equal((html.match(/class="review-card"/g)||[]).length,3,'home renders three supplied customer quotes');
+    assert.ok(html.includes('Rating and customer feedback supplied by EasyTowing'),'review source is visible');
+    assert.ok(html.replace(/<!--[\s\S]*?-->/g,'').includes('25-minute arrival estimate'),'arrival estimate reflects owner confirmation');
     assert.match(html,/easytowing/,'owner brand rendered');
-    for (const id of ['services','fleet','how-it-works','reviews','contact']) assert.ok(html.includes(`id="${id}"`),`home: #${id} section exists`);
+    for (const id of ['services','fleet','reviews','contact']) assert.ok(html.includes(`id="${id}"`),`home: #${id} section exists`);
     assert.match(html, /alt="White easytowing flatbed truck carrying a grey SUV"/, 'hero has descriptive alt text');
     assert.match(html, /srcSet="[^"]*easytowing-flatbed/, 'hero has responsive image sources');
     assert.ok(!html.includes('scene-grid'), 'old SVG grid has been replaced');
     assert.match(html, /width="1448" height="1086"/, 'image dimensions prevent layout shift');
     for (const image of fleetImages) assert.ok(html.includes(image.slice(1)) || html.includes(encodeURIComponent(image)),`home: ${image} rendered`);
   }
+  const footer=html.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0];
+  assert.ok(footer,`${route}: shared footer is rendered`);
+  assert.match(footer,/easytowing coordinates independent/,`${route}: actual coordinator role remains visible`);
+  assert.doesNotMatch(footer,/pre-launch/i,`${route}: removed pre-launch footer copy stays removed`);
   for(const match of html.matchAll(/href="(\/[^"?]*)"/g)) { const path=match[1].split('#')[0]; if (!path.startsWith('/_next') && !path.startsWith('//')) discovered.add(path); }
   console.log(`PASS ${route}: SSR, H1, preview metadata, contact and schema guards`);
 }

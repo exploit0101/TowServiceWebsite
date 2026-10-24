@@ -252,3 +252,114 @@ tests/launch.test.ts
 tests/request.test.ts
 tests/services.test.ts
 ```
+
+## Production release - October 24, 2026
+
+The owner supplied legal name EasyTowing, explicitly selected phone-only support at 672-889-9764, confirmed all advertised services throughout Winnipeg, and confirmed that the 25-minute arrival estimate is supported by actual dispatch records. The owner also confirmed provider/partner, provincial, rates/consent, privacy and legal-text approvals and requested production publication. These are recorded owner attestations, not an independent legal determination.
+
+Removed How it works and customer-facing project/draft labels. The shorter homepage retains service scope, independent-provider identity, quote/consent information and essential safety guidance. The nine primary service cards now move horizontally, with hover/focus/touch and explicit pause controls, swipe/arrows, an expanded view and reduced-motion support. The supplied three customer quotes and company-supplied 4.9 rating are visible with source attribution; no reviewer names, dates, platform, total count or review-rating schema are invented.
+
+Production Pages now has a guarded opt-in that validates configured business facts before export. Repository variables select production and the final HTTPS origin. Nineteen approved pages become indexable with unique titles/descriptions, one H1, repository-prefixed canonicals/social URLs, coherent Organization/Service/BreadcrumbList data and an approved sitemap. The legacy pilot page and phone-request utility remain noindex. No LocalBusiness, street address, coordinates, fleet ownership or certificate claim is invented. There is no static callback endpoint or unsupported public form.
+
+Static Next Image delivery now uses forty-two pre-sized WebP variants, responsive source sets and high-priority hero loading. Image resizing/encoding does not change the creative content. Accessible call labels include the visible button wording, and the brand uses its visible text as its accessible name.
+
+Verification on the production artifact:
+
+- Launch configuration validator, lint and Next route generation/TypeScript: pass.
+- Unit/component/SEO/regression suite: **48/48 pass**.
+- Guarded production static build: pass, including twenty-one Windows RSC aliases.
+- Exported HTML/link/image/canonical/sitemap verification: **21 pages and 81 local destinations/assets pass**, including responsive image candidates.
+- Headless Chrome: pass at **320, 375, 390, 768, 1024 and 1440px**. Navigation, visible phone targets, service expansion, gallery keyboard/focus flows, image loading and overflow checks pass, with zero browser errors. Separate normal-motion checks verify movement, hover/focus pause, manual pause/resume, offscreen suspension and looping. No call links were activated.
+- Structured-data checks: eleven Service records use the canonical repository prefix, Organization provider ID and Winnipeg service area. Nineteen sitemap URLs match approved canonicals. Organization has the real legal name and phone, and omits email for phone-only support.
+- Local Lighthouse 12.8.2 mobile simulation after responsive image delivery: SEO **100**, accessibility **100**, best practices **100**, performance **78**; LCP **6.0s**, TBT **20ms**, CLS **0**. The temporary Python server does not supply production compression or caching; this is a local laboratory result and does not establish deployed/field performance. Image over-delivery fell from an estimated 1,031 KiB to 211 KiB. A visible-name issue outside the scored accessibility checks was subsequently corrected in the brand link. Field LCP/INP/CLS and real devices remain unmeasured.
+
+Runnable checks are documented in README.md and PRELAUNCH_CHECKLIST.md. Google Search Console sitemap submission/index inspection and actual carrier/call-centre handling remain owner-side operational checks; successful deployment does not guarantee indexing or rankings.
+
+Files changed for this release (including generated responsive image assets):
+
+```text
+.github/workflows/pages.yml
+assets/README.md
+config/launch.json
+GITHUB_DEPLOYMENT.md
+next.config.ts
+PRELAUNCH_CHECKLIST.md
+public/images/easytowing-flatbed-1200w.webp
+public/images/easytowing-flatbed-1440w.webp
+public/images/easytowing-flatbed-320w.webp
+public/images/easytowing-flatbed-480w.webp
+public/images/easytowing-flatbed-640w.webp
+public/images/easytowing-flatbed-768w.webp
+public/images/easytowing-flatbed-960w.webp
+public/images/easytowing-flatbed-night-1200w.webp
+public/images/easytowing-flatbed-night-1440w.webp
+public/images/easytowing-flatbed-night-320w.webp
+public/images/easytowing-flatbed-night-480w.webp
+public/images/easytowing-flatbed-night-640w.webp
+public/images/easytowing-flatbed-night-768w.webp
+public/images/easytowing-flatbed-night-960w.webp
+public/images/easytowing-highway-1200w.webp
+public/images/easytowing-highway-1440w.webp
+public/images/easytowing-highway-320w.webp
+public/images/easytowing-highway-480w.webp
+public/images/easytowing-highway-640w.webp
+public/images/easytowing-highway-768w.webp
+public/images/easytowing-highway-960w.webp
+public/images/easytowing-loading-1200w.webp
+public/images/easytowing-loading-1440w.webp
+public/images/easytowing-loading-320w.webp
+public/images/easytowing-loading-480w.webp
+public/images/easytowing-loading-640w.webp
+public/images/easytowing-loading-768w.webp
+public/images/easytowing-loading-960w.webp
+public/images/easytowing-recovery-1200w.webp
+public/images/easytowing-recovery-1440w.webp
+public/images/easytowing-recovery-320w.webp
+public/images/easytowing-recovery-480w.webp
+public/images/easytowing-recovery-640w.webp
+public/images/easytowing-recovery-768w.webp
+public/images/easytowing-recovery-960w.webp
+public/images/easytowing-wheel-lift-1200w.webp
+public/images/easytowing-wheel-lift-1440w.webp
+public/images/easytowing-wheel-lift-320w.webp
+public/images/easytowing-wheel-lift-480w.webp
+public/images/easytowing-wheel-lift-640w.webp
+public/images/easytowing-wheel-lift-768w.webp
+public/images/easytowing-wheel-lift-960w.webp
+QA_REPORT.md
+README.md
+scripts/browser-check.ts
+scripts/build-pages.ts
+scripts/smoke.ts
+scripts/test-pages.ts
+SEO_AUDIT.md
+src/app/[page]/page.tsx
+src/app/areas/[area]/page.tsx
+src/app/globals.css
+src/app/layout.tsx
+src/app/page.tsx
+src/app/request-help/page.tsx
+src/app/robots.ts
+src/app/services/[service]/page.tsx
+src/app/sitemap.ts
+src/components/arrival-estimate.tsx
+src/components/customer-reviews.tsx
+src/components/fleet-gallery.tsx
+src/components/header.tsx
+src/components/service-carousel.css
+src/components/service-carousel.tsx
+src/components/service-grid.tsx
+src/components/ui.tsx
+src/lib/launch.ts
+src/lib/reviews.ts
+src/lib/seo.tsx
+src/lib/seo-policy.ts
+src/lib/site-config.ts
+src/lib/static-image-loader.ts
+tests/arrival.test.ts
+tests/carousel.test.ts
+tests/claims.test.ts
+tests/components.test.ts
+tests/launch.test.ts
+tests/seo.test.ts
+```

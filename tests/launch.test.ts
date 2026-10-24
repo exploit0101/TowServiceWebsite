@@ -5,7 +5,7 @@ import { launchErrors, type LaunchConfig } from '../src/lib/launch';
 function verifiedFixture(): LaunchConfig {
   return { ...launch, businessStatus:'operating', brandName:'Test fixture',legalName:'Fixture business',providerRole:'Coordinator of independent operators',phoneMode:'verified',supportPhone:'+12045551234',displayPhone:'204-555-1234',supportEmail:'test@fixture.test',canonicalDomain:'https://fixture.test',serviceHours:'Owner-approved hours',operatorDetails:'Fixture quote and invoice responsibilities',areas:['Verified test zone'],offers:['battery-boost'],prices:['Approved quote terms'],approvedIndexableRoutes:['/','/services','/services/battery-boost'],approvals:Object.fromEntries(Object.keys(launch.approvals).map(key => [key,true])) };
 }
-test('proposed checked-in configuration blocks launch', () => { const errors=launchErrors(launch); assert.ok(errors.length >= 10); assert.ok(errors.some(x=>x.includes('operating'))); });
+test('proposed business status blocks an otherwise complete launch fixture', () => { const errors=launchErrors({...verifiedFixture(),businessStatus:'proposed'}); assert.ok(errors.some(error=>error.includes('operating'))); });
 test('complete fixture passes structural gates; each required approval fails closed', () => {
   const config=verifiedFixture(); assert.deepEqual(launchErrors(config),[]);
   for (const field of ['identity','monitoredCanadianPhone','partnerCoverage','provincialCompliance','partnerCredentialsAndInsurance','ratesAndConsent','privacyAndRetention','legalTexts']) {
@@ -22,6 +22,13 @@ test('reject unknown markets, services, unapproved route indexing and placeholde
 test('Ontario selection needs separate restricted-highway handling approval', () => {
   const config=verifiedFixture();
   assert.ok(launchErrors({...config,pilotMarket:'brampton-bramalea',approvals:{...config.approvals,restrictedHighwayHandling:false}}).some(error=>error.includes('restricted-highway')));
+});
+
+test('owner-approved phone-only support permits launch without an invented email', () => {
+  const config=verifiedFixture();
+  assert.deepEqual(launchErrors({...config,supportChannel:'phone',supportEmail:''}),[]);
+  assert.ok(launchErrors({...config,supportChannel:'email',supportEmail:''}).some(error=>error.includes('email')));
+  assert.ok(launchErrors({...config,supportChannel:'phone',supportEmail:'invalid'}).some(error=>error.includes('email')));
 });
 
 test('production rejects unverified phone modes and reserved fictional numbers even with approvals', () => {

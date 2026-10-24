@@ -11,8 +11,12 @@ export type MarketKey = keyof typeof markets;
 export type LaunchConfig = {
   businessStatus: string; brandName: string; legalName: string; providerRole: string;
   supportPhone: string; displayPhone: string; phoneMode: string; supportEmail: string; canonicalDomain: string;
+  supportChannel?: string;
   pilotMarket: string; serviceHours: string; physicalOfficeVerified: boolean;
   availability?: AvailabilityConfig;
+  coverage?: { label: string; scope: string; confirmedAt: string; confirmationSource: string };
+  arrivalEstimate?: { minutes: number; status: string; confirmedAt: string; confirmationSource: string };
+  approvalRecord?: { confirmedAt: string; confirmationSource: string };
   areas: string[]; offers: string[]; prices: string[]; certifications: string[];
   operatorDetails: string; approvedIndexableRoutes: string[];
   approvals: Record<string, boolean>;
@@ -28,7 +32,8 @@ export function launchErrors(config: LaunchConfig): string[] {
   if (config.phoneMode !== 'verified') errors.push('Confirm the owner-provided phone as a verified, monitored service line before production.');
   if (config.supportPhone && config.displayPhone && !getPhoneContact(config.supportPhone,config.displayPhone)) errors.push('The dial target and displayed phone number must be valid and match.');
   if (/^\+1[2-9]\d{2}55501\d{2}$/.test(config.supportPhone)) errors.push('Reserved demonstration phone numbers cannot be used for a live service.');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.supportEmail)) errors.push('A verified support email is required.');
+  if (config.supportChannel && !['email','phone'].includes(config.supportChannel)) errors.push('Choose a supported customer contact channel.');
+  if ((config.supportChannel !== 'phone' || config.supportEmail) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.supportEmail)) errors.push('A verified support email is required unless the owner explicitly selects phone-only support.');
   try {
     const url = new URL(config.canonicalDomain);
     if (url.protocol !== 'https:' || url.pathname !== '/' || url.search || url.hash || url.username || url.password || !url.hostname.includes('.') || /localhost|example\.|\.invalid$/.test(url.hostname)) throw new Error();

@@ -5,6 +5,7 @@ import { services } from '@/lib/content';
 import { pageMetadata, StructuredBreadcrumbs } from '@/lib/seo';
 import { Breadcrumbs, PageIntro, SafetyNote, NextStep } from '@/components/ui';
 type Props = {params:Promise<{area:string}>};
+export const dynamicParams = false;
 export function generateStaticParams() { return isLive ? [{area:siteConfig.pilotMarket}] : []; }
 function check(area:string) { if (!isLive || !pilot || area !== siteConfig.pilotMarket) notFound(); return pilot; }
 export async function generateMetadata({params}:Props) { const selected = check((await params).area); return pageMetadata(`Roadside help in ${selected.label}`, `Check roadside dispatch availability in the verified ${selected.label} service zone in ${selected.city}.`, `/areas/${siteConfig.pilotMarket}`); }

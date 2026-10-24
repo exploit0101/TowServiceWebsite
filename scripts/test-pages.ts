@@ -4,10 +4,19 @@ import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { services } from '../src/lib/content';
 import { homepageServiceIds } from '../src/lib/service-catalog';
+import launch from '../config/launch.json';
+import { launchErrors } from '../src/lib/launch';
+import { resolveSiteConfig } from '../src/lib/configuration';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'pages-out');
 const basePath = process.env.GITHUB_PAGES_BASE_PATH || '';
-const routes = ['/', '/services', ...services.map(service => `/services/${service.id}`), '/request-help', '/about', '/contact', '/rates-and-disclosures', '/privacy', '/terms', '/accessibility'];
+const production = process.env.GITHUB_PAGES_PRODUCTION === '1';
+const configured = resolveSiteConfig(launch, process.env.CANONICAL_DOMAIN);
+if (production) assert.deepEqual(launchErrors(configured), [], 'Production export requires complete business configuration and approvals');
+const availableServices = production ? services.filter(service => configured.offers.includes(service.id)) : services;
+const routes = ['/', '/services', ...availableServices.map(service => `/services/${service.id}`), '/request-help', '/about', '/contact', '/rates-and-disclosures', '/privacy', '/terms', '/accessibility', ...(production ? [`/areas/${configured.pilotMarket}`] : [])];
+const canonical = (route: string) => new URL(`${basePath}${route === '/' ? '/' : `${route}/`}`, configured.canonicalDomain).href;
+const expectedTelephone = `tel:${configured.supportPhone}`;
 const titles = new Set<string>();
 const descriptions = new Set<string>();
 const assets = new Set<string>();
@@ -23,19 +32,24 @@ function localFile(url: string) {
 for (const route of routes) {
   const html = readFileSync(localFile(`${basePath}${route}`), 'utf8');
   assert.equal((html.match(/<h1\b/g) || []).length, 1, `${route}: one H1`);
-  assert.match(html, /name="robots" content="noindex, nofollow"/, `${route}: noindex preview`);
-  assert.match(html, /pre-launch/i, `${route}: proposed operating status disclosed`);
+  const approved = production && configured.approvedIndexableRoutes.includes(route);
+  assert.ok(html.includes(`name="robots" content="${approved ? 'index, follow' : 'noindex, nofollow'}"`), `${route}: approved robots metadata`);
+  assert.match(html, /independent|coordinat|call centre/i, `${route}: service provider role is visible`);
   assert.ok(!html.includes('DEMO PHONE'),`${route}: demo phone removed`);
   assert.match(html,/easytowing/,`${route}: owner brand`);
-  assert.ok(!html.includes('rel="canonical"') && !html.includes('application/ld+json'), `${route}: no unverified launch metadata`);
+  if (production) {
+    assert.ok(html.includes(`rel="canonical" href="${canonical(route)}"`), `${route}: canonical matches deployed route`);
+    const structured = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]) as { '@type'?: string });
+    assert.ok(structured.some(item => item['@type'] === 'Organization'), `${route}: verified organization schema`);
+  } else assert.ok(!html.includes('rel="canonical"') && !html.includes('application/ld+json'), `${route}: no unverified launch metadata`);
   assert.doesNotMatch(html,/aggregateRating|ratingValue|reviewCount/,`${route}: no invented rating data`);
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
   const description = html.match(/name="description" content="([^"]+)"/)?.[1];
   assert.ok(title && !titles.has(title), `${route}: unique title`); titles.add(title);
   assert.ok(description && !descriptions.has(description), `${route}: unique description`); descriptions.add(description);
   const telephoneTargets = [...html.matchAll(/href="(tel:[^"]+)"/g)].map(match => match[1]);
-  assert.ok(telephoneTargets.length >= 2 && telephoneTargets.every(target => target === 'tel:+16728899764'), `${route}: owner-provided dialer links`);
-  assert.match(html,/672-889-9764/,`${route}: readable phone number`);
+  assert.ok(telephoneTargets.length >= 2 && telephoneTargets.every(target => target === expectedTelephone), `${route}: configured dialer links`);
+  assert.ok(html.includes(configured.displayPhone), `${route}: readable phone number`);
   for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     const url = match[1].replace(/&amp;/g, '&');
     if (url.startsWith('/') && !url.startsWith('//')) {
@@ -44,27 +58,52 @@ for (const route of routes) {
     }
   }
 }
-assert.ok(!existsSync(join(root, 'api')) && !existsSync(join(root, 'areas')), 'No server callback or unverified location route');
+assert.ok(!existsSync(join(root, 'api')), 'No server callback endpoint on static hosting');
+if (production) {
+  assert.ok(existsSync(join(root, 'areas', configured.pilotMarket, 'index.html')), 'Selected approved area exported');
+  for (const area of ['winnipeg-bridgwater', 'winnipeg-transcona', 'brampton-bramalea']) {
+    if (area !== configured.pilotMarket) assert.ok(!existsSync(join(root, 'areas', area)), 'No unselected area exported');
+  }
+} else assert.ok(!existsSync(join(root, 'areas')), 'No unverified location route');
 assert.ok(existsSync(join(root, '.nojekyll')) && existsSync(join(root, '404.html')), 'GitHub Pages assets and real 404');
-assert.ok(!readFileSync(join(root, 'sitemap.xml'), 'utf8').includes('<loc>'), 'Preview sitemap stays empty');
-assert.ok(!readFileSync(join(root, 'robots.txt'), 'utf8').includes('Sitemap:'), 'No advertised live sitemap');
+const sitemap = readFileSync(join(root, 'sitemap.xml'), 'utf8');
+const robots = readFileSync(join(root, 'robots.txt'), 'utf8');
+if (production) {
+  const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
+  assert.deepEqual(sitemapUrls.sort(), [...new Set(configured.approvedIndexableRoutes)].map(canonical).sort(), 'Only approved canonical routes in live sitemap');
+  assert.ok(robots.includes(`Sitemap: ${new URL(`${basePath}/sitemap.xml`, configured.canonicalDomain).href}`), 'Correct deployed sitemap advertised');
+} else {
+  assert.ok(!sitemap.includes('<loc>'), 'Preview sitemap stays empty');
+  assert.ok(!robots.includes('Sitemap:'), 'No advertised live sitemap');
+}
 const home = readFileSync(join(root, 'index.html'), 'utf8');
-for (const id of ['services','fleet','how-it-works','reviews','contact']) assert.ok(home.includes(`id="${id}"`),`Home: #${id} section exists`);
-assert.match(home,/service-carousel-track[^"]*is-expanded/,'Home shows all nine service categories before interaction');
-assert.doesNotMatch(home,/\b4\.\d\s*(?:\/|out of)\s*5\b/,'Home has no unsupported average review score');
+for (const id of ['services','fleet','reviews','contact']) assert.ok(home.includes(`id="${id}"`),`Home: #${id} section exists`);
+assert.doesNotMatch(home,/service-carousel-track[^"]*is-expanded/,'Home carousel starts collapsed');
+assert.equal((home.match(/class="review-card"/g)||[]).length,3,'Home renders the three owner-supplied customer quotes');
+assert.ok(home.includes('Rating and customer feedback supplied by EasyTowing'),'Review source remains visible');
+assert.ok(home.replace(/<!--[\s\S]*?-->/g,'').includes('25-minute arrival estimate'),'Home shows the owner-confirmed arrival estimate');
 assert.match(home,/alt="White easytowing flatbed truck carrying a grey SUV"/,'Hero has descriptive alt text');
 assert.match(home,/width="1448" height="1086"/,'Hero has intrinsic dimensions');
+assert.match(home, /fetchPriority="high"/i, 'Hero image has high loading priority');
+assert.match(home, /srcSet="[^"]+easytowing-flatbed-640w\.webp 640w/i, 'Static hero offers responsive image sizes');
+for (const match of home.matchAll(/(?:srcSet|imageSrcSet)="([^"]+)"/gi)) {
+  for (const candidate of match[1].split(',')) {
+    const url = candidate.trim().split(/\s+/)[0];
+    assert.ok(existsSync(localFile(url)), `Responsive image exists: ${url}`);
+    assets.add(url);
+  }
+}
 for (const name of ['flatbed','highway','wheel-lift','loading','flatbed-night','recovery']) {
   const path=`${basePath}/images/easytowing-${name}.webp`;
-  assert.ok(home.includes(path),`${name}: image uses the repository base path`);
+  assert.ok(home.includes(path.replace('.webp', '-640w.webp')),`${name}: responsive image uses the repository base path`);
   assert.ok(statSync(localFile(path)).size < 300000,`${name}: optimized source is under 300KB`);
 }
 function hasServiceLink(markup: string, id: string) {
   return [...markup.matchAll(/href="([^"]+)"/g)].some(match => match[1].replace(/\/$/, '') === `${basePath}/services/${id}`);
 }
 for (const [route,shown] of [
-  ['/',homepageServiceIds.map(id => services.find(service => service.id === id)!)],
-  ['/services',services],
+  ['/',homepageServiceIds.map(id => availableServices.find(service => service.id === id)).filter((service): service is typeof services[number] => Boolean(service))],
+  ['/services',availableServices],
 ] as const) {
   const markup=readFileSync(localFile(`${basePath}${route}`),'utf8');
   const serviceCards = [...markup.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]).filter(card => services.some(service => hasServiceLink(card,service.id)));
@@ -73,7 +112,7 @@ for (const [route,shown] of [
     const card=serviceCards.find(markup => hasServiceLink(markup,service.id));
     assert.ok(card,`${route}: ${service.name} service detail link`);
     assert.match(card,/<svg\b[^>]*aria-hidden="true"/,`${route}: ${service.name} decorative service icon`);
-    assert.ok(card.includes('href="tel:+16728899764"'),`${route}: ${service.name} uses owner-provided phone`);
+    assert.ok(card.includes(`href="${expectedTelephone}"`),`${route}: ${service.name} uses configured phone`);
   }
 }
 assert.ok(!home.includes('/_next/image?'), 'Static image needs no Next image server');

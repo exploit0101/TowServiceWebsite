@@ -52,10 +52,10 @@ export function FleetGallery({ images }: { images: readonly FleetImage[] }) {
       }
     }}>
       <div className="lightbox-content">
-        <div className="lightbox-toolbar"><h2 id={titleId}>{selected?.label || 'Gallery preview'}</h2><button className="lightbox-close" type="button" aria-label="Close gallery" onClick={() => dialog.current?.close()}><X size={22} aria-hidden="true" /></button></div>
+        <div className="lightbox-toolbar"><h2 id={titleId}>{selected?.label || 'Vehicle gallery'}</h2><button className="lightbox-close" type="button" aria-label="Close gallery" onClick={() => dialog.current?.close()}><X size={22} aria-hidden="true" /></button></div>
         {selected && <figure className="lightbox-figure">
           <div className="lightbox-image"><Image key={selected.id} src={publicAssetPath(selected.src)} alt={selected.alt} width={selected.width} height={selected.height} sizes="(max-width: 1100px) 95vw, 1100px" /></div>
-          <figcaption className="lightbox-caption" id={captionId}>{selected.generated ? 'AI-generated concept' : 'A rebranded image'} · Not a verified company fleet photograph.</figcaption>
+          <figcaption className="lightbox-caption" id={captionId}>Illustrative vehicle image. Equipment varies by job.</figcaption>
         </figure>}
         <div className="lightbox-controls"><button type="button" className="lightbox-previous" aria-label="Previous image" disabled={images.length < 2} onClick={() => move(-1)}><ChevronLeft size={22} aria-hidden="true" /><span>Previous</span></button><span className="lightbox-counter" aria-live="polite" aria-atomic="true">{selectedIndex === null ? '' : `${selectedIndex + 1} of ${images.length}`}</span><button type="button" className="lightbox-next" aria-label="Next image" disabled={images.length < 2} onClick={() => move(1)}><span>Next</span><ChevronRight size={22} aria-hidden="true" /></button></div>
       </div>

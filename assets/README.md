@@ -26,7 +26,7 @@ Built-in ImageGen was used to edit four owner-supplied images and create two ori
 
 All six final assets were visually inspected for composition, clear lowercase easytowing branding, the exact phone number, and absence of unsupported hours, pricing or certification claims. Towing-company graphics and service lists were replaced; some ordinary vehicle/manufacturer badges remain incidental photographic details. The loading sign was replaced with brand and phone graphics. These images are visual concepts, not a substitute for verified business claims.
 
-Processing used Sharp only for resize (maximum width 1600, without enlargement) and WebP quality 84 encoding. No programmatic creative edits were made. All final files are under 250 KB. Raw ImageGen outputs remain at the built-in destination `C:/Users/PC/.codex/generated_images/01a1648a-271a-7ef3-a739-f0a9e3008a17/`; the website references only the workspace WebP files.
+Processing used Sharp only for resize (maximum width 1600, without enlargement) and WebP quality 84 encoding. Static delivery additionally has seven responsive variants per source at 320, 480, 640, 768, 960, 1200 and 1440px, WebP quality 80, without enlargement. These use the `-WIDTHw.webp` suffix and the static Next Image loader; hero priority and matching responsive preload avoid downloading full-size imagery on small screens. No programmatic creative edits were made. All final files are under 250 KB. Raw ImageGen outputs remain at the built-in destination `C:/Users/PC/.codex/generated_images/01a1648a-271a-7ef3-a739-f0a9e3008a17/`; the website references only the workspace WebP files.
 
 Raw output filenames, in the same order as the table:
 

@@ -50,6 +50,16 @@ test('owner-provided phone is readable and opens the dialer before full producti
   assert.ok(!html.includes('DEMO PHONE'));
   assert.ok(!html.includes('disabled=""'));
 });
+
+test('header navigation links only to the four retained homepage sections', () => {
+  const html=renderToStaticMarkup(createElement(Header,{brand:'easytowing',phone:'',displayPhone:'',live:false,pilotLabel:'Winnipeg'}));
+  const navigation=html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(navigation);
+  const targets=[...navigation.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(targets,['/#services','/#fleet','/#reviews','/#contact']);
+  assert.match(navigation,/>Gallery<\/a>/);
+  assert.ok(!navigation.includes('how-it-works'));
+});
 test('preview callback form labels local-only action, minimal fields, consent and dispatch limits', () => {
   const html=renderToStaticMarkup(createElement(RequestForm,{enabled:false,offers:[]}));
   assert.match(html,/Review request \(preview\)/); assert.match(html,/Nothing is sent, stored or booked/);

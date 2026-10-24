@@ -1,51 +1,73 @@
 export type CustomerReview = {
-  author: string;
+  author?: string;
   text: string;
-  rating: number;
-  date: string;
+  rating?: number;
+  date?: string;
 };
 export type ReviewSummary = {
   verified: boolean;
   sourceUrl: string;
+  sourceKind?: "public" | "owner-provided";
+  sourceLabel?: string;
   rating: number | null;
   totalReviews: number | null;
   entries: readonly CustomerReview[];
 };
 
-// Publish actual customer feedback and its source here when supplied by the owner.
+/** Owner-supplied feedback. No platform, individual star scores, names or dates are inferred. */
 export const customerReviews: ReviewSummary = {
-  verified: false,
+  verified: true,
   sourceUrl: "",
-  rating: null,
+  sourceKind: "owner-provided",
+  sourceLabel: "Rating and customer feedback supplied by EasyTowing",
+  rating: 4.9,
   totalReviews: null,
-  entries: [],
+  entries: [
+    {
+      text: "Easy Towing made a stressful situation much easier. The dispatch team was helpful, communication was clear, and the towing service was handled professionally.",
+    },
+    {
+      text: "Great communication and helpful service. The team explained everything clearly and helped me arrange the roadside assistance I needed. A positive experience overall.",
+    },
+    {
+      text: "I needed help with a dead car battery and contacted Easy Towing. The process was straightforward, and I appreciated being kept informed while assistance was arranged.",
+    },
+  ],
 };
 
 export function hasPublishableReviews(reviews: ReviewSummary): boolean {
-  let validSource = false;
+  const suppliedByOwner =
+    reviews.sourceKind === "owner-provided" &&
+    Boolean(reviews.sourceLabel?.trim());
+  let publicSource = false;
   try {
-    validSource = new URL(reviews.sourceUrl).protocol === "https:";
+    publicSource = new URL(reviews.sourceUrl).protocol === "https:";
   } catch {
-    /* No source supplied. */
+    /* Owner-supplied feedback need not have a public URL. */
   }
+  const validCount =
+    reviews.totalReviews === null
+      ? suppliedByOwner
+      : Number.isInteger(reviews.totalReviews) &&
+        reviews.totalReviews >= reviews.entries.length;
   return (
     reviews.verified &&
-    validSource &&
+    (suppliedByOwner || publicSource) &&
     typeof reviews.rating === "number" &&
     Number.isFinite(reviews.rating) &&
     reviews.rating >= 1 &&
     reviews.rating <= 5 &&
-    Number.isInteger(reviews.totalReviews) &&
-    (reviews.totalReviews ?? 0) >= reviews.entries.length &&
+    validCount &&
     reviews.entries.length > 0 &&
     reviews.entries.every(
       (review) =>
-        review.author.trim() &&
-        review.text.trim() &&
-        Number.isInteger(review.rating) &&
-        review.rating >= 1 &&
-        review.rating <= 5 &&
-        /^\d{4}-\d{2}-\d{2}$/.test(review.date),
+        Boolean(review.text.trim()) &&
+        (review.author === undefined || Boolean(review.author.trim())) &&
+        (review.rating === undefined ||
+          (Number.isInteger(review.rating) &&
+            review.rating >= 1 &&
+            review.rating <= 5)) &&
+        (review.date === undefined || /^\d{4}-\d{2}-\d{2}$/.test(review.date)),
     )
   );
 }

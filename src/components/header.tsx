@@ -22,7 +22,7 @@ export function Header({
   const [open, setOpen] = useState(false);
   const demo = phoneMode === "demo";
   const contact =
-    live || demo || phoneMode === "owner-provided"
+    live || demo || phoneMode === "owner-provided" || phoneMode === "verified"
       ? getPhoneContact(phone, displayPhone)
       : null;
   const close = () => setOpen(false);
@@ -42,7 +42,7 @@ export function Header({
   );
   return (
     <>
-      {!live && phoneMode !== "owner-provided" && (
+      {!live && phoneMode !== "owner-provided" && phoneMode !== "verified" && (
         <div className="preview-banner">
           <strong>
             {demo ? "DEMO PHONE · NOT A SERVICE LINE" : "PRE-LAUNCH PREVIEW"}
@@ -57,7 +57,6 @@ export function Header({
           <Link
             href="/"
             className="brand"
-            aria-label={`${brand} home`}
             onClick={close}
           >
             <span className="brand-mark">
@@ -86,13 +85,10 @@ export function Header({
               Services
             </Link>
             <Link href="/#fleet" onClick={close}>
-              Fleet
+              Gallery
             </Link>
             <Link href="/#reviews" onClick={close}>
               Reviews
-            </Link>
-            <Link href="/#how-it-works" onClick={close}>
-              How it works
             </Link>
             <Link href="/#contact" onClick={close}>
               Contact
@@ -116,7 +112,7 @@ export function Header({
                 className="header-call"
                 href={contact.href}
                 onClick={close}
-                aria-label={`${demo ? "Open demo dialer" : "Call easytowing"} at ${contact.display}`}
+                aria-label={`${demo ? "Test dialer" : "Call now"}: ${brand} at ${contact.display}`}
               >
                 {callContent}
               </a>

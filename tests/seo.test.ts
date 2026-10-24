@@ -14,9 +14,9 @@ const previewContext: SeoContext = { ...liveContext, live: false, origin: '' };
 test('environment canonical override is shared, normalized, and never changes business approvals', () => {
   const resolved = resolveSiteConfig(launch, ' https://fixture.test/ ');
   assert.equal(resolved.canonicalDomain, 'https://fixture.test');
-  assert.equal(resolved.businessStatus, 'proposed');
+  assert.equal(resolved.businessStatus, launch.businessStatus);
   assert.deepEqual(resolved.approvals, launch.approvals);
-  assert.ok(launchErrors(resolved).length > 0, 'A real domain alone cannot open launch gates');
+  assert.equal(launchErrors(resolved).length,launchErrors(launch).length, 'A canonical origin override does not change business approvals');
   assert.equal(resolveSiteConfig({ ...launch, canonicalDomain: 'https://fixture.test/' }, '').canonicalDomain, 'https://fixture.test');
 });
 
@@ -31,8 +31,47 @@ test('canonical config preserves invalid environment input for launch rejection'
 test('canonical URLs use a consistent absolute origin and reject external or tracking paths', () => {
   assert.equal(canonicalUrl('/', liveContext.origin), 'https://fixture.test/');
   assert.equal(canonicalUrl('/services/battery-boost', liveContext.origin), 'https://fixture.test/services/battery-boost');
-  for (const path of ['//other.test/', '/\\other.test/', 'https://other.test', '/?utm_source=ad', '/#services'])
+  for (const path of ['//other.test/', '/\\other.test/', 'https://other.test', '/?utm_source=ad', '/#services', '/../services', '/%2e%2e/services', '/%2fother.test', '/two words'])
     assert.throws(() => canonicalUrl(path, liveContext.origin));
+});
+
+test('repository deployment canonicals preserve the prefix and match static HTML/file URLs', () => {
+  const origin = 'https://exploit0101.github.io';
+  const basePath = '/TowServiceWebsite';
+  assert.equal(canonicalUrl('/', origin, basePath), 'https://exploit0101.github.io/TowServiceWebsite/');
+  assert.equal(canonicalUrl('/services/battery-boost', origin, basePath), 'https://exploit0101.github.io/TowServiceWebsite/services/battery-boost/');
+  assert.equal(canonicalUrl('/services/battery-boost/', origin, basePath), 'https://exploit0101.github.io/TowServiceWebsite/services/battery-boost/');
+  assert.equal(canonicalUrl('/sitemap.xml', origin, basePath), 'https://exploit0101.github.io/TowServiceWebsite/sitemap.xml');
+  assert.equal(canonicalUrl('/images/easytowing-flatbed.webp', origin, basePath), 'https://exploit0101.github.io/TowServiceWebsite/images/easytowing-flatbed.webp');
+  assert.equal(canonicalUrl('/.well-known/config', origin, basePath), 'https://exploit0101.github.io/TowServiceWebsite/.well-known/config');
+  assert.equal(canonicalUrl('/contact', origin, '', true), 'https://exploit0101.github.io/contact/');
+  assert.equal(canonicalUrl('/contact', origin, basePath, false), 'https://exploit0101.github.io/TowServiceWebsite/contact');
+  for (const invalid of ['/', '//other.test', '/repo/', '/repo?key=x', '/repo#fragment', '/repo/../other', '/%2e%2e', '/repo name', '/repo\\other'])
+    assert.throws(() => canonicalUrl('/contact', origin, invalid));
+});
+
+test('repository deployment metadata, social assets, breadcrumbs and sitemap share one URL shape', () => {
+  const context = { ...liveContext, origin: 'https://exploit0101.github.io', basePath: '/TowServiceWebsite' };
+  const path = '/services/battery-boost';
+  const expected = 'https://exploit0101.github.io/TowServiceWebsite/services/battery-boost/';
+  const metadata = createPageMetadata('Battery boost', 'Fixture description', path, context);
+  assert.equal(metadata.alternates?.canonical, expected);
+  assert.ok(metadata.openGraph && 'url' in metadata.openGraph);
+  assert.equal(metadata.openGraph.url, expected);
+  assert.deepEqual(metadata.openGraph.images, [{ url: 'https://exploit0101.github.io/TowServiceWebsite/images/easytowing-flatbed.webp', alt: 'White easytowing flatbed truck carrying a grey SUV', width: 1448, height: 1086 }]);
+  assert.deepEqual(createSitemap(context), [{ url: 'https://exploit0101.github.io/TowServiceWebsite/' }, { url: expected }]);
+  assert.equal(canonicalUrl(path, context.origin, context.basePath), expected, 'Breadcrumb URLs use the same canonical helper');
+  assert.deepEqual(createRobots(context), { rules: { userAgent: '*', allow: '/', disallow: '/TowServiceWebsite/api/' }, sitemap: 'https://exploit0101.github.io/TowServiceWebsite/sitemap.xml' });
+});
+
+test('repository base path does not open preview indexing or schema/canonical gates', () => {
+  const context = { ...previewContext, origin: 'https://exploit0101.github.io', basePath: '/TowServiceWebsite' };
+  const metadata = createPageMetadata('Preview', 'Fixture description', '/', context);
+  assert.deepEqual(metadata.robots, { index: false, follow: false });
+  assert.equal(metadata.alternates, undefined);
+  assert.ok(metadata.openGraph && !('url' in metadata.openGraph) && !('images' in metadata.openGraph));
+  assert.deepEqual(createSitemap(context), []);
+  assert.equal(createRobots(context).sitemap, undefined);
 });
 
 test('preview never emits indexable metadata, canonical, sitemap, or invented social URL even with approved routes', () => {

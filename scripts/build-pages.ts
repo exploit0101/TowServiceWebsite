@@ -3,8 +3,19 @@ import { spawnSync } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normalizeStaticSegments } from './normalize-static-segments';
+import launch from '../config/launch.json';
+import { launchErrors } from '../src/lib/launch';
+import { resolveSiteConfig } from '../src/lib/configuration';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const production = process.env.GITHUB_PAGES_PRODUCTION === '1';
+if (production) {
+  const errors = launchErrors(resolveSiteConfig(launch, process.env.CANONICAL_DOMAIN));
+  if (errors.length) {
+    console.error('GITHUB PAGES PRODUCTION BLOCKED\n' + errors.map(error => ` - ${error}`).join('\n'));
+    process.exit(1);
+  }
+}
 const basePath = process.env.GITHUB_PAGES_BASE_PATH || '';
 if (!/^(?:\/[A-Za-z0-9._-]+)*$/.test(basePath) || basePath.split('/').some(part => part === '.' || part === '..')) {
   throw new Error('GITHUB_PAGES_BASE_PATH must be empty or a safe /repository path without a trailing slash.');
@@ -22,7 +33,7 @@ function clearGenerated(path: string) {
 }
 
 try {
-  const excluded = [join(root, 'src', 'app', 'api'), join(root, 'src', 'app', 'areas')];
+  const excluded = [join(root, 'src', 'app', 'api'), ...(!production ? [join(root, 'src', 'app', 'areas')] : [])];
   cpSync(join(root, 'src'), join(staging, 'src'), { recursive: true, filter: path => !excluded.includes(path) });
   for (const entry of ['config', 'public', 'next.config.ts', 'package.json', 'package-lock.json', 'next-env.d.ts']) {
     cpSync(join(root, entry), join(staging, entry), { recursive: true });
@@ -31,11 +42,13 @@ try {
   tsconfig.include = ['next-env.d.ts', 'src/**/*.ts', 'src/**/*.tsx', '.next/types/**/*.ts'];
   tsconfig.exclude = ['node_modules'];
   writeFileSync(join(staging, 'tsconfig.json'), JSON.stringify(tsconfig, null, 2) + '\n');
-  console.log(`Building GitHub Pages design demo at ${basePath || '/'}. Live service, callback delivery and indexing remain disabled.`);
+  console.log(production
+    ? `Building approved GitHub Pages production at ${basePath || '/'}. Static hosting has no callback delivery endpoint.`
+    : `Building GitHub Pages preview at ${basePath || '/'}. Indexing and callback delivery remain disabled.`);
   const result = spawnSync(process.execPath, [join(root, 'node_modules', 'next', 'dist', 'bin', 'next'), 'build', '--webpack'], {
     cwd: staging,
     stdio: 'inherit',
-    env: { ...process.env, GITHUB_PAGES_DEMO: '1', GITHUB_PAGES_BASE_PATH: basePath, SITE_DEPLOYMENT: 'preview', NEXT_PUBLIC_GOOGLE_TAG_ID: '', NEXT_TELEMETRY_DISABLED: '1' },
+    env: { ...process.env, GITHUB_PAGES_BUILD: '1', GITHUB_PAGES_DEMO: production ? '0' : '1', GITHUB_PAGES_PRODUCTION: production ? '1' : '0', GITHUB_PAGES_BASE_PATH: basePath, SITE_DEPLOYMENT: production ? 'production' : 'preview', ...(!production ? { NEXT_PUBLIC_GOOGLE_TAG_ID: '' } : {}), NEXT_TELEMETRY_DISABLED: '1' },
   });
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`GitHub Pages build failed (${result.status}).`);
