@@ -12,6 +12,8 @@ Historical reports below describe prior states, including the initial non-indexa
 
 Local release checks passed: lint, TypeScript, **55 unit/component/SEO tests**, configured launch validator, production Pages build and **21-page / 92-destination** artifact checks. Existing browser checks passed at 320, 375, 390, 768, 1024 and 1440px; theme and text-contrast checks passed at 390/1440px, including the new form. Contact checks passed at 320/390/768/1440px and with JavaScript disabled. Screenshots of the empty request page and mobile footer were visually inspected. Read-only GET of the Formspree endpoint returned its expected POST-required response; inbox delivery/account configuration remains unverified.
 
+A 320×568 phone check found that the floating call action could obscure the bottom of focused form feedback. Form controls and delivery feedback now have bottom scroll clearance. Browser checks assert that both success and error messages stay below the sticky header and above the call action, including the short phone viewport.
+
 Implementation checked on October 22, 2026. This is a **local pre-launch preview**, not an operating roadside service. Selected pilot: Winnipeg — Bridgwater / Waverley West. No production deployment, actual customer request or call was made.
 
 ## Executed checks

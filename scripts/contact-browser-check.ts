@@ -10,7 +10,7 @@ const origin = (process.env.TEST_ORIGIN || 'http://127.0.0.1:3000').replace(/\/+
 export async function checkContactForm(browser: Browser) {
   await mkdir(resolve('.qa'), { recursive: true });
   for (const width of [320, 390, 768, 1440]) {
-    const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
+    const context = await browser.newContext({ viewport: { width, height: width === 320 ? 568 : 900 }, reducedMotion: 'reduce' });
     const page = await context.newPage();
     let mode: 'success' | 'reject' | 'busy' | 'network' | 'invalid-json' | 'native' = 'success';
     const submissions: string[] = [];
@@ -65,6 +65,12 @@ export async function checkContactForm(browser: Browser) {
       await expect(form.getByLabel('Name', { exact: false })).toHaveValue('');
       await expect(form.getByRole('checkbox')).not.toBeChecked();
       await expect(form.getByRole('status')).toBeFocused();
+      const feedbackBox = await form.getByRole('status').boundingBox();
+      const chromeBox = await page.locator('.site-chrome').boundingBox();
+      const callBox = await page.locator('.floating-call').boundingBox();
+      assert.ok(feedbackBox && chromeBox && callBox);
+      assert.ok(feedbackBox.y >= chromeBox.y + chromeBox.height, 'confirmation stays below the sticky header');
+      assert.ok(feedbackBox.y + feedbackBox.height <= callBox.y, 'confirmation stays above the floating call button, including short phones');
 
       await form.getByLabel('Name', { exact: false }).fill('QA Visitor');
       await form.getByLabel('Phone number', { exact: false }).fill('204-555-0100');
@@ -75,6 +81,12 @@ export async function checkContactForm(browser: Browser) {
         mode = failure;
         await form.getByRole('button', { name: 'Send request', exact: true }).click();
         await expect(form.getByRole('alert')).toBeVisible();
+        await expect(form.getByRole('alert')).toBeFocused();
+        const errorBox = await form.getByRole('alert').boundingBox();
+        const stickyBox = await page.locator('.site-chrome').boundingBox();
+        const floatingBox = await page.locator('.floating-call').boundingBox();
+        assert.ok(errorBox && stickyBox && floatingBox);
+        assert.ok(errorBox.y >= stickyBox.y + stickyBox.height && errorBox.y + errorBox.height <= floatingBox.y, 'delivery errors remain readable between fixed controls');
         await expect(form.getByLabel('Name', { exact: false })).toHaveValue('QA Visitor');
         await expect(form.getByRole('button', { name: 'Send request', exact: true })).toBeEnabled();
         if (failure === 'reject') await expect(form.getByRole('button', { name: 'Continue with Formspree verification' })).toBeVisible();

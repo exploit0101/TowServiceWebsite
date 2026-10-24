@@ -56,7 +56,8 @@
 .footer-whatsapp small { display: block; font-size: 10px; color: #b4d7c3; margin-top: 3px; font-weight: 400; }
 .footer-whatsapp:hover { background: #1c513c; border-color: #72e5a1; }
 .site-footer .footer-whatsapp { color: #c6f5d7; }
-.assistance-feedback, .assistance-field { scroll-margin-top: 205px; }
+.assistance-feedback { scroll-margin: 16px 0 100px; }
+.assistance-field :is(input, select, textarea) { scroll-margin: 16px 0 100px; }
 .footer-bottom .footer-whatsapp { flex-shrink: 0; }
 html[data-theme="dark"] .assistance-panel { border-color: #355166; box-shadow: 0 20px 60px #0002; }
 html[data-theme="dark"] .assistance-form-card { color: #edf4f8; background: #162a39; }
