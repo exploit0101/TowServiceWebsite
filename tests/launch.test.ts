@@ -24,10 +24,11 @@ test('Ontario selection needs separate restricted-highway handling approval', ()
   assert.ok(launchErrors({...config,pilotMarket:'brampton-bramalea',approvals:{...config.approvals,restrictedHighwayHandling:false}}).some(error=>error.includes('restricted-highway')));
 });
 
-test('production rejects demo mode and reserved fictional numbers even with approvals', () => {
+test('production rejects unverified phone modes and reserved fictional numbers even with approvals', () => {
   const config=verifiedFixture();
   assert.ok(launchErrors({...config,phoneMode:'demo'}).length);
   assert.ok(launchErrors({...config,phoneMode:'unconfigured'}).length);
+  assert.ok(launchErrors({...config,phoneMode:'owner-provided'}).length);
   for (const ending of ['0100','0150','0199']) {
     assert.ok(launchErrors({...config,supportPhone:`+1204555${ending}`,displayPhone:`204-555-${ending}`}).length);
   }

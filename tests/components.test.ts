@@ -40,6 +40,16 @@ test('explicit demo phone opens the dial target while visibly remaining a previe
   assert.match(html,/<a[^>]*class="header-phone-number"[^>]*>[\s\S]*?204-555-0100[\s\S]*?<\/a>/);
   assert.ok(!html.includes('disabled=""'));
 });
+
+test('owner-provided phone is readable and opens the dialer before full production approval', () => {
+  const html=renderToStaticMarkup(createElement(Header,{brand:'easytowing',phone:'+16728899764',displayPhone:'672-889-9764',phoneMode:'owner-provided',live:false,pilotLabel:'Selected pilot'}));
+  assert.equal((html.match(/href="tel:\+16728899764"/g) || []).length,2);
+  assert.match(html,/<a[^>]*class="header-phone-number"[^>]*>[\s\S]*?672-889-9764[\s\S]*?<\/a>/);
+  assert.match(html,/Call now/);
+  assert.ok(!html.includes('preview-banner'), 'owner-provided phone uses compact prelaunch disclosure elsewhere');
+  assert.ok(!html.includes('DEMO PHONE'));
+  assert.ok(!html.includes('disabled=""'));
+});
 test('preview callback form labels local-only action, minimal fields, consent and dispatch limits', () => {
   const html=renderToStaticMarkup(createElement(RequestForm,{enabled:false,offers:[]}));
   assert.match(html,/Review request \(preview\)/); assert.match(html,/Nothing is sent, stored or booked/);

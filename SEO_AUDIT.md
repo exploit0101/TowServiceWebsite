@@ -1,6 +1,6 @@
 # Technical SEO review — October 22, 2026
 
-The site remains an unpublished, non-indexable preview. Technical preparation does not establish business eligibility, legal approval, rankings or real-world Core Web Vitals.
+The site remains a non-indexable pre-launch preview. Technical preparation does not establish business eligibility, legal approval, rankings or real-world Core Web Vitals.
 
 ## Changes
 
@@ -34,3 +34,15 @@ Complete `PRELAUNCH_CHECKLIST.md` and the configured launch checks. Review actua
 Once the verified public domain and final content exist, validate Organization/Service/BreadcrumbList data with Google's testing tools and inspect canonical/indexing results in Search Console. Measure mobile performance and field LCP/INP/CLS on the real deployment; no p75 performance result is claimed by this review.
 
 Reference for the crawl/noindex correction: [Google Search Central: block indexing with noindex](https://developers.google.com/search/docs/crawling-indexing/block-indexing). Framework APIs were checked against the installed Next.js documentation in `node_modules/next/dist/docs/`.
+
+## easytowing redesign review — October 24, 2026
+
+The owner supplied the trading brand **easytowing** and number **672-889-9764** (`+16728899764`). `phoneMode: "owner-provided"` enables consistent native dialer links without changing `isLive`, the business status or any approval flag. A supplied number is not evidence of a monitored dispatch operation. The site remains proposed and non-indexable.
+
+The shorter homepage retains a service-specific H1, seven service cards with distinct detail links, descriptive photo alternatives, intrinsic image dimensions, responsive image delivery, a concise process/provider explanation, a safety note and essential policy/contact links. Carousel and gallery controls do not replace the underlying server-rendered service and image content. The six rebranded/generated photos are labelled as illustrative; they do not prove owned vehicles, staff, neighbourhood coverage or completed jobs. The detailed content and original service URLs remain available after the homepage is shortened.
+
+Technical SEO is prepared for a verified launch: shared metadata, canonical-origin configuration, approved-route sitemap, crawl access for page-level directives, social metadata and optional Search Console verification are implemented. In the current preview, `noindex, nofollow` remains active, canonical/schema claims are omitted, the sitemap has no indexable URLs, analytics stays off, callback handling stays disabled, and unverified locality routes remain unavailable. The owner-provided phone does not bypass any of these controls.
+
+Public indexing remains blocked until the legal entity and advertised role, service hours and monitored phone status, partner coverage/credentials, provincial requirements, pricing/consent disclosures, privacy/legal texts, support email and final HTTPS origin are configured and approved. No location is inferred from the phone's area code. The selected Winnipeg pilot remains a planning choice until coverage gates pass. Structured-data testing, Search Console inspection and deployment/mobile performance measurements still require the final approved public site.
+
+This section records a source/configuration review of the redesign. Earlier test counts above are historical; consult [QA_REPORT.md](QA_REPORT.md) for the final combined checks on the current redesign. See [REFERENCE_REDESIGN.md](REFERENCE_REDESIGN.md) for the observed reference flow and the easytowing implementation decisions.

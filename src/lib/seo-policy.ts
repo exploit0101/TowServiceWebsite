@@ -17,8 +17,8 @@ export function createPageMetadata(title: string, description: string, path: str
   const indexable = context.live && context.approvedRoutes.includes(path);
   const url = context.live ? canonicalUrl(path, context.origin) : undefined;
   const image = context.live ? {
-    url: canonicalUrl('/images/towing-3d-hero.webp', context.origin),
-    alt: '3D illustration of a yellow flatbed tow truck transporting a silver car',
+    url: canonicalUrl('/images/easytowing-flatbed.webp', context.origin),
+    alt: 'White easytowing flatbed truck carrying a grey SUV',
     width: 1448,
     height: 1086,
   } : undefined;

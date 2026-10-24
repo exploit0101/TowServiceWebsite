@@ -24,3 +24,9 @@ test('telephone contact rejects missing or mismatched display numbers', () => {
     assert.equal(getPhoneContact(fixturePhone, display), null, display);
   }
 });
+
+test('owner-provided easytowing display number matches its native dial target', () => {
+  assert.deepEqual(getPhoneContact('+16728899764','672-889-9764'), {
+    href:'tel:+16728899764',display:'672-889-9764',
+  });
+});

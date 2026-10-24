@@ -23,7 +23,7 @@ export function launchErrors(config: LaunchConfig): string[] {
   if (config.businessStatus !== 'operating') errors.push('Business must be approved as operating.');
   if (!/^\+1[2-9]\d{9}$/.test(config.supportPhone)) errors.push('A verified Canadian E.164 phone is required.');
   if (!config.displayPhone.trim()) errors.push('A readable displayPhone is required.');
-  if (config.phoneMode !== 'verified') errors.push('Replace the demo phone with a verified service line before production.');
+  if (config.phoneMode !== 'verified') errors.push('Confirm the owner-provided phone as a verified, monitored service line before production.');
   if (config.supportPhone && config.displayPhone && !getPhoneContact(config.supportPhone,config.displayPhone)) errors.push('The dial target and displayed phone number must be valid and match.');
   if (/^\+1[2-9]\d{2}55501\d{2}$/.test(config.supportPhone)) errors.push('Reserved demonstration phone numbers cannot be used for a live service.');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.supportEmail)) errors.push('A verified support email is required.');

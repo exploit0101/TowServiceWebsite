@@ -133,3 +133,72 @@ tests/request.test.ts
 ```
 
 Generated dependencies, Next build output and TypeScript incremental cache are ignored. Package versions are pinned and the lockfile is included. See `PRELAUNCH_CHECKLIST.md` for the precise business/legal inputs and manual verification needed before production.
+
+## easytowing redesign verification ? October 24, 2026
+
+Replaced the long homepage with an original photo-led, call-first design informed by the reference flow. Configured easytowing and owner-provided 672-889-9764; the same E.164 target is used by all call actions. Added a seven-service carousel/all-services grid and six-image keyboard-accessible gallery. Four supplied photos were rebranded with built-in ImageGen and two vehicle concepts generated; originals remain local. See assets/README.md for exact prompts and provenance.
+
+Current checks:
+
+- `npm.cmd run lint`: pass.
+- `npm.cmd run typecheck`: pass (Next route type generation and TypeScript).
+- `npm.cmd test`: 34/34 pass, including four Windows static-segment regression cases.
+- `npm.cmd run test:smoke`: 16 pages pass; service icons, unique metadata/H1, internal links, 404 guards, phone links, image delivery, robots/sitemap and disabled callback API pass.
+- `npm.cmd run build:pages` with `/TowServiceWebsite`: pass. Produces a static artifact; Windows export normalization adds 16 byte-identical RSC aliases. Linux flat exports remain unchanged.
+- `npm.cmd run test:pages`: 16 exported pages and 41 local destinations/assets pass; all six WebP files are below 300 KB, all links use the owner number, noindex remains active and unverified locality/API routes are excluded.
+- `npm.cmd run test:browser`: pass in headless installed Chrome at 320, 375, 390, 768, 1024 and 1440px, against both the development site and the static Pages artifact. Checks no page overflow/header overlap, readable telephone links, seven SSR icon cards, carousel navigation and expanded view, mobile menu, six loaded images, native dialog ArrowRight/Escape controls and focus return. Mobile contact and battery-boost pages also pass. No JavaScript/console errors. No call links were activated.
+- Desktop and mobile screenshots were visually inspected. Fresh-page captures include loaded gallery images; screenshots are in ignored `.qa/`.
+- `npm.cmd run check:launch`: intentionally blocked by outstanding operational facts and approvals. No verified operating status or public indexing is asserted.
+
+The GitHub workflow now runs the browser/mobile checks against its exported artifact before deployment. The earlier Windows-only Next.js RSC prefetch path mismatch was reproduced and corrected in packaging, with original payloads preserved and collisions rejected; no framework package was patched.
+
+The main content is server-rendered, concise and service-specific. The preview has noindex, no canonical/Organization/LocalBusiness claims, no live locality page and no analytics. Verified live mode still supports approved canonicals, schema and sitemap. Outstanding inputs: legal identity/role, actual monitored hours/phone handling, approved partner coverage/services/credentials, provincial requirements, rates/consent, final domain/email and privacy/legal approval. Real-device calling, screen readers, zoom and field Core Web Vitals remain unmeasured; browser emulation is not a carrier/call-centre test.
+
+Changed files for this redesign (including removal of obsolete layered CSS):
+
+```
+.github/workflows/pages.yml
+.gitignore
+GITHUB_DEPLOYMENT.md
+PRELAUNCH_CHECKLIST.md
+QA_REPORT.md
+README.md
+REFERENCE_REDESIGN.md
+SEO_AUDIT.md
+assets/README.md
+config/launch.json
+package-lock.json
+package.json
+public/images/easytowing-flatbed-night.webp
+public/images/easytowing-flatbed.webp
+public/images/easytowing-highway.webp
+public/images/easytowing-loading.webp
+public/images/easytowing-recovery.webp
+public/images/easytowing-wheel-lift.webp
+scripts/browser-check.ts
+scripts/build-pages.ts
+scripts/normalize-static-segments.ts
+scripts/smoke.ts
+scripts/test-pages.ts
+src/app/[page]/page.tsx
+src/app/design.css
+src/app/globals.css
+src/app/icon.svg
+src/app/layout.tsx
+src/app/page.tsx
+src/app/services/page.tsx
+src/components/fleet-gallery.tsx
+src/components/header.css
+src/components/header.tsx
+src/components/service-carousel.tsx
+src/components/service-grid.tsx
+src/components/ui.tsx
+src/lib/launch.ts
+src/lib/seo-policy.ts
+src/lib/site-config.ts
+tests/components.test.ts
+tests/launch.test.ts
+tests/phone.test.ts
+tests/seo.test.ts
+tests/static-segments.test.ts
+```

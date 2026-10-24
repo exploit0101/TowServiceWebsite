@@ -46,6 +46,21 @@ jobs:
         run: npm run test:pages
         env:
           GITHUB_PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+      - name: Browser and mobile checks
+        env:
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          TEST_BROWSER_CHANNEL: chrome
+        run: |
+          mkdir -p ".qa/site${PAGES_BASE_PATH}"
+          cp -R pages-out/. ".qa/site${PAGES_BASE_PATH}/"
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory .qa/site > .qa/server.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid"' EXIT
+          for attempt in {1..20}; do
+            curl --fail --silent "http://127.0.0.1:4173${PAGES_BASE_PATH}/" > /dev/null && break
+            sleep 1
+          done
+          TEST_ORIGIN="http://127.0.0.1:4173${PAGES_BASE_PATH}" npm run test:browser
       - name: Upload the Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

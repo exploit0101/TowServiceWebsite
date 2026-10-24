@@ -7,3 +7,6 @@ pages-out/
 !.env.example
 *.tsbuildinfo
 coverage/
+.qa/
+# Preserve supplied originals locally; publish the edited web assets only.
+/Images/

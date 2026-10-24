@@ -2,6 +2,7 @@ import { cpSync, existsSync, lstatSync, mkdtempSync, readFileSync, rmSync, write
 import { spawnSync } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { normalizeStaticSegments } from './normalize-static-segments';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const basePath = process.env.GITHUB_PAGES_BASE_PATH || '';
@@ -40,6 +41,8 @@ try {
   if (result.status !== 0) throw new Error(`GitHub Pages build failed (${result.status}).`);
   clearGenerated(output);
   cpSync(join(staging, 'out'), output, { recursive: true });
+  const segmentAliases = normalizeStaticSegments(output);
+  if (segmentAliases) console.log(`Added ${segmentAliases} static RSC segment aliases for Windows export compatibility.`);
   writeFileSync(join(output, '.nojekyll'), '');
   console.log('GitHub Pages artifact: pages-out/ (normal .next development output was preserved).');
 } finally {

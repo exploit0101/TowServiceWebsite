@@ -6,7 +6,7 @@ export const siteConfig: LaunchConfig = resolveSiteConfig(launch, process.env.CA
 export const isLive = process.env.SITE_BUILD_DEPLOYMENT === 'production' && process.env.SITE_DEPLOYMENT === 'production' && launchErrors(siteConfig).length === 0;
 export const phoneContact = getPhoneContact(siteConfig.supportPhone,siteConfig.displayPhone);
 export const isDemoPhone = siteConfig.phoneMode === 'demo';
-export const callsEnabled = Boolean(phoneContact && (isLive || isDemoPhone));
+export const callsEnabled = Boolean(phoneContact && (isLive || isDemoPhone || siteConfig.phoneMode === 'owner-provided'));
 export const pilot = isLive ? markets[siteConfig.pilotMarket as MarketKey] : null;
 export const brand = siteConfig.brandName || 'Roadside';
 export const callbacksEnabled = isLive && siteConfig.approvals.callbackStaffing &&

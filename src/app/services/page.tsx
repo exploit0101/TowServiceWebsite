@@ -9,7 +9,7 @@ export const metadata = pageMetadata('Roadside assistance & towing services', 'E
 export default function ServicesPage() {
   const shown = isLive ? services.filter(service => siteConfig.offers.includes(service.id)) : services;
   return <div className="container subpage"><Breadcrumbs items={[{ label: 'Services' }]}/>
-    <PageIntro eyebrow="ONE CALL. THE RIGHT NEXT STEP." title="Roadside services for the unexpected."><p>{isLive ? 'Call to describe the problem, check availability and get a quote. The team confirms the operator and arrival estimate before service.' : 'Explore the full requested service range below. Calling will be the primary way to check availability and arrange help once the phone line and launch details are ready.'}</p></PageIntro>
+    <PageIntro eyebrow="ONE CALL. THE RIGHT NEXT STEP." title="Roadside services for the unexpected."><p>{isLive ? 'Call to describe the problem, check availability and get a quote. The team confirms the operator and arrival estimate before service.' : 'Explore the service options below. Call to discuss your vehicle, check availability and request a quote before agreeing to service.'}</p></PageIntro>
     <ServiceGrid items={shown} includeCallCard/>
     <SafetyNote/><NextStep/>
     <StructuredBreadcrumbs items={[{ name: 'Services', path: '/services' }]}/>

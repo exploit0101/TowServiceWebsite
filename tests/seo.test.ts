@@ -52,7 +52,7 @@ test('only approved live HTML becomes indexable, with matching canonical and soc
   assert.ok(metadata.openGraph && 'url' in metadata.openGraph);
   assert.equal(metadata.openGraph.url, metadata.alternates?.canonical);
   assert.equal(metadata.openGraph.siteName, 'Fixture');
-  assert.deepEqual(metadata.twitter, { card: 'summary_large_image', title: 'Battery boost | Fixture', description: 'Fixture description', images: [{ url: 'https://fixture.test/images/towing-3d-hero.webp', alt: '3D illustration of a yellow flatbed tow truck transporting a silver car', width: 1448, height: 1086 }] });
+  assert.deepEqual(metadata.twitter, { card: 'summary_large_image', title: 'Battery boost | Fixture', description: 'Fixture description', images: [{ url: 'https://fixture.test/images/easytowing-flatbed.webp', alt: 'White easytowing flatbed truck carrying a grey SUV', width: 1448, height: 1086 }] });
   assert.deepEqual(createPageMetadata('Terms', 'Fixture terms', '/terms', liveContext).robots, { index: false, follow: false });
 });
 
