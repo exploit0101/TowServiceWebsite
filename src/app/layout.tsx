@@ -5,6 +5,8 @@ import "@/components/service-carousel.css";
 import "@/components/service-ticker.css";
 import "@/components/brand.css";
 import "@/components/customer-reviews.css";
+import "@/components/theme.css";
+import { themeInitializationScript } from '@/lib/theme';
 import { BrandLogo } from "@/components/brand-logo";
 import { ServiceTicker } from "@/components/service-ticker";
 import { services } from "@/lib/content";
@@ -41,7 +43,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-CA">
+    <html lang="en-CA" data-theme="light" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{__html: themeInitializationScript}}/></head>
       <body>
         <a href="#main" className="skip-link">
           Skip to content

@@ -1,5 +1,6 @@
 import { Clock3 } from "./icons";
 import type { LaunchConfig } from "@/lib/launch";
+import { getDocumentedArrivalEstimate } from "@/lib/arrival";
 
 export function ArrivalEstimate({
   estimate,
@@ -8,16 +9,8 @@ export function ArrivalEstimate({
   estimate?: LaunchConfig["arrivalEstimate"];
   tagline?: boolean;
 }) {
-  const documented = Boolean(
-    estimate?.confirmationSource.trim() && estimate.confirmedAt,
-  );
-  const publishable =
-    documented &&
-    estimate &&
-    Number.isInteger(estimate.minutes) &&
-    estimate.minutes > 0 &&
-    ["measured", "target"].includes(estimate.status);
-  if (tagline) return <p className="hero-tagline">Quick roadside help. {publishable ? <strong>{estimate.minutes}-minute arrival {estimate.status === 'target' ? 'target' : 'estimate'}.</strong> : 'Call for an arrival estimate.'}</p>;
+  const publishable = getDocumentedArrivalEstimate(estimate);
+  if (tagline) return <p className="hero-tagline">Quick roadside help. {publishable ? <strong>{publishable.minutes}-minute arrival {publishable.status === 'target' ? 'target' : 'estimate'}.</strong> : 'Call for an arrival estimate.'}</p>;
   return (
     <div className="arrival-estimate">
       <Clock3 size={18} aria-hidden="true" />
@@ -25,8 +18,8 @@ export function ArrivalEstimate({
         {publishable ? (
           <>
             <strong>
-              {estimate.minutes}-minute{" "}
-              {estimate.status === "target"
+              {publishable.minutes}-minute{" "}
+              {publishable.status === "target"
                 ? "arrival target"
                 : "arrival estimate"}
             </strong>

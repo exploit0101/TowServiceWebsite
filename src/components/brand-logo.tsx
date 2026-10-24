@@ -1,20 +1,15 @@
-/** Original easytowing vector mark, shared by the wordmark and hero watermark. */
-export function BrandMark({ className = '' }: { className?: string }) {
-  return <svg className={`brand-symbol ${className}`} viewBox="0 0 64 64" fill="none" aria-hidden="true" focusable="false">
-    <rect className="brand-symbol-tile" x="2" y="2" width="60" height="60" rx="18" fill="#142b3c" />
-    <path d="M12 52h40" stroke="#ffffff" strokeOpacity=".16" strokeWidth="2" strokeLinecap="round" />
-    <g className="brand-vehicle">
-      <path d="M12 37h25V26h9l8 12v7H12V37Z" fill="#ffc539" />
-      <path d="M41 29h3l5 7h-8v-7Z" fill="#142b3c" />
-      <path d="M17 36V25l15-11M23 36v-8l11-9" stroke="#ffc539" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path className="brand-hook" d="M34 18v9a4 4 0 0 1-8 0" stroke="#ffc539" strokeWidth="3" strokeLinecap="round" />
-      <path d="M13 39h19" stroke="#fff0b5" strokeWidth="2" strokeLinecap="round" />
-      <path className="brand-headlight" d="M51 39h3" stroke="#fff5cf" strokeWidth="3" strokeLinecap="round" />
-      <g className="brand-wheel"><circle cx="20" cy="45" r="6" fill="#142b3c" /><circle cx="20" cy="45" r="2.5" fill="#ffc539" /></g>
-      <g className="brand-wheel"><circle cx="46" cy="45" r="6" fill="#142b3c" /><circle cx="46" cy="45" r="2.5" fill="#ffc539" /></g>
-    </g>
-    <path className="brand-spark" d="M48 12v6M45 15h6" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
-  </svg>;
+/* eslint-disable @next/next/no-img-element -- Pre-sized transparent brand art is delivered directly on static hosting. */
+import { publicAssetPath } from '@/lib/asset-path';
+
+/** Original, generated towing emblem with native text for a crisp wordmark. */
+export function BrandMark({ className = '', hero = false }: { className?: string; hero?: boolean }) {
+  const widths = hero ? [320, 480, 640, 768, 960, 1200, 1440] : [112, 224];
+  return <span className={`brand-symbol ${className}`} aria-hidden="true">
+    <img src={publicAssetPath(`/images/easytowing-emblem-${hero ? 768 : 112}w.webp`)}
+      srcSet={widths.map(width => `${publicAssetPath(`/images/easytowing-emblem-${width}w.webp`)} ${width}w`).join(', ')}
+      sizes={hero ? '(max-width: 760px) 95vw, 700px' : '(max-width: 960px) 58px, 72px'}
+      width={1536} height={1024} alt="" decoding="async" fetchPriority={hero ? 'high' : undefined}/>
+  </span>;
 }
 
 export function BrandLogo({ name = 'easytowing' }: { name?: string }) {

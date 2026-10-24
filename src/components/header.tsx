@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight, Menu, X, Phone } from "./icons";
 import { BrandLogo } from "./brand-logo";
+import { ThemeToggle } from './theme-toggle';
 import { getPhoneContact } from "@/lib/phone";
 
 type HeaderProps = {
@@ -62,7 +63,7 @@ export function Header({
           >
             <BrandLogo name={brand}/>
           </Link>
-          <button
+          <div className="header-tools"><ThemeToggle/><button
             className="menu-toggle"
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
@@ -71,6 +72,7 @@ export function Header({
           >
             {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
           </button>
+          </div>
           <nav
             id="main-navigation"
             className={open ? "navigation is-open" : "navigation"}

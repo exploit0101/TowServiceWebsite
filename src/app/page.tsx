@@ -1,24 +1,20 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ServiceCarousel } from "@/components/service-carousel";
 import { FleetGallery, type FleetImage } from "@/components/fleet-gallery";
 import { PrimaryAction } from "@/components/ui";
 import { AvailabilityBadge } from "@/components/availability-badge";
 import { CustomerReviews } from "@/components/customer-reviews";
-import { ArrivalEstimate } from "@/components/arrival-estimate";
 import { BrandMark } from "@/components/brand-logo";
 import {
   ArrowUpRight,
   ArrowRight,
-  Phone,
-  ClipboardCheck,
-  Navigation,
-  Check,
 } from "@/components/icons";
+import { Clock3, MapPin, ShieldCheck, Timer, Star } from 'lucide-react';
+import { getDocumentedArrivalEstimate } from '@/lib/arrival';
+import { customerReviews, hasPublishableReviews } from '@/lib/reviews';
 import { services } from "@/lib/content";
 import { homepageServiceIds } from "@/lib/service-catalog";
 import { getAvailability } from "@/lib/availability";
-import { publicAssetPath } from "@/lib/asset-path";
 import { pageMetadata } from "@/lib/seo";
 import {
   isLive,
@@ -85,6 +81,8 @@ const images: FleetImage[] = [
   },
 ];
 export default function Home() {
+  const arrival = getDocumentedArrivalEstimate(siteConfig.arrivalEstimate);
+  const availability = getAvailability(siteConfig.availability);
   const shown = homepageServiceIds.flatMap((id) =>
     services.filter(
       (service) =>
@@ -94,71 +92,36 @@ export default function Home() {
   return (
     <div className="home-page">
       <section className="hero">
-        <div className="hero-brand-watermark" aria-hidden="true"><BrandMark/><span>easytowing</span></div>
+        <div className="hero-brand-watermark" aria-hidden="true"><BrandMark hero/></div>
         <div className="container hero-grid">
           <div className="hero-copy">
             <AvailabilityBadge config={siteConfig.availability} />
-            <div className="eyebrow">
-              <span />
-              TOWING & ROADSIDE ASSISTANCE
-            </div>
             <h1>
               Winnipeg towing.
               <br />
               <em>Made easy.</em>
             </h1>
-            <ArrivalEstimate estimate={siteConfig.arrivalEstimate} tagline/>
-            <p>
-              Car trouble anywhere in Winnipeg? Call for towing or roadside
-              assistance, a clear quote and an arrival estimate.
-            </p>
+            <p className="hero-summary">Towing and roadside assistance across Winnipeg. One call for a clear quote and the help you need.</p>
             <div className="hero-actions">
               <PrimaryAction label="Call for roadside help" />
               <Link href="#services" className="text-link">
                 Our services
                 <ArrowRight size={18} aria-hidden="true" />
               </Link>
+              {hasPublishableReviews(customerReviews) && <a className="hero-rating" href="#reviews" aria-label={`${customerReviews.rating} out of 5. Rating supplied by EasyTowing. Read customer feedback.`}>
+                <Star size={20} aria-hidden="true"/><span><strong>{customerReviews.rating?.toFixed(1)}/5</strong><small>Customer feedback</small></span>
+              </a>}
             </div>
-            <div className="hero-promise">
-              <Check size={17} aria-hidden="true" />
-              <span>Confirm the price before you agree to service.</span>
-            </div>
-            <ArrivalEstimate estimate={siteConfig.arrivalEstimate} />
+            <ul className="hero-highlights">
+              <li><Clock3 aria-hidden="true"/><span><strong>{availability.dispatch24h ? 'Open 24 hours' : 'Call for availability'}</strong><small>{availability.dispatch24h ? '7 days a week' : 'Discuss dispatch timing'}</small></span></li>
+              <li><MapPin aria-hidden="true"/><span><strong>Winnipeg</strong><small>Citywide service</small></span></li>
+              <li><ShieldCheck aria-hidden="true"/><span><strong>{siteConfig.approvals.partnerCredentialsAndInsurance ? 'Licensed & insured' : 'Independent'}</strong><small>Service partners</small></span></li>
+              <li><Timer aria-hidden="true"/><span><strong>{arrival ? `${arrival.minutes}-minute arrival ${arrival.status === 'target' ? 'target' : 'estimate'}` : 'Arrival estimate'}</strong><small>Confirm timing on your call</small></span></li>
+            </ul>
+            <p className="hero-note">Independent partners provide on-site service. Arrival varies with traffic, weather and availability.</p>
           </div>
-          <figure className="hero-visual">
-            <Image
-              src={publicAssetPath("/images/easytowing-flatbed.webp")}
-              alt="White easytowing flatbed truck carrying a grey SUV"
-              width={1448}
-              height={1086}
-              sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1280px) 52vw, 650px"
-              preload
-              fetchPriority="high"
-            />
-            <figcaption>
-              <span className="hero-photo-tag">
-                <Navigation size={19} aria-hidden="true" />A way forward.
-              </span>
-            </figcaption>
-          </figure>
         </div>
       </section>
-      <div className="trust-strip">
-        <div className="container">
-          <span>
-            <ClipboardCheck size={21} aria-hidden="true" />
-            Quote before service
-          </span>
-          <span>
-            <Phone size={21} aria-hidden="true" />
-            One number. Nine services.
-          </span>
-          <span>
-            <Navigation size={21} aria-hidden="true" />
-            Availability confirmed by phone
-          </span>
-        </div>
-      </div>
       <section id="services" className="section container">
         <div className="section-heading">
           <div>

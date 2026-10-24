@@ -19,3 +19,11 @@ Competitor ratings, review text, addresses, hours, response promises and certifi
 ## Completion checks
 
 Verify arrows and touch scrolling, the all-services toggle, all six image dialogs, previous/next navigation, Escape/close behaviour, focus return, the mobile menu and consistent telephone targets. Check small-screen horizontal overflow, readable type, sticky/floating call controls, reduced motion and safe-area spacing. Confirm page metadata, noindex, sitemap exclusions and both Next.js/GitHub Pages asset paths. Test results belong in [QA_REPORT.md](QA_REPORT.md); this reference review does not claim browser or real-device passes.
+
+## Current reference comparison and first-screen revision - October 24, 2026
+
+Fresh desktop/mobile inspection of Panda found the main opportunity in hierarchy and brevity: headline, short paragraph, call/rating pair and icon facts over faint brand artwork. Full-page inventory is approximately 415 visible words: hero, six services, four fleet pictures, three reviews, contact facts/emergency call and footer. Useful controls are phone links, anchor navigation, floating call and carousel/grid switching; no additional form, map, FAQ, gallery lightbox or theme control needs to be copied. Local reference captures are ignored .qa/panda-audit-hero.png and .qa/panda-audit-mobile.png.
+
+EasyTowing now uses an original transparent flatbed/road/hook emblem, concise hero, company-supplied rating and four verified/scoped service facts. The separate arrival block, price-promise row, trust strip and foreground photograph were removed. The existing gallery, service routes, customer-source attribution, provider role and safety/contact information remain. Explicit light/dark appearance is an additional EasyTowing feature, with light as the default.
+
+The reference's raw document is a small empty React shell with generic metadata and no canonical or JSON-LD. EasyTowing keeps its server-rendered content, individual titles/descriptions, correct H1, deployment-aware canonical/schema URLs and approved sitemap. No competitor artwork, unsupported pricing, business identity or claim is copied. Source inspected: https://www.pandatowing.ca/ . See QA_REPORT.md for actual checks and asset documentation for the original emblem prompt.

@@ -1,0 +1,107 @@
+/* Light is the default. Dark is only applied after an explicit visitor choice. */
+:root { color-scheme: light; }
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid #dce4e8;
+  border-radius: 50%;
+  color: #254357;
+  background: #f6f8f9;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+.theme-toggle:hover { background: #fff0c9; border-color: #d8b65c; transform: rotate(-8deg); }
+.theme-toggle:focus-visible { outline: 3px solid #b57900; outline-offset: 4px; }
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #edf4f8;
+  --muted: #b2c2ce;
+  --paper: #0c1822;
+  --soft: #122330;
+  --line: #2b3f4e;
+}
+html[data-theme="dark"] body { background: var(--paper); color: var(--ink); }
+html[data-theme="dark"] ::selection { background: #ffc539; color: #132330; }
+html[data-theme="dark"] :is(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline-color: #f2c75c; }
+html[data-theme="dark"] .site-header { background: #0e1d29f5; border-color: var(--line); }
+html[data-theme="dark"] :is(.theme-toggle, .menu-toggle) { color: #f3d277; background: #1a3040; border-color: #345064; }
+html[data-theme="dark"] .theme-toggle:hover { background: #304353; border-color: #cda643; }
+html[data-theme="dark"] .navigation { background: #0e1d29; }
+html[data-theme="dark"] .navigation a:hover { color: #f2c75c; }
+html[data-theme="dark"] .brand-towing { color: #f2c75c; }
+html[data-theme="dark"] .hero {
+  background: radial-gradient(ellipse at 83% 23%, #233b4c 0, transparent 56%), linear-gradient(115deg, #0e1d28, #142938);
+}
+html[data-theme="dark"] .hero-brand-watermark { opacity: .09; }
+html[data-theme="dark"] .hero-brand-watermark > span { color: #d9e7f0; }
+html[data-theme="dark"] :is(.hero h1 em, .hero-tagline strong) { color: #f1c45b; }
+html[data-theme="dark"] :is(.hero-copy .hero-tagline, .hero-summary) { color: #c3d3de; }
+html[data-theme="dark"] .hero-copy > .hero-note { color: #b2c2ce; }
+html[data-theme="dark"] :is(.hero-promise svg, .arrival-estimate > svg, .trust-strip svg) { color: #f0c45f; }
+html[data-theme="dark"] .availability-badge { color: #a0e5c1; background: #153b30; border-color: #2b644c; }
+html[data-theme="dark"] .availability-icon { background: #24513d; }
+html[data-theme="dark"] .availability-dot { background: #64dc9a; }
+html[data-theme="dark"] :is(.trust-strip, .hero-highlights, .hero-proof) { background: transparent; border-color: var(--line); }
+html[data-theme="dark"] :is(.hero-highlights > *, .hero-proof > *) { border-color: var(--line); }
+html[data-theme="dark"] :is(.hero-highlights strong, .hero-highlights b, .hero-proof strong, .hero-rating strong) { color: #edf4f8; }
+html[data-theme="dark"] :is(.hero-highlights svg, .hero-rating svg, .hero-proof svg) { color: #f1c45b; }
+html[data-theme="dark"] :is(.hero-highlights small, .hero-highlights span, .hero-rating small, .hero-proof small) { color: #b2c2ce; }
+html[data-theme="dark"] .hero-rating { color: #c3d3de; background: #1a3040; border-color: #345064; }
+html[data-theme="dark"] :is(.button-yellow, .header-call, .floating-call, .service-call-button, .skip-link) { color: #142b3c; }
+html[data-theme="dark"] .button-outline { color: #edf4f8; background: #1b3040; border-color: #3a5263; }
+html[data-theme="dark"] .button-outline:hover { background: #263f50; }
+html[data-theme="dark"] .button-dark { background: #29465c; color: #fff; }
+html[data-theme="dark"] .service-call-button-dark { background: #234257; color: #fff; }
+html[data-theme="dark"] .service-carousel .service-carousel-hint { color: #c6d5de; }
+html[data-theme="dark"] .service-carousel .carousel-hint-dot { box-shadow: 0 0 0 4px #3b3422; }
+html[data-theme="dark"] .service-carousel .carousel-swipe-hint { color: #a4b7c5; }
+html[data-theme="dark"] .service-carousel :is(.carousel-motion-control, .carousel-arrow) { color: #dce8ef; background: #192e3e; border-color: #375063; }
+html[data-theme="dark"] .service-carousel :is(.carousel-motion-control, .carousel-arrow:not(:disabled)):hover { background: #f2c33f; color: #142b3c; border-color: #f2c33f; }
+html[data-theme="dark"] .service-carousel .service-carousel-track { scrollbar-color: #59758a #142b3c; }
+html[data-theme="dark"] .service-carousel .service-carousel-track::-webkit-scrollbar-track { background: #142b3c; }
+html[data-theme="dark"] .service-carousel .service-carousel-track::-webkit-scrollbar-thumb { background: #59758a; }
+html[data-theme="dark"] .service-carousel .compact-service-card { background: linear-gradient(155deg, #1b3141, #142736); border-color: #334b5d; }
+html[data-theme="dark"] .service-carousel .compact-service-card:hover { border-color: #bc9c4c; box-shadow: 0 12px 25px #0003; }
+html[data-theme="dark"] .service-carousel .compact-service-card :is(.compact-service-details, .compact-service-details h3, .compact-service-link) { color: #edf4f8; }
+html[data-theme="dark"] .service-carousel .compact-service-card .compact-service-details p { color: #b1c3d0; }
+html[data-theme="dark"] .service-carousel .compact-service-number { color: #405b70; }
+html[data-theme="dark"] .service-carousel .compact-service-link > svg { color: #f0cb75; border-color: #446074; }
+html[data-theme="dark"] .service-carousel .compact-service-details:hover .compact-service-link > svg { color: #142b3c; }
+html[data-theme="dark"] .service-carousel .compact-service-card .compact-service-call { color: #dce7ef; background: #112634; border-color: #334b5d; }
+html[data-theme="dark"] .service-carousel .compact-service-card .compact-service-call:hover { background: #293f4f; color: #f5d986; }
+html[data-theme="dark"] .service-carousel .compact-service-card:first-child { background: linear-gradient(135deg, #29495f, #173447); border-color: #537088; }
+html[data-theme="dark"] .reviews-section.has-reviews { background: linear-gradient(180deg, #11222f, #0d1b26); }
+html[data-theme="dark"] .review-card { background: #192e3e; border-color: #334b5d; box-shadow: 0 8px 25px #0001; }
+html[data-theme="dark"] .review-card:hover { border-color: #bc9c4c; box-shadow: 0 15px 32px #0002; }
+html[data-theme="dark"] .review-person > strong { color: #edf4f8; }
+html[data-theme="dark"] :is(.review-profile-details, .review-source) { color: #b1c3d0; }
+html[data-theme="dark"] .review-card blockquote { color: #c3d3de; }
+html[data-theme="dark"] .review-date-label { background: #254052; color: #c4d5e0; }
+html[data-theme="dark"] .review-card:nth-child(2) { background: linear-gradient(140deg, #29495f, #173447); border-color: #537088; }
+html[data-theme="dark"] .review-stars { color: #f2c75c; }
+html[data-theme="dark"] .review-invitation { background: linear-gradient(110deg, #343224, #172b39 65%); border-color: #4a4d3f; }
+html[data-theme="dark"] :is(.service-card, .form-card, .consent-panel) { color: #edf4f8; background: #162a39; border-color: var(--line); }
+html[data-theme="dark"] :is(.contact-card, .service-sidebar) { background: #142837; border-color: #30495c; }
+html[data-theme="dark"] :is(.content-block, .document-content, .contact-card, .service-sidebar) :is(h2, h3) { color: #edf4f8; }
+html[data-theme="dark"] :is(.content-block, .document-content, .contact-card, .service-sidebar) a:not(.button) { color: #f2cf7f; }
+html[data-theme="dark"] .service-symbol { background: #514425; color: #ffe09b; }
+html[data-theme="dark"] .service-call-card { color: #142b3c; }
+html[data-theme="dark"] :is(.safety-note, .preview-banner, .draft-label) { color: #f1ddad; background: #332e22; border-color: #685a38; }
+html[data-theme="dark"] .safety-note > svg { color: #f2c75c; }
+html[data-theme="dark"] :is(.field input, .field select) { color: #edf4f8; background: #0f2130; border-color: #547083; }
+html[data-theme="dark"] .checkbox-field input { accent-color: #f2c75c; }
+html[data-theme="dark"] .form-error { color: #ffb4a3; }
+html[data-theme="dark"] :is(.contact-panel, .next-step) { background: linear-gradient(120deg, #203c50, #132c3d); border: 1px solid #355166; }
+html[data-theme="dark"] .fleet-lightbox { background: #132330; }
+
+@media (max-width: 960px) {
+  html[data-theme="dark"] .navigation { border-color: var(--line); box-shadow: 0 16px 20px #0003; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle { transition: none; }
+  .theme-toggle:hover { transform: none; }
+}

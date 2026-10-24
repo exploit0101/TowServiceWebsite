@@ -24,7 +24,7 @@ async function checkLayout(page: Page, label: string) {
   assert.ok(Math.abs(ticker.y)<1,`${label}: the service strip stays at the top while scrolling`);
   assert.ok(ticker.height>=38,`${label}: the complete service strip remains visible`);
   assert.ok(header.y >= ticker.y+ticker.height-1,`${label}: the strip does not overlap the header`);
-  const parts = ['.brand','.menu-toggle','#main-navigation','.header-contact'];
+  const parts = ['.brand','.menu-toggle','#main-navigation','.header-contact','.theme-toggle'];
   const boxes: { selector:string; x:number; y:number; width:number; height:number }[] = [];
   for (const selector of parts) {
     const element = page.locator(`.site-header ${selector}`);
@@ -106,9 +106,29 @@ async function checkHomeInteractions(page: Page, width: number) {
   await expect(page.locator('#reviews .review-source')).toContainText('supplied by EasyTowing');
   await expect(page.locator('#reviews .review-person > strong')).toHaveText(['Michael Thompson','Sarah Mitchell','Mathew']);
   await expect(page.locator('#reviews .review-date-label')).toHaveText(['1 week ago','2 weeks ago','4 weeks ago']);
-  await expect(page.locator('.hero-tagline')).toContainText('Quick roadside help. 25-minute arrival estimate.');
+  await expect(page.locator('.hero-summary')).toHaveCount(1);
+  const facts=page.locator('.hero-highlights');
+  for (const fact of ['Open 24 hours','Winnipeg','Licensed & insured','Service partners','25-minute arrival estimate']) {
+    await expect(facts).toContainText(fact);
+  }
+  assert.equal(await facts.locator('svg').count(),4,'the four concise hero facts each have an icon');
+  const actionsBox=await page.locator('.hero-actions').boundingBox();
+  const factsBox=await facts.boundingBox();
+  assert.ok(actionsBox && factsBox && factsBox.y >= actionsBox.y+actionsBox.height-1,'hero facts sit below the call and service actions');
+  await expect(page.locator('.hero-rating')).toContainText('4.9/5');
+  await expect(page.locator('.hero-rating')).toHaveAttribute('href','#reviews');
   await expect(page.locator('.hero-brand-watermark')).toHaveAttribute('aria-hidden','true');
-  await expect(page.locator('.arrival-estimate')).toContainText('25-minute arrival estimate');
+  await expect(page.locator('.hero-brand-watermark .brand-symbol')).toBeVisible();
+  await expect(page.locator('.review-quote-mark, #reviews svg.lucide-quote')).toHaveCount(0);
+  const quoteDecoration=await page.locator('#reviews blockquote').evaluateAll(elements => elements.map(element => ({
+    text:element.textContent?.trim() || '',
+    before:getComputedStyle(element,'::before').content,
+    after:getComputedStyle(element,'::after').content,
+  })));
+  for (const quote of quoteDecoration) {
+    assert.ok(!/^["“”]|["“”]$/.test(quote.text),'review text has no added quotation marks');
+    for (const content of [quote.before,quote.after]) assert.ok(['none','normal','""',"''"].includes(content),'review text has no quotation-mark pseudo-elements');
+  }
   const menu=page.getByRole('button',{name:'Open navigation',exact:true});
   if (await menu.isVisible()) {
     await menu.click();
@@ -158,11 +178,15 @@ async function checkAutomaticCarousel(browser: Awaited<ReturnType<typeof chromiu
     await page.goto(origin,{waitUntil:'networkidle',timeout:60000});
     const region=page.getByRole('region',{name:'Service options',exact:true});
     const logo=page.locator('.site-header .brand');
+    const logoTransform=() => logo.locator('.brand-symbol').evaluate(element => getComputedStyle(element).transform);
+    await page.mouse.move(0,0);
+    const restingLogoTransform=await logoTransform();
     await logo.hover();
-    await expect.poll(() => logo.locator('.brand-vehicle').evaluate(element => getComputedStyle(element).transform)).not.toBe('none');
+    await expect.poll(logoTransform).not.toBe(restingLogoTransform);
+    await page.keyboard.press('Tab');
     await logo.focus();
     await page.mouse.move(0,0);
-    assert.notEqual(await logo.locator('.brand-vehicle').evaluate(element => getComputedStyle(element).transform),'none','keyboard focus activates the same logo interaction');
+    await expect.poll(logoTransform,{message:'keyboard focus activates the same logo interaction'}).not.toBe(restingLogoTransform);
     await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
     const track=page.locator('.service-carousel-track');
     const position=() => track.evaluate(element => element.scrollLeft);
@@ -283,10 +307,123 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
   }
 }
 
+async function checkTextContrast(page: Page, label: string) {
+  const measurements=await page.evaluate(() => {
+    type Color=[number,number,number,number];
+    const canvas=document.createElement('canvas');
+    canvas.width=canvas.height=1;
+    const context=canvas.getContext('2d',{willReadFrequently:true})!;
+    // Method syntax preserves native names without a tsx/esbuild __name helper
+    // leaking into the function Playwright serializes for the browser.
+    const helpers={
+    color(value:string): Color {
+      context.clearRect(0,0,1,1);
+      context.fillStyle=value;
+      context.fillRect(0,0,1,1);
+      const rgba=context.getImageData(0,0,1,1).data;
+      return [rgba[0]/255,rgba[1]/255,rgba[2]/255,rgba[3]/255];
+    },
+    over(foreground:Color,background:Color): Color { return [
+      foreground[0]*foreground[3]+background[0]*(1-foreground[3]),
+      foreground[1]*foreground[3]+background[1]*(1-foreground[3]),
+      foreground[2]*foreground[3]+background[2]*(1-foreground[3]),
+      1,
+    ]; },
+    luminance(value:Color) { return value.slice(0,3).reduce((sum,channel,index) => sum+(channel<=.04045 ? channel/12.92 : ((channel+.055)/1.055)**2.4)*[.2126,.7152,.0722][index],0); },
+    contrast(first:Color,second:Color) {
+      const a=luminance(first),b=luminance(second);
+      return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+    },
+    };
+    const {color,over,luminance,contrast}=helpers;
+    const selectors=['.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','.compact-service-details h3','.compact-service-details p','.review-card blockquote','.review-person > strong','.review-source'];
+    return selectors.flatMap(selector => Array.from(document.querySelectorAll<HTMLElement>(selector))).filter(element => element.getClientRects().length && element.textContent?.trim()).map(element => {
+      const chain:Element[]=[];
+      for (let ancestor:Element|null=element;ancestor;ancestor=ancestor.parentElement) chain.unshift(ancestor);
+      let backgrounds:Color[]=[[1,1,1,1]];
+      for (const ancestor of chain) {
+        const style=getComputedStyle(ancestor);
+        const solid=color(style.backgroundColor);
+        backgrounds=backgrounds.map(background => over(solid,background));
+        // The design uses colour gradients; check each stop as a conservative
+        // contrast sample instead of treating a transparent gradient as white.
+        const stops=(style.backgroundImage.match(/rgba?\([^)]+\)/g) || []).map(color);
+        if (stops.length) backgrounds=backgrounds.flatMap(background => stops.map(stop => over(stop,background)));
+      }
+      const style=getComputedStyle(element);
+      const foreground=color(style.color);
+      const ratios=backgrounds.map(background => contrast(over(foreground,background),background));
+      const fontSize=parseFloat(style.fontSize),weight=parseInt(style.fontWeight,10);
+      return {text:element.textContent?.trim().slice(0,65),ratio:Math.min(...ratios),minimum:fontSize>=24 || fontSize>=18.66 && weight>=700 ? 3 : 4.5};
+    });
+  });
+  assert.ok(measurements.length >= 20,`${label}: hero, service and review text are included in readability checks`);
+  const failures=measurements.filter(measurement => measurement.ratio < measurement.minimum-.02).map(measurement => `${measurement.ratio.toFixed(2)} < ${measurement.minimum}: ${measurement.text}`);
+  assert.deepEqual(failures,[],`${label}: insufficient text contrast against the design's background/gradient colours`);
+}
+
+async function checkThemeModes(browser: Awaited<ReturnType<typeof chromium.launch>>) {
+  for (const width of [390,1440]) {
+    const context=await browser.newContext({viewport:{width,height:900},colorScheme:'dark',reducedMotion:'reduce'});
+    const page=await context.newPage();
+    page.setDefaultTimeout(15000);
+    const errors:string[]=[];
+    page.on('pageerror',error => errors.push(error.message));
+    page.on('console',message => { if (message.type() === 'error') errors.push(message.text()); });
+    try {
+      const contrastFailures:string[]=[];
+      await page.goto(origin,{waitUntil:'networkidle',timeout:60000});
+      await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+      await expect(page.getByRole('button',{name:'Switch to dark theme',exact:true})).toHaveAttribute('aria-pressed','false');
+      assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme),'light','fresh visitors see light even when the OS prefers dark');
+      try { await checkTextContrast(page,`${width}px light`); }
+      catch (error) { contrastFailures.push(error instanceof Error ? error.message : String(error)); }
+
+      await page.getByRole('button',{name:'Switch to dark theme',exact:true}).click();
+      await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+      await expect(page.getByRole('button',{name:'Switch to light theme',exact:true})).toHaveAttribute('aria-pressed','true');
+      assert.equal(await page.evaluate(() => localStorage.getItem('easytowing-theme')),'dark','dark mode is remembered after the explicit choice');
+      await checkLayout(page,`${width}px dark home`);
+      try { await checkTextContrast(page,`${width}px dark`); }
+      catch (error) { contrastFailures.push(error instanceof Error ? error.message : String(error)); }
+      await page.reload({waitUntil:'networkidle'});
+      await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+      for (const image of await page.locator('.fleet-grid img').all()) {
+        await image.scrollIntoViewIfNeeded();
+        await expect.poll(() => image.evaluate(element => element instanceof HTMLImageElement && element.complete && element.naturalWidth>0)).toBe(true);
+      }
+      await page.evaluate(() => window.scrollTo(0,0));
+      await page.screenshot({path:resolve(screenshotDirectory,`easytowing-${width}-dark-full.png`),fullPage:true});
+      await page.locator('.hero').screenshot({path:resolve(screenshotDirectory,`easytowing-${width}-dark-hero.png`)});
+
+      for (const path of ['/contact','/services/battery-boost']) {
+        const response=await page.goto(`${origin}${path}/`,{waitUntil:'networkidle',timeout:60000});
+        assert.equal(response?.status(),200,`${width}px dark ${path} loads`);
+        await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+        await checkLayout(page,`${width}px dark ${path}`);
+      }
+      await page.getByRole('button',{name:'Switch to light theme',exact:true}).click();
+      await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+      await page.reload({waitUntil:'networkidle'});
+      await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+      assert.equal(await page.evaluate(() => localStorage.getItem('easytowing-theme')),'light','switching back to light also persists');
+      assert.deepEqual(errors,[],`${width}px theme changes have no browser errors`);
+      assert.deepEqual(contrastFailures,[],`${width}px both themes meet the checked text contrast thresholds`);
+      console.log(`PASS ${width}px themes: light default despite dark OS, explicit toggle, saved choice across reload/routes, readable text and no layout overflow.`);
+    } finally {
+      await context.close();
+    }
+  }
+}
+
 async function main() {
   await mkdir(screenshotDirectory,{recursive:true});
   const browser=await chromium.launch({channel:process.env.TEST_BROWSER_CHANNEL || 'chrome',headless:true});
   try {
+    if (process.argv.includes('--themes-only')) {
+      await checkThemeModes(browser);
+      return;
+    }
     for (const width of widths) {
       const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:'reduce'});
       const page=await context.newPage();
@@ -305,6 +442,9 @@ async function main() {
       await expect(page.locator('#how-it-works')).toHaveCount(0);
       assert.deepEqual(await page.locator('#main-navigation a').allTextContents(),['Services','Gallery','Reviews','Contact'],'header has only the four current section links');
       await expect(page.locator('.site-header .brand')).toContainText('easytowing');
+      for (const mark of await page.locator('.site-header .brand-symbol img, .hero-brand-watermark img').all()) {
+        await expect.poll(() => mark.evaluate(element => element instanceof HTMLImageElement && element.complete && element.naturalWidth>0),{message:'new logo and hero emblem load'}).toBe(true);
+      }
       await page.evaluate(() => document.fonts.ready);
       await checkLayout(page,`${width}px home`);
       await checkHomeInteractions(page,width);
@@ -329,6 +469,7 @@ async function main() {
       await context.close();
       console.log(`PASS ${width}px: layout, visible phone, service carousel, mobile navigation, gallery keyboard flow and loaded images`);
     }
+    await checkThemeModes(browser);
     await checkAutomaticCarousel(browser);
     await checkMobileMotion(browser);
     console.log(`PASS browser QA; desktop/mobile screenshots saved to ${screenshotDirectory}. No call links were activated.`);

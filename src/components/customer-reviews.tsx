@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageSquareQuote, Quote, Star, ArrowUpRight, Camera, MessageSquare, Clock3 } from "lucide-react";
+import { MessageSquareQuote, Star, ArrowUpRight, Camera, MessageSquare, Clock3 } from "lucide-react";
 import {
   customerReviews,
   hasPublishableReviews,
@@ -90,7 +90,6 @@ export function CustomerReviews({
                     </div>
                   )}
                   <blockquote>{review.text}</blockquote>
-                  <Quote className="review-quote-mark" size={35} aria-hidden="true"/>
                 </figure>
               ))}
             </div>

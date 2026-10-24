@@ -82,10 +82,14 @@ assert.doesNotMatch(home,/service-carousel-track[^"]*is-expanded/,'Home carousel
 assert.equal((home.match(/class="review-card"/g)||[]).length,3,'Home renders the three owner-supplied customer quotes');
 assert.ok(home.includes('Rating and customer feedback supplied by EasyTowing'),'Review source remains visible');
 assert.ok(home.replace(/<!--[\s\S]*?-->/g,'').includes('25-minute arrival estimate'),'Home shows the owner-confirmed arrival estimate');
-assert.match(home,/alt="White easytowing flatbed truck carrying a grey SUV"/,'Hero has descriptive alt text');
-assert.match(home,/width="1448" height="1086"/,'Hero has intrinsic dimensions');
+assert.match(home,/alt="White easytowing flatbed truck carrying a grey SUV"/,'Gallery has descriptive alt text');
+assert.match(home,/width="1448" height="1086"/,'Gallery has intrinsic dimensions');
+assert.match(home,/class="hero-brand-watermark" aria-hidden="true"/,'Decorative hero emblem is hidden from assistive technology');
+assert.match(home,/data-theme="light"/,'Server-rendered default theme is light');
+assert.match(home,/class="hero-highlights"/,'Compact service facts are server-rendered');
+assert.match(home,/class="hero-rating"/,'Supplied rating is present in the hero');
 assert.match(home, /fetchPriority="high"/i, 'Hero image has high loading priority');
-assert.match(home, /srcSet="[^"]+easytowing-flatbed-640w\.webp 640w/i, 'Static hero offers responsive image sizes');
+assert.match(home, /srcSet="[^"]+easytowing-emblem-640w\.webp 640w/i, 'Static hero emblem offers responsive image sizes');
 for (const match of home.matchAll(/(?:srcSet|imageSrcSet)="([^"]+)"/gi)) {
   for (const candidate of match[1].split(',')) {
     const url = candidate.trim().split(/\s+/)[0];

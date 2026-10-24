@@ -429,3 +429,58 @@ src/lib/reviews.ts
 tests/arrival.test.ts
 tests/claims.test.ts
 ```
+
+## Compact hero, new emblem and light/dark appearance - October 24, 2026
+
+The requested fresh review of https://www.pandatowing.ca/ included desktop/mobile screenshots, raw HTML, headings and a full interaction inventory. The reference's useful visual strengths are its short first-screen hierarchy, prominent call/rating pair, small icon-fact row, soft colour wash and large decorative logo. It has approximately 415 visible words and the flow hero → six services → four fleet photographs → three reviews → contact/emergency call → footer. Interactions are anchor navigation, phone links, a floating phone CTA and carousel/grid controls. It does not add a form, map, FAQ, gallery dialog or theme switch that EasyTowing is missing.
+
+The revision adopts that compact hierarchy with original branding and content. EasyTowing's first screen now has one short paragraph, call/service actions, the company-supplied 4.9 rating, and four facts below the actions: Open24hours, Winnipeg, Licensed &insured / Servicepartners, and 25-minute arrival estimate. The credential fact is scoped to independent partners; the business configuration does not identify EasyTowing itself as a certified operator. One short provider/timing note remains. Repeated ETA text, the price-promise row, separate trust strip and foreground photo were removed. The photos remain in the accessible gallery.
+
+The reference's raw HTML is a small client-rendered shell with a generic React description, no canonical or JSON-LD. Those weaknesses, generic hashtag copy, business identity, own-fleet implications, rating provenance and credential/response claims were not transferred. EasyTowing retains server-rendered service content, one H1, unique metadata, absolute deployment-aware canonicals, accurate schema, approved sitemap and real 404 behaviour.
+
+A newly generated original flatbed/car emblem combines a sweeping road and hook in navy, amber and silver. No Panda logo/artwork was used as input. It replaces the previous native icon in header/background/favicon; native text supplies the wordmark. Artwork provenance, prompt and optimized sizes are in assets/README.md. Header hover/focus and reduced-motion support remain.
+
+The new theme switch defaults to light even if the device prefers dark. Only an explicit remembered dark choice changes that. The small pre-paint initializer avoids a flash of the wrong saved theme; client controls update appearance without changing service content or SEO metadata. Stored choice survives reloads/routes, storage access failures remain usable, and no cookie/third-party analytics integration was introduced. Privacy explains the functional browser preference. All review quotation glyphs and added quote punctuation have been removed while customer words remain intact.
+
+Verification: launch validator, lint, TypeScript, **52 unit/component/SEO tests** and **20 preview HTTP pages** pass. Guarded production export and **21 pages/90 local destinations and assets** pass. Browser checks pass at320/375/390/768/1024/1440px and independently verify light/dark390/1440px, default despite darkOS, persisted selection across reload/routes, accessible button state, actual text contrast, header overflow, visible/decoded logo artwork, quote removal, static mobile services, sticky strip, normal/reduced motion, gallery keyboard flow and phone targets. Zero browser errors and no telephone links activated. Light/dark hero, full-page, contact and service screenshots were visually inspected. These are browser/lab checks; carrier calls and field Core Web Vitals are not measured by them.
+
+The approved sitemap still has nineteen URLs. The default preview remains noindex and production indexing still requires the existing validated release configuration. No new business/legal input is required for these scoped presentation changes. Existing approval evidence remains owner supplied. Previous Lighthouse measurements are historical; no result for this revision is assumed. Run README.md commands, including test:browser (or -- --themes-only for the focused theme checks), build:pages and test:pages.
+
+Changed files and generated brand assets for this release:
+```text
+assets/README.md
+public/images/easytowing-emblem.webp
+public/images/easytowing-emblem-112w.webp
+public/images/easytowing-emblem-1200w.webp
+public/images/easytowing-emblem-1440w.webp
+public/images/easytowing-emblem-224w.webp
+public/images/easytowing-emblem-320w.webp
+public/images/easytowing-emblem-480w.webp
+public/images/easytowing-emblem-640w.webp
+public/images/easytowing-emblem-768w.webp
+public/images/easytowing-emblem-960w.webp
+QA_REPORT.md
+README.md
+REFERENCE_REDESIGN.md
+scripts/browser-check.ts
+scripts/smoke.ts
+scripts/test-pages.ts
+SEO_AUDIT.md
+src/app/[page]/page.tsx
+src/app/icon.png
+src/app/icon.svg
+src/app/layout.tsx
+src/app/page.tsx
+src/components/arrival-estimate.tsx
+src/components/brand.css
+src/components/brand-logo.tsx
+src/components/customer-reviews.css
+src/components/customer-reviews.tsx
+src/components/header.tsx
+src/components/service-carousel.css
+src/components/theme.css
+src/components/theme-toggle.tsx
+src/lib/arrival.ts
+src/lib/theme.ts
+tests/theme.test.ts
+```

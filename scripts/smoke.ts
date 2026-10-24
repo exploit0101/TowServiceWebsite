@@ -69,10 +69,12 @@ for (const route of routes) {
     assert.ok(html.replace(/<!--[\s\S]*?-->/g,'').includes('25-minute arrival estimate'),'arrival estimate reflects owner confirmation');
     assert.match(html,/easytowing/,'owner brand rendered');
     for (const id of ['services','fleet','reviews','contact']) assert.ok(html.includes(`id="${id}"`),`home: #${id} section exists`);
-    assert.match(html, /alt="White easytowing flatbed truck carrying a grey SUV"/, 'hero has descriptive alt text');
-    assert.match(html, /srcSet="[^"]*easytowing-flatbed/, 'hero has responsive image sources');
+    assert.match(html, /alt="White easytowing flatbed truck carrying a grey SUV"/, 'gallery has descriptive alt text');
+    assert.match(html, /srcSet="[^"]*easytowing-emblem/, 'hero emblem has responsive image sources');
+    assert.match(html,/class="hero-brand-watermark" aria-hidden="true"/,'background emblem is decorative');
+    assert.match(html,/data-theme="light"/,'light is the server-rendered default');
     assert.ok(!html.includes('scene-grid'), 'old SVG grid has been replaced');
-    assert.match(html, /width="1448" height="1086"/, 'image dimensions prevent layout shift');
+    assert.match(html, /width="1448" height="1086"/, 'gallery dimensions prevent layout shift');
     for (const image of fleetImages) assert.ok(html.includes(image.slice(1)) || html.includes(encodeURIComponent(image)),`home: ${image} rendered`);
   }
   const footer=html.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0];
@@ -99,7 +101,7 @@ for (const imagePath of fleetImages) {
 }
 const optimized=await fetch(`${origin}/_next/image?url=%2Fimages%2Feasytowing-flatbed.webp&w=640&q=75`,{headers:{Accept:'image/webp'}});
 assert.equal(optimized.status,200); assert.match(optimized.headers.get('content-type') || '',/image\/webp/);
-assert.equal((await fetch(`${origin}/icon.svg`)).status,200);
-console.log('PASS descriptive hero alt, responsive sources, intrinsic dimensions, six fleet WebP images, optimized delivery and site icon.');
+assert.equal((await fetch(`${origin}/icon.png`)).status,200);
+console.log('PASS responsive hero emblem, descriptive gallery alt, intrinsic dimensions, six fleet WebP images, optimized delivery and site icon.');
 }
 main().catch(error => { console.error(error); process.exitCode=1; });
