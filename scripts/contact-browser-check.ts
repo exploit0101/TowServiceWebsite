@@ -39,7 +39,12 @@ export async function checkContactForm(browser: Browser) {
       await expect(form).toHaveAttribute('method', 'POST');
       await expect(form.getByRole('option')).toHaveCount(services.length + 1);
       await form.locator('[name="name"]').focus();
-      for (const field of ['phone', 'location', 'email', 'service', 'message', 'consent']) {
+      const priority = page.locator('.assistance-priority');
+      const priorityBox = await priority.boundingBox();
+      const formBox = await form.boundingBox();
+      assert.ok(priorityBox && formBox && priorityBox.y + priorityBox.height <= formBox.y, 'urgent phone contact comes before the request form at every width');
+      await expect(priority.locator('a[href^="tel:"]')).toHaveAttribute('href', 'tel:+16728899764');
+      for (const field of ['phone', 'email', 'location', 'service', 'message', 'consent']) {
         await page.keyboard.press('Tab');
         await expect(form.locator(`[name="${field}"]`)).toBeFocused();
       }
@@ -107,7 +112,7 @@ export async function checkContactForm(browser: Browser) {
         await page.locator('.assistance-panel').scrollIntoViewIfNeeded();
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), `${width}px ${theme}: no horizontal overflow`);
         const fieldLayout = await page.locator('.assistance-fields').evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length);
-        assert.equal(fieldLayout, width < 768 ? 1 : 2);
+        assert.equal(fieldLayout, width < 768 ? 1 : width < 1024 ? 2 : 3);
         if (width === 390 || width === 1440) {
           await page.locator('.assistance-panel').screenshot({ path: resolve('.qa', `contact-${width}-${theme}.png`), style: '.site-chrome, .floating-call, .skip-link, nextjs-portal { visibility: hidden !important; }' });
           await page.locator('.site-footer').screenshot({ path: resolve('.qa', `footer-${width}-${theme}.png`), style: '.site-chrome, .floating-call, .skip-link, nextjs-portal { visibility: hidden !important; }' });

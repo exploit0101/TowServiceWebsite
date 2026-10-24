@@ -1,5 +1,13 @@
 # Verification report
 
+## Unified assistance design — October 25, 2026
+
+Updated `src/components/assistance-section.tsx`, `src/components/contact-form.tsx` and `src/components/contact-form.css` to combine urgent calling and written enquiries into one card. The gold phone banner precedes the form, with a shared header, refined typography, label icons, three/two/one-column responsive fields, and a compact consent/submit row. Both themes are coordinated. Field order remains logical for keyboard users. The Formspree destination, six fields, eleven service options, consent and delivery handling are preserved.
+
+Updated `scripts/contact-browser-check.ts` to verify phone-first placement, the revised reading order and all three grid states; `scripts/browser-check.ts` also checks the new header, number and caption text contrast. Local lint, typecheck, 55 tests and contact checks passed, including 320×568 phones, form failure states, native verification and JavaScript-disabled POST. Theme checks passed at 390/1440px. Empty desktop/light and mobile/dark screenshots were visually inspected. Light input placeholders measure 4.67:1 against the field background; field borders measure 3.07:1. No live enquiry or phone/WhatsApp message was sent. Production build and deployment results are checked separately before release.
+
+The production Pages build and static artifact checks also passed: 21 pages, 92 local destinations/assets, correct canonical metadata and the existing nineteen approved sitemap URLs. No routes, metadata, structured data or third-party integrations changed in this design refresh. Runnable checks are `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test`, `npm.cmd run test:contact`, `npm.cmd run test:browser -- --themes-only`, and the production Pages build/export checks documented in README.
+
 ## Latest change — Formspree enquiries and WhatsApp, October 25, 2026
 
 The release adds a reusable navy-and-gold assistance panel to the homepage contact section and `/request-help`, six labelled fields, all eleven approved services, optional email/message, contact consent, and Formspree POST delivery to the owner-supplied endpoint. Footer WhatsApp links use the business number and an editable draft. Privacy, terms and contact information now describe these channels.

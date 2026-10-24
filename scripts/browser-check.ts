@@ -336,7 +336,7 @@ async function checkTextContrast(page: Page, label: string) {
     },
     };
     const {color,over,luminance,contrast}=helpers;
-    const selectors=['.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','.compact-service-details h3','.compact-service-details p','.review-card blockquote','.review-person > strong','.review-source','.assistance-form-heading h3','.assistance-form-heading p','.assistance-field label','.assistance-field label small','.assistance-consent label','.assistance-consent a','.assistance-submit','.assistance-form-notice','.footer-whatsapp'];
+    const selectors=['.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','.compact-service-details h3','.compact-service-details p','.review-card blockquote','.review-person > strong','.review-source','.assistance-intro h2','.assistance-intro h2 em','.assistance-intro p','.assistance-facts span','.assistance-call strong','.assistance-call small','.assistance-details','.assistance-form-caption','.assistance-form-heading h3','.assistance-form-heading p','.assistance-field label','.assistance-field label small','.assistance-consent label','.assistance-consent a','.assistance-submit','.assistance-form-notice','.footer-whatsapp'];
     return selectors.flatMap(selector => Array.from(document.querySelectorAll<HTMLElement>(selector))).filter(element => element.getClientRects().length && element.textContent?.trim()).map(element => {
       const chain:Element[]=[];
       for (let ancestor:Element|null=element;ancestor;ancestor=ancestor.parentElement) chain.unshift(ancestor);
