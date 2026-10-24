@@ -1,5 +1,9 @@
 # Technical SEO review — October 22, 2026
 
+## Formspree and WhatsApp update — October 25, 2026
+
+The assistance form is included in server-rendered homepage/request-help HTML, with labelled controls and a real POST action. Existing single-H1 structure, canonical URLs, unique metadata, approved structured data and nineteen sitemap URLs are preserved. The request utility page remains excluded from indexing. Contact links expose the form and footer WhatsApp route without embedding a third-party widget. Form entries are sent in the POST body, never page/query URLs or analytics. New form-specific CSS supports both themes and mobile layouts; no new image payloads, dependency or third-party script is added. Privacy metadata now describes Formspree and WhatsApp accurately. Historical preview findings below are retained as a record of earlier checks.
+
 The site remains a non-indexable pre-launch preview. Technical preparation does not establish business eligibility, legal approval, rankings or real-world Core Web Vitals.
 
 ## Changes

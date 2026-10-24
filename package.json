@@ -14,7 +14,8 @@
     "test": "tsx --test tests/*.test.ts",
     "check:launch": "tsx scripts/check-launch.ts",
     "test:smoke": "tsx scripts/smoke.ts",
-    "test:browser": "tsx scripts/browser-check.ts"
+    "test:browser": "tsx scripts/browser-check.ts",
+    "test:contact": "tsx scripts/contact-browser-check.ts"
   },
   "dependencies": {
     "lucide-react": "1.61.0",

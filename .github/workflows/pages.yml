@@ -65,6 +65,7 @@ jobs:
             sleep 1
           done
           TEST_ORIGIN="http://127.0.0.1:4173${PAGES_BASE_PATH}" npm run test:browser
+          TEST_ORIGIN="http://127.0.0.1:4173${PAGES_BASE_PATH}" npm run test:contact
       - name: Upload the Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

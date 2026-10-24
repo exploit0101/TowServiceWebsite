@@ -5,8 +5,8 @@ import { PrimaryAction } from "@/components/ui";
 import { AvailabilityBadge } from "@/components/availability-badge";
 import { CustomerReviews } from "@/components/customer-reviews";
 import { BrandMark } from "@/components/brand-logo";
+import { AssistanceSection } from "@/components/assistance-section";
 import {
-  ArrowUpRight,
   ArrowRight,
 } from "@/components/icons";
 import { Clock3, MapPin, ShieldCheck, Timer, Star } from 'lucide-react';
@@ -169,40 +169,7 @@ export default function Home() {
       <CustomerReviews />
       <section id="contact" className="contact-section">
         <div className="container">
-          <div className="contact-panel">
-            <div>
-              <div className="eyebrow">
-                <span />
-                LET’S GET YOU MOVING
-              </div>
-              <h2>
-                Car trouble?
-                <br />
-                Start with a call.
-              </h2>
-              <p>
-                Discuss your vehicle and location.
-                <br />
-                Confirm availability before making plans.
-              </p>
-            </div>
-            <div className="contact-action">
-              {callsEnabled && phoneContact && (
-                <>
-                  <span>CALL OR DIAL DIRECTLY</span>
-                  <a className="contact-number" href={phoneContact.href}>
-                    {phoneContact.display}
-                    <ArrowUpRight size={27} aria-hidden="true" />
-                  </a>
-                </>
-              )}
-              <PrimaryAction label="Call easytowing" />
-              <Link href="/contact" className="text-link">
-                Contact & service information
-                <ArrowRight size={17} aria-hidden="true" />
-              </Link>
-            </div>
-          </div>
+          <AssistanceSection />
           <p className="safety-line">
             <strong>In immediate danger? Call 911.</strong> Use this site only
             when safely stopped, away from active traffic.

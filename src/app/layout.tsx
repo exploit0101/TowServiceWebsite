@@ -5,10 +5,12 @@ import "@/components/service-carousel.css";
 import "@/components/service-ticker.css";
 import "@/components/brand.css";
 import "@/components/customer-reviews.css";
+import "@/components/contact-form.css";
 import "@/components/theme.css";
 import { themeInitializationScript } from '@/lib/theme';
 import { BrandLogo } from "@/components/brand-logo";
 import { ServiceTicker } from "@/components/service-ticker";
+import { WhatsAppLink } from "@/components/whatsapp-link";
 import { services } from "@/lib/content";
 import { Header } from "@/components/header";
 import { Phone, ArrowUpRight } from "@/components/icons";
@@ -97,6 +99,7 @@ export default function RootLayout({
                 <Link href="/terms">Terms</Link>
                 <Link href="/accessibility">Accessibility</Link>
               </nav>
+              {callsEnabled && <WhatsAppLink phone={siteConfig.supportPhone} />}
             </div>
           </div>
         </footer>

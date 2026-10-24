@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { formspreeEndpoint, whatsappLink } from '../src/lib/contact';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -77,6 +78,13 @@ if (production) {
   assert.ok(!robots.includes('Sitemap:'), 'No advertised live sitemap');
 }
 const home = readFileSync(join(root, 'index.html'), 'utf8');
+for (const route of ['/', '/request-help']) {
+  const html = readFileSync(localFile(`${basePath}${route}`), 'utf8');
+  assert.ok(html.includes(`action="${formspreeEndpoint}" method="POST"`), `${route}: native Formspree form is exported`);
+  for (const field of ['name', 'phone', 'location', 'email', 'service', 'message', 'consent', '_gotcha']) assert.ok(html.includes(`name="${field}"`), `${route}: enquiry field ${field}`);
+  for (const service of availableServices) assert.ok(html.includes(`<option value="${service.name.replace(/&/g, '&amp;')}">`), `${route}: approved service ${service.id} available`);
+  assert.ok(html.includes(whatsappLink(configured.supportPhone)!.replace(/&/g, '&amp;')), `${route}: correct WhatsApp number and draft`);
+}
 for (const id of ['services','fleet','reviews','contact']) assert.ok(home.includes(`id="${id}"`),`Home: #${id} section exists`);
 assert.doesNotMatch(home,/service-carousel-track[^"]*is-expanded/,'Home carousel starts collapsed');
 assert.equal((home.match(/class="review-card"/g)||[]).length,3,'Home renders the three owner-supplied customer quotes');

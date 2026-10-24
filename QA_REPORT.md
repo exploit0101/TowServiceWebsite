@@ -1,5 +1,17 @@
 # Verification report
 
+## Latest change — Formspree enquiries and WhatsApp, October 25, 2026
+
+The release adds a reusable navy-and-gold assistance panel to the homepage contact section and `/request-help`, six labelled fields, all eleven approved services, optional email/message, contact consent, and Formspree POST delivery to the owner-supplied endpoint. Footer WhatsApp links use the business number and an editable draft. Privacy, terms and contact information now describe these channels.
+
+New sources: `src/lib/contact.ts`, `src/components/contact-form.tsx`, `src/components/contact-form.css`, `src/components/assistance-section.tsx`, `src/components/whatsapp-link.tsx`, `tests/contact.test.ts`, `scripts/contact-browser-check.ts`. Updated sources: homepage, root layout, request-help, information pages, static export/browser checks, package scripts and Pages workflow. No dependencies added.
+
+The new browser checks intercept **every Formspree submission**, using reserved example contact details. They cover empty and invalid input, consent, payload fields, success/reset/focus, 422 challenge, 429, network failure, malformed success, retained entries on errors, native challenge handoff, keyboard field order, JavaScript-disabled native POST, responsive layouts and both themes. WhatsApp URL, number, draft and external-link attributes are checked without opening a real chat. No customer enquiry, live inbox delivery, actual phone call or WhatsApp message is sent or claimed.
+
+Historical reports below describe prior states, including the initial non-indexable preview. The current site is the owner-authorized GitHub Pages production release.
+
+Local release checks passed: lint, TypeScript, **55 unit/component/SEO tests**, configured launch validator, production Pages build and **21-page / 92-destination** artifact checks. Existing browser checks passed at 320, 375, 390, 768, 1024 and 1440px; theme and text-contrast checks passed at 390/1440px, including the new form. Contact checks passed at 320/390/768/1440px and with JavaScript disabled. Screenshots of the empty request page and mobile footer were visually inspected. Read-only GET of the Formspree endpoint returned its expected POST-required response; inbox delivery/account configuration remains unverified.
+
 Implementation checked on October 22, 2026. This is a **local pre-launch preview**, not an operating roadside service. Selected pilot: Winnipeg — Bridgwater / Waverley West. No production deployment, actual customer request or call was made.
 
 ## Executed checks

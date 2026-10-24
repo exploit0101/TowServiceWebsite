@@ -12,9 +12,18 @@ Updated October 24, 2026 from the owner's confirmations and publication instruct
 - [x] Three actual customer quotes were supplied by the owner. Rating and feedback are visibly described as supplied by EasyTowing. No invented reviewer identity, dates, platform affiliation or total count.
 - [x] Public project/draft wording and the How it works section removed. Essential role, safety, privacy and quotation information remains.
 - [x] Production validator passes. GitHub Pages has a guarded production export, base-path-correct canonicals, approved schema and nineteen sitemap URLs.
-- [x] Static request page uses phone calls. Callback processing and optional analytics stay disabled unless separately configured.
+- [x] Homepage and static request page include the owner-requested Formspree enquiry form. The separate server callback API and optional analytics stay disabled unless separately configured.
 
 These checkmarks record owner attestations and implementation checks; the software does not provide a legal determination. Keep underlying operating/partner documents outside the public repository. The original `winnipeg-bridgwater` pilot key is historical; current advertised coverage is Winnipeg.
+
+## Formspree / WhatsApp addition — October 25, 2026
+
+- [x] Owner supplied Formspree endpoint `https://formspree.io/f/xkjjownd` and requested name, phone, address/location, email, service and message fields.
+- [x] Formspree processing and US transfers disclosed beside consent and on the privacy page. No GPS permission, payment fields or browser storage of entries.
+- [x] Native POST fallback, pending state, acknowledged-success feedback, error recovery and hosted challenge handoff implemented. Server-side spam handling is provided by Formspree.
+- [x] Footer WhatsApp uses the configured business number, with an editable greeting. The visitor sends the message.
+- [ ] Owner operational check: confirm Formspree inbox notifications, active account/quota, allowed domain and appropriate submission retention/access settings in the dashboard; verify one actual enquiry reaches the intended inbox. This cannot be established by mocked UI tests.
+- [ ] Owner operational check: confirm the business number is active on WhatsApp and monitored. The website does not verify WhatsApp account ownership or message delivery.
 
 ## Release checks
 
