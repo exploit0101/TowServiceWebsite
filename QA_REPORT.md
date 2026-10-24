@@ -275,6 +275,10 @@ Verification on the production artifact:
 
 Runnable checks are documented in README.md and PRELAUNCH_CHECKLIST.md. Google Search Console sitemap submission/index inspection and actual carrier/call-centre handling remain owner-side operational checks; successful deployment does not guarantee indexing or rankings.
 
+Public verification after deployment of `8d3a3b0`: [GitHub Actions run 40113021374](https://github.com/exploit0101/TowServiceWebsite/actions/runs/40113021374) passed lint, typecheck, all 48 tests, production artifact checks and every browser check before deployment. HTTPS checks on [the live site](https://exploit0101.github.io/TowServiceWebsite/) confirm all nineteen approved pages return 200 with one H1 and indexable HTML directives, matching sitemap/canonical URLs, all nine primary service cards, three supplied reviews, 25-minute estimate, correct phone-only support and truthful Organization data. The phone utility remains noindex without a form; an unknown route returns 404. GitHub serves gzip and a 600-second cache policy.
+
+Lighthouse 12.8.2 against the **public deployment**, using its standard mobile simulation: **performance 96, accessibility 100, best practices 100, SEO 100**. FCP 1.8s, LCP 2.4s, TBT 60ms, CLS 0, Speed Index 3.1s. The visible-label/accessibility-name audit now passes. These are a single laboratory run, not real-user p75 Core Web Vitals or a ranking guarantee. Raw local reports are in ignored `.qa/lighthouse-live.json` and `.qa/lighthouse-responsive.json`; production compression and caching explain why the deployed result differs from the temporary Python server.
+
 Files changed for this release (including generated responsive image assets):
 
 ```text
