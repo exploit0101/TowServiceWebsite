@@ -394,3 +394,38 @@ src/components/service-ticker.css
 src/components/service-ticker.tsx
 tests/ticker.test.ts
 ```
+
+## Sticky services, brand identity and supplied reviewer profiles - October 24, 2026
+
+The moving service strip and header now share a sticky container. The complete strip remains at the viewport top while scrolling and sits above the header; section anchors account for the combined height. Phone service cards retain their static two-column layout.
+
+Added an original native SVG tow-truck mark with a navy/gold wordmark, hover and keyboard-focus effects, matching favicon and a faint hero watermark. The background treatment follows the large translucent-logo idea observed on the owner-requested Panda reference; no competitor artwork or branding was copied. The original logo lives in src/components/brand-logo.tsx and src/app/icon.svg. Reduced motion suppresses animated logo transitions. The confirmed availability dot increased from 6px to 11px.
+
+The hero tagline now says Quick roadside help. 25-minute arrival estimate. It uses the same documented-estimate validation as the existing arrival note, including distinguishing a target from a measured estimate and omitting unsupported numeric claims.
+
+Review cards now use the exact supplied Michael Thompson, Sarah Mitchell and Mathew quotes, reviewer names, review/photo profile counts and relative timing labels. Initial avatars, date pills and a navy feature card provide the requested visual treatment. Counts are reviewer profile metadata, not the business's total reviews. No personal photos, review-platform links/affiliation, individual star ratings or precise review timestamps were inferred. The company-supplied source remains visible and profile details are identified as of October 24, 2026 so static relative labels do not imply live freshness.
+
+Validation: lint, Next route generation/TypeScript, all 49 unit/component/SEO tests, guarded production export and 21-page/81-destination exported checks pass. Headless Chrome checks pass at 320, 375, 390, 768, 1024 and 1440px. They verify the service strip stays at the top without overlapping the header through homepage, gallery, services, contact and mobile subpage flows, plus exact supplied review metadata, hero watermark, tagline, enlarged dot, interactive logo, static mobile services and existing desktop/pause/reduced-motion behaviour. Desktop/mobile hero and review screenshots were visually inspected. No telephone links were activated.
+
+SEO titles, descriptions, H1, canonical URLs, structured-data identity, review-rating schema exclusion and the nineteen approved sitemap URLs remain intact. Earlier Lighthouse measurements apply to their recorded deployments and were not repeated for this presentation update. No new business/legal inputs are required. Run the existing lint, typecheck, test, test:browser, build:pages and test:pages commands in README.md.
+
+Changed files:
+
+```text
+README.md
+QA_REPORT.md
+assets/README.md
+scripts/browser-check.ts
+src/app/icon.svg
+src/app/layout.tsx
+src/app/page.tsx
+src/components/arrival-estimate.tsx
+src/components/brand-logo.tsx
+src/components/brand.css
+src/components/customer-reviews.tsx
+src/components/customer-reviews.css
+src/components/header.tsx
+src/lib/reviews.ts
+tests/arrival.test.ts
+tests/claims.test.ts
+```

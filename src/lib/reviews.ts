@@ -3,12 +3,16 @@ export type CustomerReview = {
   text: string;
   rating?: number;
   date?: string;
+  profileReviewCount?: number;
+  profilePhotoCount?: number;
+  relativeDateLabel?: string;
 };
 export type ReviewSummary = {
   verified: boolean;
   sourceUrl: string;
   sourceKind?: "public" | "owner-provided";
   sourceLabel?: string;
+  detailsAsOf?: string;
   rating: number | null;
   totalReviews: number | null;
   entries: readonly CustomerReview[];
@@ -21,16 +25,20 @@ export const customerReviews: ReviewSummary = {
   sourceKind: "owner-provided",
   sourceLabel: "Rating and customer feedback supplied by EasyTowing",
   rating: 4.9,
+  detailsAsOf: "2026-10-24",
   totalReviews: null,
   entries: [
     {
-      text: "Easy Towing made a stressful situation much easier. The dispatch team was helpful, communication was clear, and the towing service was handled professionally.",
+      author: "Michael Thompson", profileReviewCount: 8, profilePhotoCount: 1, relativeDateLabel: "1 week ago",
+      text: "My car broke down unexpectedly, and Easy Towing made the whole process simple. The dispatch team was friendly, kept me updated, and arranged help without any hassle. Really appreciate the professional service!",
     },
     {
-      text: "Great communication and helpful service. The team explained everything clearly and helped me arrange the roadside assistance I needed. A positive experience overall.",
+      author: "Sarah Mitchell", profileReviewCount: 12, profilePhotoCount: 3, relativeDateLabel: "2 weeks ago",
+      text: "Had a dead battery and needed roadside assistance. The team was very responsive and explained everything clearly. The entire experience was smooth and stress-free. Would definitely recommend!",
     },
     {
-      text: "I needed help with a dead car battery and contacted Easy Towing. The process was straightforward, and I appreciated being kept informed while assistance was arranged.",
+      author: "Mathew", profileReviewCount: 5, profilePhotoCount: 2, relativeDateLabel: "4 weeks ago",
+      text: "Excellent communication and customer service! I needed assistance with a flat tire, and Easy Towing helped arrange everything. Very convenient and professional service.",
     },
   ],
 };
@@ -57,6 +65,7 @@ export function hasPublishableReviews(reviews: ReviewSummary): boolean {
     Number.isFinite(reviews.rating) &&
     reviews.rating >= 1 &&
     reviews.rating <= 5 &&
+    (reviews.detailsAsOf === undefined || (/^\d{4}-\d{2}-\d{2}$/.test(reviews.detailsAsOf) && Number.isFinite(Date.parse(reviews.detailsAsOf)))) &&
     validCount &&
     reviews.entries.length > 0 &&
     reviews.entries.every(
@@ -67,7 +76,9 @@ export function hasPublishableReviews(reviews: ReviewSummary): boolean {
           (Number.isInteger(review.rating) &&
             review.rating >= 1 &&
             review.rating <= 5)) &&
-        (review.date === undefined || /^\d{4}-\d{2}-\d{2}$/.test(review.date)),
+        (review.date === undefined || /^\d{4}-\d{2}-\d{2}$/.test(review.date)) &&
+        [review.profileReviewCount, review.profilePhotoCount].every(count => count === undefined || (Number.isInteger(count) && count >= 0)) &&
+        (review.relativeDateLabel === undefined || Boolean(review.relativeDateLabel.trim())),
     )
   );
 }

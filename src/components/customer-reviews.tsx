@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageSquareQuote, Quote, Star, ArrowUpRight } from "lucide-react";
+import { MessageSquareQuote, Quote, Star, ArrowUpRight, Camera, MessageSquare, Clock3 } from "lucide-react";
 import {
   customerReviews,
   hasPublishableReviews,
@@ -65,7 +65,20 @@ export function CustomerReviews({
                   className="review-card"
                   key={`${review.author || "feedback"}-${index}`}
                 >
-                  <Quote size={23} aria-hidden="true" />
+                  <figcaption>
+                    <span className="review-avatar" aria-hidden="true">
+                      {review.author ? review.author.trim().split(/\s+/).map(part => part.charAt(0)).slice(0,2).join('') : <MessageSquareQuote size={17}/>}
+                    </span>
+                    <span className="review-person">
+                      <strong>{review.author || "Customer feedback"}</strong>
+                      <span className="review-profile-details">
+                        {review.profileReviewCount !== undefined && <span><MessageSquare size={12} aria-hidden="true"/>{review.profileReviewCount} {review.profileReviewCount === 1 ? 'review' : 'reviews'}</span>}
+                        {review.profilePhotoCount !== undefined && <span><Camera size={12} aria-hidden="true"/>{review.profilePhotoCount} {review.profilePhotoCount === 1 ? 'photo' : 'photos'}</span>}
+                      </span>
+                      {review.date && <time dateTime={review.date}>{review.date}</time>}
+                    </span>
+                  </figcaption>
+                  {review.relativeDateLabel && <span className="review-date-label"><Clock3 size={12} aria-hidden="true"/>{review.relativeDateLabel}</span>}
                   {review.rating !== undefined && (
                     <div
                       className="review-stars"
@@ -77,26 +90,12 @@ export function CustomerReviews({
                     </div>
                   )}
                   <blockquote>{review.text}</blockquote>
-                  <figcaption>
-                    <span className="review-avatar" aria-hidden="true">
-                      {review.author ? (
-                        review.author.trim().charAt(0)
-                      ) : (
-                        <MessageSquareQuote size={17} />
-                      )}
-                    </span>
-                    <span>
-                      <strong>{review.author || "Customer feedback"}</strong>
-                      {review.date && (
-                        <time dateTime={review.date}>{review.date}</time>
-                      )}
-                    </span>
-                  </figcaption>
+                  <Quote className="review-quote-mark" size={35} aria-hidden="true"/>
                 </figure>
               ))}
             </div>
             {reviews.sourceLabel && (
-              <p className="review-source">{reviews.sourceLabel}.</p>
+              <p className="review-source">{reviews.sourceLabel}.{reviews.detailsAsOf && <> Profile details as of {new Intl.DateTimeFormat('en-CA',{dateStyle:'long',timeZone:'UTC'}).format(new Date(`${reviews.detailsAsOf}T00:00:00Z`))}.</>}</p>
             )}
           </>
         ) : (

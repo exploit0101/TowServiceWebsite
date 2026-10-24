@@ -6,6 +6,7 @@ import { PrimaryAction } from "@/components/ui";
 import { AvailabilityBadge } from "@/components/availability-badge";
 import { CustomerReviews } from "@/components/customer-reviews";
 import { ArrivalEstimate } from "@/components/arrival-estimate";
+import { BrandMark } from "@/components/brand-logo";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -93,6 +94,7 @@ export default function Home() {
   return (
     <div className="home-page">
       <section className="hero">
+        <div className="hero-brand-watermark" aria-hidden="true"><BrandMark/><span>easytowing</span></div>
         <div className="container hero-grid">
           <div className="hero-copy">
             <AvailabilityBadge config={siteConfig.availability} />
@@ -105,6 +107,7 @@ export default function Home() {
               <br />
               <em>Made easy.</em>
             </h1>
+            <ArrivalEstimate estimate={siteConfig.arrivalEstimate} tagline/>
             <p>
               Car trouble anywhere in Winnipeg? Call for towing or roadside
               assistance, a clear quote and an arrival estimate.

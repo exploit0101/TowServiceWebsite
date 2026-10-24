@@ -3,8 +3,10 @@ import type { LaunchConfig } from "@/lib/launch";
 
 export function ArrivalEstimate({
   estimate,
+  tagline = false,
 }: {
   estimate?: LaunchConfig["arrivalEstimate"];
+  tagline?: boolean;
 }) {
   const documented = Boolean(
     estimate?.confirmationSource.trim() && estimate.confirmedAt,
@@ -15,6 +17,7 @@ export function ArrivalEstimate({
     Number.isInteger(estimate.minutes) &&
     estimate.minutes > 0 &&
     ["measured", "target"].includes(estimate.status);
+  if (tagline) return <p className="hero-tagline">Quick roadside help. {publishable ? <strong>{estimate.minutes}-minute arrival {estimate.status === 'target' ? 'target' : 'estimate'}.</strong> : 'Call for an arrival estimate.'}</p>;
   return (
     <div className="arrival-estimate">
       <Clock3 size={18} aria-hidden="true" />

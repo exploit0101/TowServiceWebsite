@@ -3,10 +3,13 @@ import Link from "next/link";
 import "./globals.css";
 import "@/components/service-carousel.css";
 import "@/components/service-ticker.css";
+import "@/components/brand.css";
+import "@/components/customer-reviews.css";
+import { BrandLogo } from "@/components/brand-logo";
 import { ServiceTicker } from "@/components/service-ticker";
 import { services } from "@/lib/content";
 import { Header } from "@/components/header";
-import { Phone, ArrowUpRight, Truck } from "@/components/icons";
+import { Phone, ArrowUpRight } from "@/components/icons";
 import { Consent } from "@/components/consent";
 import {
   brand,
@@ -43,6 +46,7 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
+        <div className="site-chrome">
         <ServiceTicker items={services.filter(service => !isLive || siteConfig.offers.includes(service.id)).map(({ id, name }) => ({ id, name }))} />
         <Header
           brand={brand}
@@ -52,6 +56,7 @@ export default function RootLayout({
           phoneMode={siteConfig.phoneMode}
           pilotLabel=""
         />
+        </div>
         <main id="main" tabIndex={-1}>
           {children}
         </main>
@@ -59,13 +64,7 @@ export default function RootLayout({
           <div className="container">
             <div className="footer-top">
               <Link href="/" className="brand">
-                <span className="brand-mark">
-                  <Truck size={25} aria-hidden="true" />
-                </span>
-                <span>
-                  {brand}
-                  <small>TOWING & ROADSIDE</small>
-                </span>
+                <BrandLogo name={brand}/>
               </Link>
               <nav aria-label="Footer navigation">
                 <Link href="/services">Services</Link>

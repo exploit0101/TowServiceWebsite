@@ -9,6 +9,9 @@ test('arrival component omits unsupported 25-minute promises', () => {
     const html=renderToStaticMarkup(createElement(ArrivalEstimate,{estimate}));
     assert.match(html,/Arrival estimate on your call/);
     assert.ok(!html.includes('25-minute'));
+    const tagline=renderToStaticMarkup(createElement(ArrivalEstimate,{estimate,tagline:true}));
+    assert.ok(!tagline.includes('25-minute'));
+    assert.match(tagline,/Call for an arrival estimate/);
   }
 });
 test('documented arrival targets stay distinct from measured estimates', () => {
@@ -17,5 +20,8 @@ test('documented arrival targets stay distinct from measured estimates', () => {
     assert.match(html,status==='target' ? /25-minute arrival target/ : /25-minute arrival estimate/);
     assert.match(html,/Traffic, weather and available operators affect arrival/);
     assert.ok(!html.includes('guarantee'));
+    const tagline=renderToStaticMarkup(createElement(ArrivalEstimate,{estimate:{...fixture,status,confirmedAt:'2026-10-24',confirmationSource:'Owner fixture'},tagline:true}));
+    assert.match(tagline,/Quick roadside help/);
+    assert.match(tagline,status==='target' ? /25-minute arrival target/ : /25-minute arrival estimate/);
   }
 });

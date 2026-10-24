@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowUpRight, Menu, X, Phone, Truck } from "./icons";
+import { ArrowUpRight, Menu, X, Phone } from "./icons";
+import { BrandLogo } from "./brand-logo";
 import { getPhoneContact } from "@/lib/phone";
 
 type HeaderProps = {
@@ -59,13 +60,7 @@ export function Header({
             className="brand"
             onClick={close}
           >
-            <span className="brand-mark">
-              <Truck size={25} strokeWidth={2.3} aria-hidden="true" />
-            </span>
-            <span>
-              {brand}
-              <small>TOWING & ROADSIDE</small>
-            </span>
+            <BrandLogo name={brand}/>
           </Link>
           <button
             className="menu-toggle"

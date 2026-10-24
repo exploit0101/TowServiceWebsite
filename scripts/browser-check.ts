@@ -17,6 +17,13 @@ async function checkLayout(page: Page, label: string) {
     content: Math.max(document.documentElement.scrollWidth,document.body.scrollWidth),
   }));
   assert.ok(overflow.content <= overflow.viewport + 1,`${label}: horizontal page overflow ${JSON.stringify(overflow)}`);
+  const chrome=await page.locator('.site-chrome').boundingBox();
+  const ticker=await page.locator('.service-ticker').boundingBox();
+  const header=await page.locator('.site-header').boundingBox();
+  assert.ok(chrome && ticker && header,`${label}: sticky header and service strip exist`);
+  assert.ok(Math.abs(ticker.y)<1,`${label}: the service strip stays at the top while scrolling`);
+  assert.ok(ticker.height>=38,`${label}: the complete service strip remains visible`);
+  assert.ok(header.y >= ticker.y+ticker.height-1,`${label}: the strip does not overlap the header`);
   const parts = ['.brand','.menu-toggle','#main-navigation','.header-contact'];
   const boxes: { selector:string; x:number; y:number; width:number; height:number }[] = [];
   for (const selector of parts) {
@@ -97,6 +104,10 @@ async function checkHomeInteractions(page: Page, width: number) {
   await expect(page.locator('#reviews .review-summary')).toContainText('4.9/5');
   await expect(page.locator('#reviews .review-card')).toHaveCount(3);
   await expect(page.locator('#reviews .review-source')).toContainText('supplied by EasyTowing');
+  await expect(page.locator('#reviews .review-person > strong')).toHaveText(['Michael Thompson','Sarah Mitchell','Mathew']);
+  await expect(page.locator('#reviews .review-date-label')).toHaveText(['1 week ago','2 weeks ago','4 weeks ago']);
+  await expect(page.locator('.hero-tagline')).toContainText('Quick roadside help. 25-minute arrival estimate.');
+  await expect(page.locator('.hero-brand-watermark')).toHaveAttribute('aria-hidden','true');
   await expect(page.locator('.arrival-estimate')).toContainText('25-minute arrival estimate');
   const menu=page.getByRole('button',{name:'Open navigation',exact:true});
   if (await menu.isVisible()) {
@@ -146,6 +157,13 @@ async function checkAutomaticCarousel(browser: Awaited<ReturnType<typeof chromiu
   try {
     await page.goto(origin,{waitUntil:'networkidle',timeout:60000});
     const region=page.getByRole('region',{name:'Service options',exact:true});
+    const logo=page.locator('.site-header .brand');
+    await logo.hover();
+    await expect.poll(() => logo.locator('.brand-vehicle').evaluate(element => getComputedStyle(element).transform)).not.toBe('none');
+    await logo.focus();
+    await page.mouse.move(0,0);
+    assert.notEqual(await logo.locator('.brand-vehicle').evaluate(element => getComputedStyle(element).transform),'none','keyboard focus activates the same logo interaction');
+    await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
     const track=page.locator('.service-carousel-track');
     const position=() => track.evaluate(element => element.scrollLeft);
     const blur=async () => page.evaluate(() => {
@@ -237,6 +255,7 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
     const resumed=await offset();
     await expect.poll(offset).toBeLessThan(resumed-5);
     assert.equal(await page.locator('.availability-dot').evaluate(element => getComputedStyle(element).animationName),'availability-online-pulse','confirmed availability dot pulses in normal-motion mode');
+    assert.equal(await page.locator('.availability-dot').evaluate(element => getComputedStyle(element).width),'11px','availability dot is larger and easy to see');
 
     const track=page.locator('.service-carousel-track');
     for (const width of [390,767]) {
