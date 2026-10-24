@@ -419,3 +419,55 @@
     transform: none;
   }
 }
+
+/* Phones show every card immediately, including before JavaScript hydrates. */
+@media (max-width: 767px) {
+  .service-carousel { --service-card-gap: 12px; }
+  .service-carousel .service-carousel-toolbar,
+  .service-carousel .service-carousel-toggle { display: none; }
+  .service-carousel .service-carousel-track,
+  .service-carousel .service-carousel-track.is-expanded {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
+  }
+  .service-carousel .compact-service-card {
+    border-radius: 15px;
+    transition: none;
+  }
+  .service-carousel .compact-service-card:hover { transform: none; }
+  .service-carousel .compact-service-card .compact-service-details { padding: 17px 15px 15px; }
+  .service-carousel .compact-service-top { gap: 8px; margin-bottom: 16px; }
+  .service-carousel .compact-service-card .compact-service-icon {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+    border-radius: 13px;
+  }
+  .service-carousel .compact-service-icon svg { width: 26px; height: 26px; }
+  .service-carousel .compact-service-number { font-size: 31px; letter-spacing: -2px; }
+  .service-carousel .compact-service-card .compact-service-details h3 {
+    min-height: 43px;
+    margin-bottom: 0;
+    font-size: 18px;
+    line-height: 1.25;
+    letter-spacing: -.5px;
+  }
+  .service-carousel .compact-service-card .compact-service-details p { display: none; }
+  .service-carousel .compact-service-card .compact-service-link { padding-top: 16px; gap: 5px; font-size: 10px; }
+  .service-carousel .compact-service-link > svg { width: 24px; height: 24px; padding: 5px; }
+  .service-carousel .compact-service-card .compact-service-call {
+    min-height: 45px;
+    padding: 11px 12px;
+    gap: 6px;
+    font-size: 10px;
+  }
+}
+@media (max-width: 360px) {
+  .service-carousel .compact-service-card .compact-service-details { padding-inline: 12px; }
+  .service-carousel .compact-service-card .compact-service-details h3 { font-size: 16px; }
+  .service-carousel .compact-service-number { font-size: 27px; }
+}

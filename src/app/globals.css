@@ -337,6 +337,11 @@ h3 {
   background: #26855b;
   box-shadow: 0 0 0 4px #26855b12;
   margin-left: 4px;
+  animation: availability-online-pulse 2.4s ease-in-out infinite;
+}
+@keyframes availability-online-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 3px #26855b22; }
+  50% { opacity: .55; box-shadow: 0 0 0 8px #26855b00; }
 }
 .hero h1 {
   font-size: clamp(46px, 4.8vw, 66px);

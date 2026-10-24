@@ -51,19 +51,32 @@ async function checkHomeInteractions(page: Page, width: number) {
   await expect(cards).toHaveCount(homepageServices.length);
   assert.equal(await cards.locator('.compact-service-icon svg').count(),homepageServices.length,'all nine homepage services have icons');
   const track=page.locator('.service-carousel-track');
-  await expect(track).not.toHaveClass(/is-expanded/);
+  const mobile=width <= 767;
+  if (mobile) await expect(track).toHaveClass(/is-expanded/);
+  else await expect(track).not.toHaveClass(/is-expanded/);
   await track.scrollIntoViewIfNeeded();
   await page.mouse.move(0,0);
   const reducedStart=await track.evaluate(element => element.scrollLeft);
   await page.waitForTimeout(450);
   assert.ok(Math.abs(await track.evaluate(element => element.scrollLeft)-reducedStart) <= 1,'reduced motion stops automatic movement');
-  await expect(page.getByRole('button',{name:'Resume movement',exact:true})).toBeVisible();
+  if (mobile) {
+    await expect(page.locator('.carousel-controls')).toHaveCount(0);
+    await expect(page.locator('.service-carousel-toggle')).toHaveCount(0);
+    const grid=await track.evaluate(element => ({width:element.clientWidth,content:element.scrollWidth,left:element.scrollLeft,columns:getComputedStyle(element).gridTemplateColumns.split(' ').length}));
+    assert.ok(grid.content <= grid.width+1 && grid.left === 0,'mobile service cards all fit the static grid');
+    assert.equal(grid.columns,2,'mobile services use two readable columns');
+    await expect(page.getByRole('region',{name:'Service options',exact:true})).not.toHaveAttribute('aria-roledescription','carousel');
+  } else await expect(page.getByRole('button',{name:'Resume movement',exact:true})).toBeVisible();
+  assert.equal(await page.locator('.service-ticker-track').evaluate(element => getComputedStyle(element).animationName),'none','reduced motion stops the top strip');
+  assert.equal(await page.locator('.availability-dot').evaluate(element => getComputedStyle(element).animationName),'none','reduced motion stops the availability pulse');
+  await expect(page.locator('.service-ticker-group:not([aria-hidden]) li')).toHaveCount(services.length);
   for (const service of homepageServices) {
     const card=cards.filter({has:page.getByRole('heading',{name:service.name,exact:true})});
     await expect(card.getByRole('heading',{name:service.name,exact:true})).toBeVisible();
     await expect(card.locator('a[href^="tel:"]')).toHaveAttribute('href',phoneHref);
     await expect(card.locator('a[href*="/services/"]').first()).toHaveAttribute('href',new RegExp('/services/' + service.id + '/?$'));
   }
+  if (!mobile) {
   await expect(page.getByRole('button',{name:'Next services',exact:true})).toBeEnabled();
   const startingScroll=await track.evaluate(element => element.scrollLeft);
   await page.getByRole('button',{name:'Next services',exact:true}).click();
@@ -79,6 +92,7 @@ async function checkHomeInteractions(page: Page, width: number) {
   await page.getByRole('button',{name:'Show carousel',exact:true}).click();
   await expect(track).not.toHaveClass(/is-expanded/);
   await expect(page.getByRole('button',{name:'Resume movement',exact:true})).toBeVisible();
+  }
   await expect(page.locator('#reviews')).toBeVisible();
   await expect(page.locator('#reviews .review-summary')).toContainText('4.9/5');
   await expect(page.locator('#reviews .review-card')).toHaveCount(3);
@@ -193,6 +207,63 @@ async function checkAutomaticCarousel(browser: Awaited<ReturnType<typeof chromiu
   }
 }
 
+async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.launch>>) {
+  const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'no-preference'});
+  const page=await context.newPage();
+  page.setDefaultTimeout(15000);
+  try {
+    await page.goto(origin,{waitUntil:'networkidle',timeout:60000});
+    const ticker=page.locator('.service-ticker-track');
+    const offset=() => ticker.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m41);
+    const blur=() => page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
+    const still=async (label:string) => {
+      await page.waitForTimeout(80);
+      const start=await offset();
+      await page.waitForTimeout(350);
+      assert.ok(Math.abs(await offset()-start)<1,label);
+    };
+    await page.mouse.move(0,150);
+    const start=await offset();
+    await expect.poll(offset).toBeLessThan(start-5);
+    await page.locator('.service-ticker').hover();
+    await still('hover pauses the moving service-name strip');
+    await page.getByRole('button',{name:'Pause service names',exact:true}).click();
+    await page.mouse.move(0,150);
+    await blur();
+    await still('manual strip pause persists after focus and pointer leave');
+    await page.getByRole('button',{name:'Resume service names',exact:true}).click();
+    await page.mouse.move(0,150);
+    await blur();
+    const resumed=await offset();
+    await expect.poll(offset).toBeLessThan(resumed-5);
+    assert.equal(await page.locator('.availability-dot').evaluate(element => getComputedStyle(element).animationName),'availability-online-pulse','confirmed availability dot pulses in normal-motion mode');
+
+    const track=page.locator('.service-carousel-track');
+    for (const width of [390,767]) {
+      await page.setViewportSize({width,height:900});
+      await expect(track).toHaveClass(/is-expanded/);
+      await track.scrollIntoViewIfNeeded();
+      const grid=await track.evaluate(element => ({left:element.scrollLeft,width:element.clientWidth,content:element.scrollWidth}));
+      await page.waitForTimeout(650);
+      assert.equal(await track.evaluate(element => element.scrollLeft),0,`${width}px cards stay stationary with normal motion enabled`);
+      assert.ok(grid.content<=grid.width+1,`${width}px every service fits without horizontal scrolling`);
+      await expect(page.getByRole('button',{name:'Pause movement',exact:true})).toHaveCount(0);
+    }
+    await page.setViewportSize({width:768,height:900});
+    await expect(track).not.toHaveClass(/is-expanded/);
+    await track.scrollIntoViewIfNeeded();
+    await page.mouse.move(0,150);
+    const desktopStart=await track.evaluate(element => element.scrollLeft);
+    await expect.poll(() => track.evaluate(element => element.scrollLeft)).toBeGreaterThan(desktopStart+5);
+    await page.setViewportSize({width:390,height:900});
+    await expect(track).toHaveClass(/is-expanded/);
+    assert.equal(await track.evaluate(element => element.scrollLeft),0,'returning to mobile clears the carousel scroll position');
+    console.log('PASS mobile motion: static service grids at 390/767px, responsive switch at 768px, moving top strip with hover/manual pause, and pulsing availability.');
+  } finally {
+    await context.close();
+  }
+}
+
 async function main() {
   await mkdir(screenshotDirectory,{recursive:true});
   const browser=await chromium.launch({channel:process.env.TEST_BROWSER_CHANNEL || 'chrome',headless:true});
@@ -240,6 +311,7 @@ async function main() {
       console.log(`PASS ${width}px: layout, visible phone, service carousel, mobile navigation, gallery keyboard flow and loaded images`);
     }
     await checkAutomaticCarousel(browser);
+    await checkMobileMotion(browser);
     console.log(`PASS browser QA; desktop/mobile screenshots saved to ${screenshotDirectory}. No call links were activated.`);
   } finally {
     await browser.close();

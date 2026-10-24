@@ -367,3 +367,30 @@ tests/components.test.ts
 tests/launch.test.ts
 tests/seo.test.ts
 ```
+
+## Mobile service layout and availability motion - October 24, 2026
+
+Phones up to 767px now show all nine primary service cards in a static two-column grid, with coloured icons, concise titles and individual call links. No carousel controls or automatic card movement appear at these sizes, including before hydration. Desktop carousel behaviour is retained. Resizing between 767px and 768px switches layout and cancels/restarts automatic card movement appropriately.
+
+A slim navy strip above the header scrolls all eleven actual service names. It supports hover/focus pause and an explicit pause/resume button. The loop's second visual copy is hidden from assistive technology and contains no focus targets. With reduced motion, the names remain a static, manually scrollable list. The confirmed green availability dot has a gentle 2.4-second pulse; reduced motion disables it. This highlights configured opening hours rather than claiming a live presence-monitoring integration.
+
+Verification: lint, Next route generation/TypeScript, **49 unit/component/SEO tests**, guarded production export and **21-page/81-destination static checks** pass. Headless Chrome passes all six existing widths (320, 375, 390, 768, 1024, 1440px), gallery/navigation/phone checks and desktop movement regressions. New normal-motion checks verify static mobile cards at 390/767px, the 768px switch and return to mobile, scrolling service names, hover/manual pause/resume and availability animation. Reduced-motion checks verify both new animations stop. Mobile header and service screenshots were visually inspected. No native calls were placed.
+
+SEO metadata, canonicals, approved sitemap and business claims are unchanged; exported-HTML checks still pass. Previous Lighthouse scores above describe the preceding deployment and were not remeasured for this bounded UI update. No additional business/legal input is required for these presentation changes.
+
+Run `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test`, `npm.cmd run test:browser` against the running portal, and the existing production `build:pages`/`test:pages` commands from README.md. Publication uses the existing GitHub Pages workflow.
+
+Changed files:
+
+```text
+README.md
+QA_REPORT.md
+scripts/browser-check.ts
+src/app/globals.css
+src/app/layout.tsx
+src/components/service-carousel.css
+src/components/service-carousel.tsx
+src/components/service-ticker.css
+src/components/service-ticker.tsx
+tests/ticker.test.ts
+```

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 import "@/components/service-carousel.css";
+import "@/components/service-ticker.css";
+import { ServiceTicker } from "@/components/service-ticker";
+import { services } from "@/lib/content";
 import { Header } from "@/components/header";
 import { Phone, ArrowUpRight, Truck } from "@/components/icons";
 import { Consent } from "@/components/consent";
@@ -40,6 +43,7 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
+        <ServiceTicker items={services.filter(service => !isLive || siteConfig.offers.includes(service.id)).map(({ id, name }) => ({ id, name }))} />
         <Header
           brand={brand}
           phone={siteConfig.supportPhone}

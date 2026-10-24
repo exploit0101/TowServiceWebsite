@@ -1,0 +1,91 @@
+.service-ticker {
+  background: #142b3c;
+  color: #ecf2f6;
+  overflow: hidden;
+}
+.service-ticker-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 38px;
+}
+.service-ticker-label {
+  flex: 0 0 auto;
+  padding-right: 20px;
+  border-right: 1px solid #ffffff26;
+  color: #f4c85b;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+}
+.service-ticker-window {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+}
+.service-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: service-name-scroll 60s linear infinite;
+}
+.service-ticker-group {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0 30px 0 0;
+  list-style: none;
+}
+.service-ticker-group li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 38px;
+}
+.service-ticker-group li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f4c85b;
+}
+.service-ticker-pause {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  flex: 0 0 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  color: #f4c85b;
+  background: transparent;
+}
+.service-ticker-pause:hover {
+  background: #ffffff0d;
+}
+.service-ticker-pause:focus-visible {
+  outline: 2px solid #f4c85b;
+  outline-offset: -5px;
+}
+.service-ticker:is(:hover, :focus-within, .is-paused) .service-ticker-track {
+  animation-play-state: paused;
+}
+@keyframes service-name-scroll {
+  to { transform: translateX(-50%); }
+}
+@media (max-width: 767px) {
+  .service-ticker-inner { gap: 8px; }
+  .service-ticker-label { display: none; }
+  .service-ticker-group { gap: 24px; padding-right: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-ticker-track { animation: none; }
+  .service-ticker-copy, .service-ticker-pause { display: none; }
+  .service-ticker-window { overflow-x: auto; scrollbar-width: none; }
+  .service-ticker-window::-webkit-scrollbar { display: none; }
+}

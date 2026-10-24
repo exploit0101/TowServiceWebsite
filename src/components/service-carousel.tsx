@@ -14,6 +14,21 @@ export type ServiceCarouselProps = {
 };
 
 const motionQuery = '(prefers-reduced-motion: reduce)';
+const mobileQuery = '(max-width: 767px)';
+
+function subscribeToMobileLayout(onChange: () => void) {
+  const query = window.matchMedia(mobileQuery);
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+}
+
+function mobileLayout() {
+  return window.matchMedia(mobileQuery).matches;
+}
+
+function serverMobileLayout() {
+  return false;
+}
 
 function subscribeToMotionPreference(onChange: () => void) {
   const query = window.matchMedia(motionQuery);
@@ -40,6 +55,8 @@ export function ServiceCarousel({ items, phoneHref, displayPhone, defaultExpande
   const [manuallyPaused, setManuallyPaused] = useState(false);
   const [motionRequested, setMotionRequested] = useState(false);
   const reducedMotion = useSyncExternalStore(subscribeToMotionPreference, prefersReducedMotion, serverMotionPreference);
+  const isMobile = useSyncExternalStore(subscribeToMobileLayout, mobileLayout, serverMobileLayout);
+  const showGrid = expanded || isMobile;
   const movementPaused = manuallyPaused || (reducedMotion && !motionRequested);
 
   useEffect(() => {
@@ -67,11 +84,11 @@ export function ServiceCarousel({ items, phoneHref, displayPhone, defaultExpande
       observer.disconnect();
       element.removeEventListener('scroll', updateControls);
     };
-  }, [expanded, items.length]);
+  }, [showGrid, items.length]);
 
   useEffect(() => {
     const element = track.current;
-    if (!element || expanded || movementPaused || items.length < 2) return;
+    if (!element || showGrid || movementPaused || items.length < 2) return;
 
     let frame = 0;
     let previousTime = 0;
@@ -114,7 +131,7 @@ export function ServiceCarousel({ items, phoneHref, displayPhone, defaultExpande
       observer.disconnect();
       document.removeEventListener('visibilitychange', onVisibilityChange);
     };
-  }, [expanded, movementPaused, items.length]);
+  }, [showGrid, movementPaused, items.length]);
 
   function move(direction: -1 | 1) {
     const element = track.current;
@@ -140,14 +157,14 @@ export function ServiceCarousel({ items, phoneHref, displayPhone, defaultExpande
     }
   }
 
-  return <div className={`service-carousel${expanded ? ' is-expanded' : ''}`} role="region" aria-label="Service options" aria-roledescription={expanded ? undefined : 'carousel'}
+  return <div className={`service-carousel${showGrid ? ' is-expanded' : ''}`} role="region" aria-label="Service options" aria-roledescription={showGrid ? undefined : 'carousel'}
     onPointerEnter={event => { if (event.pointerType === 'mouse' || event.pointerType === 'pen') interaction.current.hovered = true; }}
     onPointerLeave={() => { interaction.current.hovered = false; }}
     onFocusCapture={() => { interaction.current.focused = true; }}
     onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) interaction.current.focused = false; }}>
     <div className="service-carousel-toolbar">
-      <span className="service-carousel-hint"><span className="carousel-hint-dot" aria-hidden="true" />{expanded ? 'Every service. One clear next step.' : 'Find the help you need'}<span className="carousel-swipe-hint">Swipe or use the arrows</span></span>
-      {!expanded && <div className="carousel-controls">
+      <span className="service-carousel-hint"><span className="carousel-hint-dot" aria-hidden="true" />{showGrid ? 'Every service. One clear next step.' : 'Find the help you need'}<span className="carousel-swipe-hint">Swipe or use the arrows</span></span>
+      {!showGrid && <div className="carousel-controls">
         <button type="button" className="carousel-motion-control" aria-controls={trackId} onClick={toggleMovement}>
           {movementPaused ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}
           <span>{movementPaused ? 'Resume movement' : 'Pause movement'}</span>
@@ -156,7 +173,7 @@ export function ServiceCarousel({ items, phoneHref, displayPhone, defaultExpande
         <button type="button" className="carousel-arrow" aria-label="Next services" aria-controls={trackId} disabled={!canNext} onClick={() => move(1)}><ChevronRight size={20} aria-hidden="true" /></button>
       </div>}
     </div>
-    <div className={`service-carousel-track${expanded ? ' is-expanded' : ''}`} ref={track} id={trackId} tabIndex={expanded ? undefined : 0} aria-label={expanded ? 'All services' : 'Services, scroll horizontally'}
+    <div className={`service-carousel-track${showGrid ? ' is-expanded' : ''}`} ref={track} id={trackId} tabIndex={showGrid ? undefined : 0} aria-label={showGrid ? 'All services' : 'Services, scroll horizontally'}
       onPointerDown={event => {
         if (event.pointerType === 'touch' || event.pointerType === 'pen') {
           interaction.current.touching = true;
@@ -168,7 +185,7 @@ export function ServiceCarousel({ items, phoneHref, displayPhone, defaultExpande
       onPointerCancel={() => { interaction.current.touching = false; }}
       onWheel={() => { interaction.current.manualUntil = performance.now() + 6000; }}
       onKeyDown={event => {
-      if (expanded || event.target !== event.currentTarget) return;
+      if (showGrid || event.target !== event.currentTarget) return;
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault();
         move(event.key === 'ArrowLeft' ? -1 : 1);
@@ -184,6 +201,6 @@ export function ServiceCarousel({ items, phoneHref, displayPhone, defaultExpande
         {phoneHref && displayPhone && <a className="compact-service-call" href={phoneHref} aria-label={`Call for help: ${service.name.toLowerCase()} at ${displayPhone}`}><Phone size={14} aria-hidden="true" />Call for help</a>}
       </article>)}
     </div>
-    <div className="service-carousel-toggle"><button type="button" className="button button-outline" aria-controls={trackId} aria-pressed={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? 'Show carousel' : 'View all services'}<ArrowUpRight size={16} aria-hidden="true" /></button></div>
+    {!isMobile && <div className="service-carousel-toggle"><button type="button" className="button button-outline" aria-controls={trackId} aria-pressed={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? 'Show carousel' : 'View all services'}<ArrowUpRight size={16} aria-hidden="true" /></button></div>}
   </div>;
 }
