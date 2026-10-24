@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ServiceCarousel } from "@/components/service-carousel";
 import { FleetGallery, type FleetImage } from "@/components/fleet-gallery";
 import { PrimaryAction } from "@/components/ui";
+import { AvailabilityBadge } from "@/components/availability-badge";
+import { CustomerReviews } from "@/components/customer-reviews";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -12,6 +14,8 @@ import {
   Check,
 } from "@/components/icons";
 import { services } from "@/lib/content";
+import { homepageServiceIds } from "@/lib/service-catalog";
+import { getAvailability } from "@/lib/availability";
 import { publicAssetPath } from "@/lib/asset-path";
 import { pageMetadata } from "@/lib/seo";
 import {
@@ -26,7 +30,7 @@ export const metadata = pageMetadata(
   pilot
     ? `Towing & roadside assistance in ${pilot.label}, ${pilot.city}`
     : "Towing & roadside assistance, made easy",
-  "Towing, jump starts, lockouts, tire changes, fuel delivery, battery replacement and tire repair. Call easytowing at 672-889-9764 to check availability.",
+  `Car, heavy duty and motorcycle towing, boosting, winch out, flat tire help, tire changes, lockout and fuel delivery. Call easytowing${getAvailability(siteConfig.availability).dispatch24h ? " 24/7" : ""} at ${siteConfig.displayPhone}.`,
   "/",
 );
 const images: FleetImage[] = [
@@ -82,14 +86,18 @@ const images: FleetImage[] = [
   },
 ];
 export default function Home() {
-  const shown = isLive
-    ? services.filter((service) => siteConfig.offers.includes(service.id))
-    : services;
+  const shown = homepageServiceIds.flatMap((id) =>
+    services.filter(
+      (service) =>
+        service.id === id && (!isLive || siteConfig.offers.includes(id)),
+    ),
+  );
   return (
     <div className="home-page">
       <section className="hero">
         <div className="container hero-grid">
           <div className="hero-copy">
+            <AvailabilityBadge config={siteConfig.availability} />
             <div className="eyebrow">
               <span />
               TOWING & ROADSIDE ASSISTANCE
@@ -144,7 +152,7 @@ export default function Home() {
           </span>
           <span>
             <Phone size={21} aria-hidden="true" />
-            One number. Seven services.
+            One number. Nine services.
           </span>
           <span>
             <Navigation size={21} aria-hidden="true" />
@@ -173,6 +181,7 @@ export default function Home() {
         </div>
         <ServiceCarousel
           items={shown}
+          defaultExpanded
           phoneHref={callsEnabled ? phoneContact?.href : undefined}
           displayPhone={phoneContact?.display}
         />
@@ -196,6 +205,7 @@ export default function Home() {
           <FleetGallery images={images} />
         </div>
       </section>
+      <CustomerReviews />
       <section id="how-it-works" className="section container process-section">
         <div className="section-heading">
           <div>

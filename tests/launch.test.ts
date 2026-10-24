@@ -15,7 +15,7 @@ test('complete fixture passes structural gates; each required approval fails clo
 test('reject unknown markets, services, unapproved route indexing and placeholder canonical origins', () => {
   const config=verifiedFixture();
   for (const pilotMarket of ['', 'toString', 'all-winnipeg']) assert.ok(launchErrors({...config,pilotMarket}).length);
-  assert.ok(launchErrors({...config,offers:['winch-out']}).length);
+  assert.ok(launchErrors({...config,offers:['collision-recovery']}).length);
   assert.ok(launchErrors({...config,approvedIndexableRoutes:['/','/services/local-towing']}).length);
   for (const canonicalDomain of ['http://fixture.test','https://example.com','https://localhost','https://fixture.test/path','https://fixture.test?key=x']) assert.ok(launchErrors({...config,canonicalDomain}).length);
 });

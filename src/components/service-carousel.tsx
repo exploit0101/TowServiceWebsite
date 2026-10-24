@@ -10,12 +10,13 @@ export type ServiceCarouselProps = {
   items: readonly Service[];
   phoneHref?: string;
   displayPhone?: string;
+  defaultExpanded?: boolean;
 };
 
-export function ServiceCarousel({ items, phoneHref, displayPhone }: ServiceCarouselProps) {
+export function ServiceCarousel({ items, phoneHref, displayPhone, defaultExpanded = false }: ServiceCarouselProps) {
   const track = useRef<HTMLDivElement>(null);
   const trackId = useId();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const [canPrevious, setCanPrevious] = useState(false);
   const [canNext, setCanNext] = useState(items.length > 3);
 
@@ -68,7 +69,7 @@ export function ServiceCarousel({ items, phoneHref, displayPhone }: ServiceCarou
           <p>{service.short}</p>
           <span className="compact-service-link">Explore service <ArrowUpRight size={16} aria-hidden="true" /></span>
         </Link>
-        {phoneHref && displayPhone && <a className="compact-service-call" href={phoneHref} aria-label={`Call ${displayPhone} about ${service.name.toLowerCase()}`}><Phone size={14} aria-hidden="true" />Call about {service.name.toLowerCase()}</a>}
+        {phoneHref && displayPhone && <a className="compact-service-call" href={phoneHref} aria-label={`Call ${displayPhone} about ${service.name.toLowerCase()}`}><Phone size={14} aria-hidden="true" />Call for help</a>}
       </article>)}
     </div>
     <div className="service-carousel-toggle"><button type="button" className="button button-outline" aria-controls={trackId} aria-pressed={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? 'Show carousel' : 'View all services'}<ArrowUpRight size={16} aria-hidden="true" /></button></div>

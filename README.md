@@ -27,13 +27,13 @@ Browser checks use installed Google Chrome in headless mode. `TEST_BROWSER_CHANN
 
 ## Design and content
 
-The homepage follows a concise flow: photo hero → seven-service carousel → fleet gallery → three steps → contact. Header, service cards, contact panel and floating call action use the same readable number and native telephone link. The user completes the call in their device's calling app.
+The homepage follows a concise flow: photo hero → nine-service grid with an optional carousel → fleet gallery → three steps → contact. Header, service cards, contact panel and floating call action use the same readable number and native telephone link. The user completes the call in their device's calling app.
 
-The service carousel supports arrows, keyboard scrolling and an expanded grid. The six-image gallery opens an accessible native dialog with previous/next controls and Escape dismissal. No booking form, map, review score or testimonial is added to the homepage. [Reference analysis](REFERENCE_REDESIGN.md) records the Panda Towing inspiration and the original implementation choices.
+The service carousel supports arrows, keyboard scrolling and an expanded grid. The six-image gallery opens an accessible native dialog with previous/next controls and Escape dismissal. The Reviews section currently invites genuine feedback. Its rating and up to four testimonial cards render only after sourced customer feedback is supplied and verified; no score or reviews are fabricated. No booking form or map is added to the homepage. [Reference analysis](REFERENCE_REDESIGN.md) records the Panda Towing inspiration and the original implementation choices.
 
 Four supplied photos were rebranded with built-in ImageGen, and two additional vehicle concepts were generated. The six WebP files are 153–235 KB each. Originals stay unchanged in ignored `Images/`; only edited web assets are published. [Asset provenance and prompts](assets/README.md) distinguish these illustrative visuals from verified company fleet photographs.
 
-The seven scoped service pages remain available under `/services`: towing, jump start, lockout, tire change, fuel delivery, battery replacement and tire repair. About, contact, rates/disclosures, privacy, terms and accessibility pages remain linked. `/request-help` is a local-only form preview and sends nothing.
+The nine primary categories are car towing, heavy duty towing, motorcycle towing, boosting & jump start, winch out, flat tire, tire change, lockout and fuel delivery. Battery replacement and tire repair remain secondary services, preserving eleven scoped detail routes under `/services`. About, contact, rates/disclosures, privacy, terms and accessibility pages remain linked. `/request-help` is a local-only form preview and sends nothing.
 
 ## GitHub Pages
 
@@ -51,9 +51,9 @@ For a server-capable host, `npm.cmd run build:preview` and `npm.cmd run start` p
 
 ## SEO and operating status
 
-`config/launch.json` is the shared source of truth. Brand and phone are owner supplied; `phoneMode: "owner-provided"` enables telephone links without claiming that monitoring, hours or dispatch are verified. `phoneMode: "verified"` and the existing approval gates are required for an operating production release. Software flags do not establish legal approval.
+`config/launch.json` is the shared source of truth. Brand and phone are owner supplied; `phoneMode: "owner-provided"` enables telephone links without bypassing the operating launch gates. The owner separately confirmed 24/7 call answering and partner dispatch; the dated `availability` record controls the Available 24/7 badge. Arrival estimates and individual job acceptance still require confirmation. `phoneMode: "verified"` and the existing approval gates are required for an operating production release. Software flags do not establish legal approval.
 
-The owner selected `winnipeg-bridgwater` (Bridgwater / Waverley West, Winnipeg). Partner coverage, hours, legal identity, advertised role, rates/consent, support email, final domain and privacy/legal approvals remain outstanding. No locality page or unverified location claim is published. The Manitoba pilot uses `America/Winnipeg`; Ontario requirements apply only if that market is selected.
+The owner selected `winnipeg-bridgwater` (Bridgwater / Waverley West, Winnipeg). Specific service-zone coverage, legal identity, advertised role, rates/consent, support email, final domain and privacy/legal approvals remain outstanding. No locality page or unverified location claim is published. The Manitoba pilot uses `America/Winnipeg`; Ontario requirements apply only if that market is selected.
 
 Technical SEO includes server-rendered content, unique titles/descriptions, one H1 per page, descriptive image alt text, internal links and a live-mode canonical/schema/sitemap policy. The public preview deliberately retains **noindex**, an empty sitemap and no unverified Organization/LocalBusiness claims. Complete [PRELAUNCH_CHECKLIST.md](PRELAUNCH_CHECKLIST.md) before changing `businessStatus` to `operating` or enabling indexing. `npm.cmd run check:launch` and `npm.cmd run build` reject incomplete operating data.
 

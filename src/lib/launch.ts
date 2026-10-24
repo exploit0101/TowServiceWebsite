@@ -1,5 +1,6 @@
 import { serviceIds } from './service-catalog';
 import { getPhoneContact } from './phone';
+import type { AvailabilityConfig } from './availability';
 export { serviceIds } from './service-catalog';
 export const markets = {
   'winnipeg-bridgwater': { label: 'Bridgwater / Waverley West', city: 'Winnipeg', province: 'Manitoba', timezone: 'America/Winnipeg' },
@@ -11,6 +12,7 @@ export type LaunchConfig = {
   businessStatus: string; brandName: string; legalName: string; providerRole: string;
   supportPhone: string; displayPhone: string; phoneMode: string; supportEmail: string; canonicalDomain: string;
   pilotMarket: string; serviceHours: string; physicalOfficeVerified: boolean;
+  availability?: AvailabilityConfig;
   areas: string[]; offers: string[]; prices: string[]; certifications: string[];
   operatorDetails: string; approvedIndexableRoutes: string[];
   approvals: Record<string, boolean>;

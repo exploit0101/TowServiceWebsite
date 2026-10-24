@@ -1,9 +1,13 @@
-import { Truck, Zap, KeyRound, CircleDot, Fuel, BatteryPlus, Wrench, type LucideIcon } from 'lucide-react';
+import { Truck, Container, Motorbike, Zap, Cable, CircleDashed, KeyRound, CircleDot, Fuel, BatteryPlus, Wrench, type LucideIcon } from 'lucide-react';
 import type { ServiceIconName } from '@/lib/service-catalog';
 
 const serviceIcons = {
   truck: Truck,
+  'heavy-duty': Container,
+  motorcycle: Motorbike,
   battery: Zap,
+  winch: Cable,
+  'flat-tire': CircleDashed,
   lockout: KeyRound,
   tire: CircleDot,
   fuel: Fuel,

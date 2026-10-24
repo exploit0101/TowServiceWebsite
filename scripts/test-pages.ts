@@ -3,6 +3,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { services } from '../src/lib/content';
+import { homepageServiceIds } from '../src/lib/service-catalog';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'pages-out');
 const basePath = process.env.GITHUB_PAGES_BASE_PATH || '';
@@ -27,6 +28,7 @@ for (const route of routes) {
   assert.ok(!html.includes('DEMO PHONE'),`${route}: demo phone removed`);
   assert.match(html,/easytowing/,`${route}: owner brand`);
   assert.ok(!html.includes('rel="canonical"') && !html.includes('application/ld+json'), `${route}: no unverified launch metadata`);
+  assert.doesNotMatch(html,/aggregateRating|ratingValue|reviewCount/,`${route}: no invented rating data`);
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
   const description = html.match(/name="description" content="([^"]+)"/)?.[1];
   assert.ok(title && !titles.has(title), `${route}: unique title`); titles.add(title);
@@ -47,7 +49,9 @@ assert.ok(existsSync(join(root, '.nojekyll')) && existsSync(join(root, '404.html
 assert.ok(!readFileSync(join(root, 'sitemap.xml'), 'utf8').includes('<loc>'), 'Preview sitemap stays empty');
 assert.ok(!readFileSync(join(root, 'robots.txt'), 'utf8').includes('Sitemap:'), 'No advertised live sitemap');
 const home = readFileSync(join(root, 'index.html'), 'utf8');
-for (const id of ['services','fleet','how-it-works','contact']) assert.ok(home.includes(`id="${id}"`),`Home: #${id} section exists`);
+for (const id of ['services','fleet','how-it-works','reviews','contact']) assert.ok(home.includes(`id="${id}"`),`Home: #${id} section exists`);
+assert.match(home,/service-carousel-track[^"]*is-expanded/,'Home shows all nine service categories before interaction');
+assert.doesNotMatch(home,/\b4\.\d\s*(?:\/|out of)\s*5\b/,'Home has no unsupported average review score');
 assert.match(home,/alt="White easytowing flatbed truck carrying a grey SUV"/,'Hero has descriptive alt text');
 assert.match(home,/width="1448" height="1086"/,'Hero has intrinsic dimensions');
 for (const name of ['flatbed','highway','wheel-lift','loading','flatbed-night','recovery']) {
@@ -58,12 +62,19 @@ for (const name of ['flatbed','highway','wheel-lift','loading','flatbed-night','
 function hasServiceLink(markup: string, id: string) {
   return [...markup.matchAll(/href="([^"]+)"/g)].some(match => match[1].replace(/\/$/, '') === `${basePath}/services/${id}`);
 }
-const serviceCards = [...home.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]).filter(markup => services.some(service => hasServiceLink(markup,service.id)));
-assert.equal(serviceCards.length,services.length,'Home renders all seven service articles');
-for (const service of services) {
-  const card=serviceCards.find(markup => hasServiceLink(markup,service.id));
-  assert.ok(card,`${service.name}: service detail link`);
-  assert.match(card,/<svg\b[^>]*aria-hidden="true"/,`${service.name}: decorative service icon`);
+for (const [route,shown] of [
+  ['/',homepageServiceIds.map(id => services.find(service => service.id === id)!)],
+  ['/services',services],
+] as const) {
+  const markup=readFileSync(localFile(`${basePath}${route}`),'utf8');
+  const serviceCards = [...markup.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]).filter(card => services.some(service => hasServiceLink(card,service.id)));
+  assert.equal(serviceCards.length,shown.length,`${route}: all intended service articles render`);
+  for (const service of shown) {
+    const card=serviceCards.find(markup => hasServiceLink(markup,service.id));
+    assert.ok(card,`${route}: ${service.name} service detail link`);
+    assert.match(card,/<svg\b[^>]*aria-hidden="true"/,`${route}: ${service.name} decorative service icon`);
+    assert.ok(card.includes('href="tel:+16728899764"'),`${route}: ${service.name} uses owner-provided phone`);
+  }
 }
 assert.ok(!home.includes('/_next/image?'), 'Static image needs no Next image server');
 console.log(`Passed GitHub Pages checks: ${routes.length} pages, ${assets.size} local destinations/assets, metadata, owner-provided dialer, six fleet images, sitemap and route exclusions.`);

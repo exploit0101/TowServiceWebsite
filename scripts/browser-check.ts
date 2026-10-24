@@ -2,11 +2,14 @@ import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { chromium, expect, type Page } from '@playwright/test';
+import { services } from '../src/lib/content';
+import { homepageServiceIds } from '../src/lib/service-catalog';
 
 const origin = (process.env.TEST_ORIGIN || 'http://127.0.0.1:3000').replace(/\/+$/, '');
 const screenshotDirectory = resolve('.qa');
 const widths = [320,375,390,768,1024,1440];
 const phoneHref = 'tel:+16728899764';
+const homepageServices = homepageServiceIds.map(id => services.find(service => service.id === id)!);
 
 async function checkLayout(page: Page, label: string) {
   const overflow = await page.evaluate(() => ({
@@ -43,9 +46,22 @@ async function checkLayout(page: Page, label: string) {
 
 async function checkHomeInteractions(page: Page, width: number) {
   const cards=page.locator('#services article.compact-service-card');
-  await expect(cards).toHaveCount(7);
-  assert.equal(await cards.locator('.compact-service-icon svg').count(),7,'all seven services have icons');
+  await expect(cards).toHaveCount(homepageServices.length);
+  assert.equal(await cards.locator('.compact-service-icon svg').count(),homepageServices.length,'all nine homepage services have icons');
   const track=page.locator('.service-carousel-track');
+  await expect(track).toHaveClass(/is-expanded/);
+  for (const service of homepageServices) {
+    const card=cards.filter({has:page.getByRole('heading',{name:service.name,exact:true})});
+    await expect(card.getByRole('heading',{name:service.name,exact:true})).toBeVisible();
+    await expect(card.locator('a[href^="tel:"]')).toHaveAttribute('href',phoneHref);
+    await expect(card.locator('a[href*="/services/"]').first()).toHaveAttribute('href',new RegExp('/services/' + service.id + '/?$'));
+  }
+  const grid=await track.evaluate(element => ({width:element.clientWidth,content:element.scrollWidth}));
+  assert.ok(grid.content <= grid.width+1,width + 'px: expanded categories do not hide in a horizontal carousel');
+  await checkLayout(page,width + 'px expanded services');
+  await expect(page.getByRole('button',{name:'Show carousel',exact:true})).toHaveAttribute('aria-pressed','true');
+  await page.getByRole('button',{name:'Show carousel',exact:true}).click();
+  await expect(track).not.toHaveClass(/is-expanded/);
   await expect(page.getByRole('button',{name:'Next services',exact:true})).toBeEnabled();
   const startingScroll=await track.evaluate(element => element.scrollLeft);
   await page.getByRole('button',{name:'Next services',exact:true}).click();
@@ -54,14 +70,18 @@ async function checkHomeInteractions(page: Page, width: number) {
   await expect(track).toHaveClass(/is-expanded/);
   await expect(page.getByRole('button',{name:'Show carousel',exact:true})).toHaveAttribute('aria-pressed','true');
   await checkLayout(page,`${width}px expanded services`);
-  await page.getByRole('button',{name:'Show carousel',exact:true}).click();
-  await expect(track).not.toHaveClass(/is-expanded/);
-
+  await expect(page.locator('#reviews')).toBeVisible();
+  await expect(page.locator('#reviews')).not.toContainText(/\b4\.\d\s*(?:\/|out of)\s*5\b/);
   const menu=page.getByRole('button',{name:'Open navigation',exact:true});
   if (await menu.isVisible()) {
     await menu.click();
     await expect(page.getByRole('button',{name:'Close navigation',exact:true})).toHaveAttribute('aria-expanded','true');
     await expect(page.locator('#main-navigation')).toBeVisible();
+    await page.locator('#main-navigation').getByRole('link',{name:'Reviews',exact:true}).click();
+    await expect(page.getByRole('button',{name:'Open navigation',exact:true})).toHaveAttribute('aria-expanded','false');
+    await expect(page.locator('#main-navigation')).toBeHidden();
+    await expect(page).toHaveURL(/#reviews$/);
+    await menu.click();
     await page.locator('#main-navigation').getByRole('link',{name:'Contact',exact:true}).click();
     await expect(page.getByRole('button',{name:'Open navigation',exact:true})).toHaveAttribute('aria-expanded','false');
     await expect(page.locator('#main-navigation')).toBeHidden();
@@ -105,7 +125,7 @@ async function main() {
       assert.ok(response,`${width}px home navigation returns a response`);
       assert.equal(response.status(),200,`${width}px home loads`);
       const serverHtml=await response.text();
-      assert.equal((serverHtml.match(/<article class="compact-service-card"/g) || []).length,7,'service cards are server-rendered');
+      assert.equal((serverHtml.match(/<article class="compact-service-card"/g) || []).length,homepageServices.length,'all nine homepage categories are server-rendered');
       await expect(page.locator('h1')).toHaveCount(1);
       await expect(page.locator('.site-header .brand')).toContainText('easytowing');
       await page.evaluate(() => document.fonts.ready);

@@ -88,6 +88,9 @@ export function Header({
             <Link href="/#fleet" onClick={close}>
               Fleet
             </Link>
+            <Link href="/#reviews" onClick={close}>
+              Reviews
+            </Link>
             <Link href="/#how-it-works" onClick={close}>
               How it works
             </Link>

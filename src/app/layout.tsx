@@ -79,7 +79,7 @@ export default function RootLayout({
             <p className="footer-disclosure">
               {isLive
                 ? `${siteConfig.legalName}. ${siteConfig.providerRole} ${siteConfig.operatorDetails}`
-                : "Pre-launch preview. Hours, partner coverage and operating details are being confirmed. A call does not confirm a booking or dispatch."}
+                : "Pre-launch preview. Business and service-zone details are being finalized. A call does not confirm a booking or dispatch."}
             </p>
             <div className="footer-bottom">
               <span>

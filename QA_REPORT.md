@@ -202,3 +202,53 @@ tests/phone.test.ts
 tests/seo.test.ts
 tests/static-segments.test.ts
 ```
+
+## Nine services, availability and customer feedback update - October 24, 2026
+
+Added a compact, owner-confirmed Available 24/7 badge above the headline. The dated source record confirms both call answering and partner dispatch; individual eligibility, job acceptance and arrival estimates remain subject to confirmation. No other operating/legal approval flag was enabled.
+
+All nine requested categories are visible in the default grid with distinct icons and real telephone links: Car towing; Heavy duty towing; Motorcycle towing; Boosting & jump start; Winch out; Flat tire; Tire change; Lockout; Fuel delivery. Optional carousel controls remain available. Battery replacement and tire repair stay accessible as secondary services, preserving eleven service routes. Flat tire guidance has distinct content from spare-wheel installation.
+
+Added a compact Reviews section and navigation link. It currently invites genuine customer feedback. No unverified 4.9 score or invented review text is public. A typed, validated data source supports a real sourced summary and up to four review cards when available. Tests verify that missing/unverified feedback produces no score, quotation cards or aggregateRating markup.
+
+Verification:
+
+- Lint and Next route generation/TypeScript: pass.
+- Unit/component/SEO/regression tests: 38/38 pass.
+- HTTP smoke: all twenty preview pages pass, including nine homepage cards, eleven service hub cards, distinct icons, metadata, internal links, phone targets, image delivery and noindex/API/locality guards.
+- Headless Chrome: pass at 320, 375, 390, 768, 1024 and 1440px; expanded grid visibility, carousel transitions, five-link responsive navigation, Reviews/Contact anchors, telephone targets, image gallery keyboard/focus flow, zero overflow/overlap and zero browser errors. Mobile contact/battery pages pass. Desktop/mobile screenshots were visually inspected.
+- Pages build: pass; twenty Windows RSC aliases normalized. Static verification: twenty pages and forty-six local destinations/assets pass.
+- Native carrier calls, real devices, screen readers and field performance were not measured. No call links were activated during checks.
+
+Indexing, callbacks and unverified locality routes remain gated. Production still needs the legal identity/role, exact service zone and per-service partners/equipment, credentials/compliance, rates/consent, final domain/email and privacy/legal approval. The 24/7 owner statement does not supply those missing facts.
+
+Changed files:
+
+```
+PRELAUNCH_CHECKLIST.md
+QA_REPORT.md
+README.md
+SEO_AUDIT.md
+config/launch.json
+scripts/browser-check.ts
+scripts/smoke.ts
+scripts/test-pages.ts
+src/app/[page]/page.tsx
+src/app/globals.css
+src/app/layout.tsx
+src/app/page.tsx
+src/components/availability-badge.tsx
+src/components/customer-reviews.tsx
+src/components/header.tsx
+src/components/service-carousel.tsx
+src/components/service-icon.tsx
+src/lib/availability.ts
+src/lib/content.ts
+src/lib/launch.ts
+src/lib/reviews.ts
+src/lib/service-catalog.ts
+tests/claims.test.ts
+tests/launch.test.ts
+tests/request.test.ts
+tests/services.test.ts
+```

@@ -308,6 +308,36 @@ h3 {
 .hero-copy {
   padding: 12px 0;
 }
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 13px 7px 7px;
+  margin-bottom: 20px;
+  border: 1px solid #dce8e2;
+  border-radius: 50px;
+  background: #f2faf6;
+  color: #176343;
+  font-size: 12px;
+  font-weight: 750;
+  box-shadow: 0 5px 18px #163f2710;
+}
+.availability-icon {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background: #dff2e8;
+}
+.availability-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #26855b;
+  box-shadow: 0 0 0 4px #26855b12;
+  margin-left: 4px;
+}
 .hero h1 {
   font-size: clamp(48px, 5.2vw, 72px);
   font-weight: 800;
@@ -504,6 +534,48 @@ h3 {
   border-color: #d1b874;
   box-shadow: 0 8px 20px #16233009;
 }
+.home-page .is-expanded .compact-service-card {
+  position: relative;
+  background: linear-gradient(145deg, #fff, #fbfcfd);
+}
+.home-page .is-expanded .compact-service-details {
+  display: grid;
+  grid-template-columns: 49px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px 15px;
+  padding: 22px 23px 18px;
+}
+.home-page .is-expanded .compact-service-icon {
+  grid-column: 1;
+  grid-row: 1;
+  width: 49px;
+  height: 49px;
+  margin: 0;
+}
+.home-page .is-expanded .compact-service-details h3 {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 20px;
+  margin: 0;
+}
+.home-page .is-expanded .compact-service-details p {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  min-height: 0;
+}
+.home-page .is-expanded .compact-service-link {
+  grid-column: 1 / -1;
+  margin-top: 0;
+  font-size: 10px;
+}
+.home-page .compact-service-card:nth-child(3n + 2) .compact-service-icon {
+  background: #eaf0ff;
+  color: #315b9b;
+}
+.home-page .compact-service-card:nth-child(3n) .compact-service-icon {
+  background: #eaf5ef;
+  color: #277151;
+}
 .compact-service-details {
   display: block;
   padding: 25px 25px 19px;
@@ -689,6 +761,122 @@ html:has(.fleet-lightbox[open]) {
   color: #d8dfe5;
 }
 /* A short explanation and one unambiguous way to get in touch. */
+.reviews-section {
+  padding: 56px 0 0;
+}
+.reviews-section h2 {
+  font-size: 35px;
+}
+.review-invitation {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  border: 1px solid #e4e8ed;
+  border-radius: 17px;
+  padding: 28px 32px;
+  background: linear-gradient(110deg, #fff8e7, #fff 65%);
+}
+.review-invitation-icon {
+  display: grid;
+  place-items: center;
+  width: 61px;
+  height: 61px;
+  border-radius: 17px;
+  flex-shrink: 0;
+  background: #ffedbd;
+  color: #805b10;
+}
+.review-invitation h3 {
+  font-size: 18px;
+  margin-bottom: 7px;
+}
+.review-invitation p {
+  font-size: 12px;
+  color: var(--muted);
+}
+.review-invitation .button {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.review-summary {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.review-summary > strong {
+  font-size: 39px;
+  letter-spacing: -1.5px;
+}
+.review-summary small {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.review-summary > span {
+  display: grid;
+  gap: 7px;
+  font-size: 10px;
+}
+.review-summary > span > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.review-stars {
+  display: flex;
+  gap: 3px;
+  color: #9c6a00;
+}
+.review-stars svg {
+  fill: #ffc539;
+  stroke-width: 1;
+}
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+.review-card {
+  padding: 25px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.review-card > svg {
+  color: #9a7018;
+}
+.review-card blockquote {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted);
+  flex: 1;
+}
+.review-card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+.review-card time {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.review-avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: #eef2f6;
+  border-radius: 50%;
+  color: var(--navy);
+  font-weight: 750;
+}
 .process-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1594,7 +1782,7 @@ html:has(.fleet-lightbox[open]) {
     font-size: 29px;
   }
 }
-@media (max-width: 760px) {
+@media (max-width: 960px) {
   html {
     scroll-padding-top: 137px;
   }
@@ -1676,6 +1864,8 @@ html:has(.fleet-lightbox[open]) {
     padding: 16px 0;
     border-bottom: 1px solid var(--line);
   }
+}
+@media (max-width: 760px) {
   .hero {
     padding: 32px 0 30px;
     background: linear-gradient(170deg, #fff 40%, #f3f5f7);
@@ -2146,5 +2336,84 @@ html:has(.fleet-lightbox[open]) {
   .button:hover,
   .fleet-tile:hover > img {
     transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .availability-badge {
+    font-size: 11px;
+    margin-bottom: 18px;
+  }
+  .home-page .is-expanded .compact-service-details {
+    display: block;
+    padding: 18px 15px 14px;
+  }
+  .home-page .is-expanded .compact-service-icon {
+    width: 39px;
+    height: 39px;
+    margin-bottom: 12px;
+  }
+  .home-page .is-expanded .compact-service-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .home-page .is-expanded .compact-service-details h3 {
+    font-size: 17px;
+    min-height: 44px;
+    line-height: 1.3;
+  }
+  .home-page .is-expanded .compact-service-details p {
+    display: none;
+  }
+  .home-page .is-expanded .compact-service-link {
+    margin-top: 10px;
+    font-size: 9px;
+  }
+  .home-page .is-expanded .compact-service-call {
+    font-size: 10px;
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+  .reviews-section {
+    padding-top: 45px;
+  }
+  .reviews-section h2 {
+    font-size: 31px;
+  }
+  .review-invitation {
+    flex-wrap: wrap;
+    gap: 17px;
+    padding: 24px;
+  }
+  .review-invitation-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+  }
+  .review-invitation h3 {
+    font-size: 18px;
+  }
+  .review-invitation .button {
+    margin-left: 0;
+    width: 100%;
+  }
+  .review-summary > strong {
+    font-size: 34px;
+  }
+  .review-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 360px) {
+  .home-page .service-carousel-track.is-expanded {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .home-page .is-expanded .compact-service-details h3 {
+    font-size: 15px;
+    min-height: 40px;
+  }
+  .home-page .is-expanded .compact-service-call {
+    font-size: 9px;
+    padding-inline: 12px;
   }
 }

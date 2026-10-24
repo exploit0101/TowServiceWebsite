@@ -9,7 +9,13 @@
   "supportEmail": "",
   "canonicalDomain": "",
   "pilotMarket": "winnipeg-bridgwater",
-  "serviceHours": "",
+  "serviceHours": "24 hours a day, 7 days a week",
+  "availability": {
+    "callLine24hConfirmed": true,
+    "partnerDispatch24hConfirmed": true,
+    "confirmedAt": "2026-10-24",
+    "confirmationSource": "Owner confirmed in chat that both the call line and partner dispatch coverage are available 24/7."
+  },
   "physicalOfficeVerified": false,
   "areas": [],
   "offers": [],

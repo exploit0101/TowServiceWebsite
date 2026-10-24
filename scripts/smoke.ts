@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { services } from '../src/lib/content';
+import { homepageServiceIds } from '../src/lib/service-catalog';
 import { callsEnabled, isDemoPhone, phoneContact, siteConfig } from '../src/lib/site-config';
 const escapeHtml = (text:string) => text.replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'}[character]!));
 async function main() {
@@ -35,16 +36,19 @@ for (const route of routes) {
     }
   } else assert.ok(!telephoneTargets.length,`${route}: no unconfigured phone links`);
   assert.ok(!html.includes('application/ld+json'),`${route}: no unverified organization claims`);
+  assert.doesNotMatch(html,/aggregateRating|ratingValue|reviewCount/,`${route}: no invented rating data`);
   assert.ok(!html.includes('rel="canonical"'),`${route}: no invented canonical origin`);
   assert.ok(!html.includes('googletagmanager.com/gtag/js'),`${route}: no analytics loaded`);
   if (route === '/' || route === '/services') {
+    const expectedServices = route === '/' ? homepageServiceIds.map(id => services.find(service => service.id === id)!) : services;
     const cards = [...html.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]).filter(markup => services.some(service => markup.includes(`href="/services/${service.id}"`)));
-    assert.equal(cards.length, services.length, `${route}: all seven service cards rendered on the server`);
-    for (const service of services) {
+    assert.equal(cards.length, expectedServices.length, `${route}: all intended service cards rendered on the server`);
+    for (const service of expectedServices) {
       const card = cards.find(markup => markup.includes(`href="/services/${service.id}"`));
       assert.ok(card, `${route}: ${service.name} detail link`);
       assert.ok(card.includes(escapeHtml(service.name)), `${route}: ${service.name} visible label`);
       assert.match(card, /<svg\b[^>]*aria-hidden="true"/, `${route}: ${service.name} decorative SVG icon`);
+      if (phoneContact) assert.ok(card.includes(`href="${phoneContact.href}"`), `${route}: ${service.name} uses the configured dial target`);
     }
   }
   if (serviceRoutes.includes(route)) {
@@ -57,8 +61,10 @@ for (const route of routes) {
     assert.ok(html.includes('href="/services"'), `${route}: link back to service hub`);
   }
   if (route === '/') {
+    assert.match(html,/service-carousel-track[^"]*is-expanded/,'all nine categories are shown before interaction');
+    assert.doesNotMatch(html,/\b4\.\d\s*(?:\/|out of)\s*5\b/,'home has no unsupported average review score');
     assert.match(html,/easytowing/,'owner brand rendered');
-    for (const id of ['services','fleet','how-it-works','contact']) assert.ok(html.includes(`id="${id}"`),`home: #${id} section exists`);
+    for (const id of ['services','fleet','how-it-works','reviews','contact']) assert.ok(html.includes(`id="${id}"`),`home: #${id} section exists`);
     assert.match(html, /alt="White easytowing flatbed truck carrying a grey SUV"/, 'hero has descriptive alt text');
     assert.match(html, /srcSet="[^"]*easytowing-flatbed/, 'hero has responsive image sources');
     assert.ok(!html.includes('scene-grid'), 'old SVG grid has been replaced');
@@ -69,7 +75,7 @@ for (const route of routes) {
   console.log(`PASS ${route}: SSR, H1, preview metadata, contact and schema guards`);
 }
 for (const route of discovered) { const response=await fetch(`${origin}${route}`); assert.equal(response.status,200,`Broken internal link: ${route}`); }
-for (const route of ['/areas/winnipeg-bridgwater','/areas/winnipeg-transcona','/areas/brampton-bramalea','/services/winch-out','/nonexistent']) assert.equal((await fetch(`${origin}${route}`)).status,404,`${route}: unapproved route must be 404`);
+for (const route of ['/areas/winnipeg-bridgwater','/areas/winnipeg-transcona','/areas/brampton-bramalea','/services/collision-recovery','/nonexistent']) assert.equal((await fetch(`${origin}${route}`)).status,404,`${route}: unapproved route must be 404`);
 const robots=await (await fetch(`${origin}/robots.txt`)).text();
 assert.match(robots,/Allow: \/\s/); assert.match(robots,/Disallow: \/api\//);
 assert.ok(!/^Disallow: \/\s*$/m.test(robots),'Crawlers must reach HTML to read noindex and load rendering assets');
