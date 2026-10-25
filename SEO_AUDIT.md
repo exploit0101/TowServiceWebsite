@@ -1,5 +1,9 @@
 # Technical SEO review — October 22, 2026
 
+## Reference-style assistance form — October 25, 2026
+
+The form's labels are now visually hidden, with native label/control associations preserved for assistive technology and clear prompts inside each field. All controls and the native POST action remain server-rendered. A reused, 40KB optimized decorative image uses the deployment-aware asset helper; the export check validates its base path. No new dependency or third-party script is introduced. Existing page metadata, single H1, canonicals, structured data, service links and nineteen approved sitemap URLs are preserved.
+
 ## Single-column enquiry form — October 25, 2026
 
 The form now shows one field per row, with shorter controls and no secondary form tagline. Its six explicit labels, native POST action, keyboard order and server-rendered HTML remain. The existing H1, page titles/descriptions, absolute canonicals, internal service links, Organization/Service/BreadcrumbList schema and nineteen approved sitemap URLs are preserved. This layout change adds no scripts, dependencies or keyword-heavy text.

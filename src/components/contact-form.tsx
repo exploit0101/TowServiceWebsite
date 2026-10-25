@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { ArrowUpRight, CheckCircle2, LoaderCircle, Send, UserRound, Phone, Mail, MapPin, Wrench, MessageSquareText } from 'lucide-react';
+import { useEffect, useId, useRef, useState, type FormEvent, type CSSProperties } from 'react';
+import { ArrowUpRight, CheckCircle2, LoaderCircle } from 'lucide-react';
 import { formspreeEndpoint, validateContact, contactNotice } from '@/lib/contact';
+import { publicAssetPath } from '@/lib/asset-path';
 
 type ServiceOption = { id: string; name: string };
 type Feedback = { kind: 'success' | 'error'; message: string; verification?: boolean } | null;
@@ -67,21 +68,20 @@ export function ContactForm({ services, phoneHref, displayPhone }: {
     }
   }
 
-  return <div className="assistance-form-card">
+  return <div className="assistance-form-card" style={{ '--assistance-scene': `url("${publicAssetPath('/images/easytowing-wheel-lift-640w.webp')}")` } as CSSProperties}>
     <div className="assistance-form-heading">
-      <span className="assistance-form-icon"><Send size={23} aria-hidden="true" /></span>
       <h3>Request assistance</h3>
     </div>
     <form action={formspreeEndpoint} method="POST" onSubmit={submit} aria-label="Request roadside assistance" aria-describedby={`${id}-notice`} aria-busy={pending}>
       <input type="hidden" name="_subject" value="EasyTowing — roadside service enquiry" />
       <input type="hidden" name="contact_notice" value={contactNotice} />
       <div className="assistance-fields">
-        <div className="assistance-field"><label htmlFor={`${id}-name`}><UserRound size={15} aria-hidden="true" />Name <span>*</span></label><input id={`${id}-name`} name="name" autoComplete="name" placeholder="Your name" required maxLength={80} /></div>
-        <div className="assistance-field"><label htmlFor={`${id}-phone`}><Phone size={15} aria-hidden="true" />Phone number <span>*</span></label><input id={`${id}-phone`} name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="Your phone" required minLength={7} maxLength={30} /></div>
-        <div className="assistance-field"><label htmlFor={`${id}-email`}><Mail size={15} aria-hidden="true" />Email <small>(optional)</small></label><input id={`${id}-email`} name="email" type="email" autoComplete="email" placeholder="Email address" maxLength={254} /></div>
-        <div className="assistance-field assistance-field-location"><label htmlFor={`${id}-location`}><MapPin size={15} aria-hidden="true" />Address / location <span>*</span></label><input id={`${id}-location`} name="location" autoComplete="off" placeholder="Your location" required minLength={2} maxLength={200} /></div>
-        <div className="assistance-field"><label htmlFor={`${id}-service`}><Wrench size={15} aria-hidden="true" />Service type <span>*</span></label><select id={`${id}-service`} name="service" defaultValue="" required><option value="" disabled>Choose service</option>{services.map(service => <option key={service.id} value={service.name}>{service.name}</option>)}</select></div>
-        <div className="assistance-field assistance-field-wide"><label htmlFor={`${id}-message`}><MessageSquareText size={15} aria-hidden="true" />Message <small>(optional)</small></label><textarea id={`${id}-message`} name="message" placeholder="Your message" maxLength={2000} rows={1} /></div>
+        <div className="assistance-field"><label htmlFor={`${id}-name`}>Name</label><input id={`${id}-name`} name="name" autoComplete="name" placeholder="Your name *" required maxLength={80} /></div>
+        <div className="assistance-field"><label htmlFor={`${id}-phone`}>Phone number</label><input id={`${id}-phone`} name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="Phone number *" required minLength={7} maxLength={30} /></div>
+        <div className="assistance-field"><label htmlFor={`${id}-location`}>Address / location</label><input id={`${id}-location`} name="location" autoComplete="off" placeholder="Address / location *" required minLength={2} maxLength={200} /></div>
+        <div className="assistance-field"><label htmlFor={`${id}-email`}>Email</label><input id={`${id}-email`} name="email" type="email" autoComplete="email" placeholder="Email address (optional)" maxLength={254} /></div>
+        <div className="assistance-field"><label htmlFor={`${id}-service`}>Service type</label><select id={`${id}-service`} name="service" defaultValue="" required><option value="" disabled>Service type *</option>{services.map(service => <option key={service.id} value={service.name}>{service.name}</option>)}</select></div>
+        <div className="assistance-field"><label htmlFor={`${id}-message`}>Message</label><textarea id={`${id}-message`} name="message" placeholder="Message (optional)" maxLength={2000} rows={2} /></div>
       </div>
       <div className="assistance-honeypot" aria-hidden="true"><label htmlFor={`${id}-website`}>Leave this field empty</label><input id={`${id}-website`} name="_gotcha" tabIndex={-1} autoComplete="off" /></div>
       <div className="assistance-form-footer">

@@ -44,7 +44,7 @@ export async function checkContactForm(browser: Browser) {
       const formBox = await form.boundingBox();
       assert.ok(priorityBox && formBox && priorityBox.y + priorityBox.height <= formBox.y, 'urgent phone contact comes before the request form at every width');
       await expect(priority.locator('a[href^="tel:"]')).toHaveAttribute('href', 'tel:+16728899764');
-      for (const field of ['phone', 'email', 'location', 'service', 'message']) {
+      for (const field of ['phone', 'location', 'email', 'service', 'message']) {
         await page.keyboard.press('Tab');
         await expect(form.locator(`[name="${field}"]`)).toBeFocused();
       }
@@ -113,12 +113,16 @@ export async function checkContactForm(browser: Browser) {
         assert.equal(fieldLayout, 1, 'each field occupies its own row');
         const inputBoxes = await form.locator('.assistance-field :is(input, select, textarea)').evaluateAll(elements => elements.map(element => {
           const box = element.getBoundingClientRect();
-          return { top: box.top, bottom: box.bottom, left: box.left };
+          return { top: box.top, bottom: box.bottom, left: box.left, width: box.width };
         }));
         for (let index = 1; index < inputBoxes.length; index++) {
           assert.ok(inputBoxes[index].top >= inputBoxes[index - 1].bottom, 'input boxes never share a row');
           assert.ok(Math.abs(inputBoxes[index].left - inputBoxes[0].left) < 1, 'input boxes align consistently');
         }
+        const fieldWidth = await form.locator('.assistance-fields').evaluate(element => element.getBoundingClientRect().width);
+        for (const box of inputBoxes) assert.ok(Math.abs(box.width - fieldWidth) < 1, 'inputs use the full available width');
+        const labelBoxes = await form.locator('.assistance-field label').evaluateAll(elements => elements.map(element => element.getBoundingClientRect().width));
+        assert.ok(labelBoxes.every(width => width <= 1), 'field labels stay available to assistive technology without a visible label column');
         if (width === 390 || width === 1440) {
           await page.locator('.assistance-panel').screenshot({ path: resolve('.qa', `contact-${width}-${theme}.png`), style: '.site-chrome, .floating-call, .skip-link, nextjs-portal { visibility: hidden !important; }' });
           await page.locator('.site-footer').screenshot({ path: resolve('.qa', `footer-${width}-${theme}.png`), style: '.site-chrome, .floating-call, .skip-link, nextjs-portal { visibility: hidden !important; }' });

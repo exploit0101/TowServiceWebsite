@@ -189,3 +189,46 @@ html[data-theme="dark"] .service-list { background: #173342; }
   .hero-contact-icon, .service-list-item a { transition: none; }
   .hero-contact-icon:hover { transform: none; }
 }
+
+/* ImageAssistanceBox reference: full-width fields on an EasyTowing photo surface. */
+.assistance-form-card {
+  --contact-ink: #f0f6fa;
+  --contact-muted: #c5d5df;
+  --contact-line: #587183;
+  --contact-field: #15374bc9;
+  --contact-surface: #17384c;
+  --contact-accent: #ffd166;
+  max-width: none;
+  color: var(--contact-ink);
+  background-color: #143246;
+  background-image: linear-gradient(110deg, #0b2636d9, #112f42e6), var(--assistance-scene);
+  background-position: center;
+  background-size: cover;
+}
+.assistance-form-card > form, .assistance-form-card > .assistance-form-heading { max-width: 800px; margin-inline: auto; }
+.assistance-form-card .assistance-form-heading { justify-content: center; min-height: 42px; padding: 7px 14px; margin-bottom: 12px; border: 1px solid #456174; border-radius: 10px; background: #0c2d42bf; }
+.assistance-form-card .assistance-form-heading h3 { margin: 0; color: #ffd166; font-size: 25px; line-height: 1.15; text-align: center; }
+.assistance-fields .assistance-field { display: block; position: relative; }
+.assistance-fields .assistance-field > label { position: absolute; width: 1px; height: 1px; min-height: 0; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+.assistance-form-card .assistance-field :is(input, select, textarea) { width: 100%; padding-inline: 13px; background: #17384cbd; border-color: #9bb0bf; color: #f0f6fa; color-scheme: dark; }
+.assistance-form-card .assistance-field :is(input, textarea)::placeholder { color: #ccdae4; opacity: 1; }
+.assistance-form-card .assistance-field select:invalid { color: #ccdae4; }
+.assistance-form-card .assistance-field select option { background: #17384c; color: #f0f6fa; }
+.assistance-form-card .assistance-field :is(input, select, textarea):focus { background: #183a4eea; border-color: #ffd166; outline-color: #ffd166; box-shadow: 0 0 0 4px #ffd16616; }
+.assistance-form-card .assistance-field textarea { min-height: 56px; height: 56px; }
+.assistance-form-card .assistance-field input:autofill { -webkit-text-fill-color: #f0f6fa; box-shadow: 0 0 0 1000px #193a4e inset; }
+.assistance-form-card .assistance-form-footer { flex-direction: column-reverse; align-items: stretch; gap: 10px; margin-top: 12px; padding-top: 12px; border-color: #587183; }
+.assistance-form-card .assistance-submit { width: 100%; min-height: 44px; justify-content: center; background: linear-gradient(110deg, #ffda70, #ffc539); color: #142c3d; }
+.assistance-form-card .assistance-send-notice { color: #c5d5df; }
+.assistance-form-card .assistance-send-notice a { color: #ffdb86; }
+@media (max-width: 767px) {
+  .assistance-form-card .assistance-form-heading { min-height: 38px; padding: 6px 10px; }
+  .assistance-form-card .assistance-form-heading h3 { font-size: 22px; }
+}
+@media (max-width: 640px) and (max-height: 640px) {
+  .assistance-form-card { padding-top: 8px; padding-bottom: 8px; }
+  .assistance-form-card .assistance-form-heading { min-height: 28px; padding: 2px 8px; margin-bottom: 6px; }
+  .assistance-form-card .assistance-form-heading h3 { font-size: 19px; }
+  .assistance-form-card .assistance-field textarea { height: 40px; min-height: 40px; }
+  .assistance-form-card .assistance-form-footer { gap: 6px; margin-top: 8px; padding-top: 8px; }
+}

@@ -80,6 +80,9 @@ const home = readFileSync(join(root, 'index.html'), 'utf8');
 for (const route of ['/', '/request-help']) {
   const html = readFileSync(localFile(`${basePath}${route}`), 'utf8');
   assert.ok(html.includes(`action="${formspreeEndpoint}" method="POST"`), `${route}: native Formspree form is exported`);
+  const scene = `${basePath}/images/easytowing-wheel-lift-640w.webp`;
+  assert.ok(html.includes(`--assistance-scene:url(&quot;${scene}&quot;)`), `${route}: decorative form image uses the deployed base path`);
+  assert.ok(existsSync(localFile(scene)), `${route}: optimized form background exists`);
   for (const field of ['name', 'phone', 'location', 'email', 'service', 'message', 'contact_notice', '_gotcha']) assert.ok(html.includes(`name="${field}"`), `${route}: enquiry field ${field}`);
   for (const service of availableServices) assert.ok(html.includes(`<option value="${service.name.replace(/&/g, '&amp;')}">`), `${route}: approved service ${service.id} available`);
   assert.ok(html.includes(whatsappLink(configured.supportPhone)!.replace(/&/g, '&amp;')), `${route}: correct WhatsApp number and draft`);

@@ -1,5 +1,13 @@
 # Verification report
 
+## ImageAssistanceBox form style — October 25, 2026
+
+Updated `src/components/contact-form.tsx` and `src/components/refinements.css` to follow the supplied reference with full-width, single-column fields, prompts inside each box, a navy towing-photo surface, gold heading and full-width gold Send button. Outside label text is visually hidden while native HTML labels remain available to screen readers. Field order follows the image: name, phone, location, email, service and message. The background uses the existing optimized 40,402-byte wheel-lift WebP; no competitor photo or claims are used. The message field is slightly taller on regular screens and stays compact on short phones.
+
+Updated `scripts/contact-browser-check.ts` to verify keyboard order, full-width boxes and hidden accessible labels, alongside the existing Formspree success/error/native fallback checks. Updated `scripts/test-pages.ts` to validate the decorative image's GitHub Pages base path and file. No field, validation rule, contact destination, privacy notice, SEO route or schema is removed.
+
+Local checks include lint, typecheck, 55 tests, all four contact-test widths with both themes, six-width browser/gallery/motion checks, production build and export metadata checks. Form submissions are mocked; no enquiry, phone call, email or WhatsApp message is sent. Screenshots of the mobile and desktop form were visually inspected. Commands remain `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test`, `npm.cmd run test:contact`, `npm.cmd run test:browser`, and the README production build/export commands. Older layout reports below are historical.
+
 ## One field per row — October 25, 2026
 
 Updated `src/components/contact-form.tsx` and `src/components/refinements.css`: all six fields are now in one column at every width, with aligned labels beside the controls. Controls are 40px high (previously 44px), use 16px input text and retain visible focus. The submit action remains at least 44px. The desktop form is centred within an 880px maximum width. Removed the extra form tagline and required-fields caption; the main brand headline remains concise and unchanged.
