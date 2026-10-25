@@ -1,5 +1,13 @@
 # Verification report
 
+## One field per row — October 25, 2026
+
+Updated `src/components/contact-form.tsx` and `src/components/refinements.css`: all six fields are now in one column at every width, with aligned labels beside the controls. Controls are 40px high (previously 44px), use 16px input text and retain visible focus. The submit action remains at least 44px. The desktop form is centred within an 880px maximum width. Removed the extra form tagline and required-fields caption; the main brand headline remains concise and unchanged.
+
+Updated `scripts/contact-browser-check.ts` to assert one column, a separate vertical position for every input, and consistent alignment in light/dark modes at 320/390/768/1440px. Lint, typecheck and 55 tests passed. Existing form response/error/native POST checks passed, as did the full browser suite covering six widths, theme contrast, gallery interaction, mobile opening and form height. Inspected mobile and desktop screenshots. No live enquiry or outbound message was sent.
+
+No SEO copy, metadata, routes or schema were added or removed by this form layout change. Production/export checks validate the existing nineteen sitemap URLs and server-rendered, labelled form controls. Commands: `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test`, `npm.cmd run test:contact`, `npm.cmd run test:browser`, and the README production build/export commands. Historical layouts below are superseded by this entry.
+
 ## Changings reference update — October 25, 2026
 
 Implemented the three local screenshot references. Removed the fixed yellow call footer, styled the header phone badge with a yellow handset, replaced the homepage carousel with a joined navy/gold grid of all eleven services, and made review cards dark/white/dark. The hero has WhatsApp and email icon links. The owner-supplied email is info.easytowing.ca@gmail.com and is also used on the contact page and in Organization schema.

@@ -70,8 +70,7 @@ export function ContactForm({ services, phoneHref, displayPhone }: {
   return <div className="assistance-form-card">
     <div className="assistance-form-heading">
       <span className="assistance-form-icon"><Send size={23} aria-hidden="true" /></span>
-      <div><h3>Request assistance</h3><p>Prefer to write? Share the details below.</p></div>
-      <span className="assistance-form-caption">ALL FIELDS MARKED * ARE REQUIRED</span>
+      <h3>Request assistance</h3>
     </div>
     <form action={formspreeEndpoint} method="POST" onSubmit={submit} aria-label="Request roadside assistance" aria-describedby={`${id}-notice`} aria-busy={pending}>
       <input type="hidden" name="_subject" value="EasyTowing — roadside service enquiry" />

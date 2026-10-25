@@ -110,7 +110,15 @@ export async function checkContactForm(browser: Browser) {
         await page.locator('.assistance-panel').scrollIntoViewIfNeeded();
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), `${width}px ${theme}: no horizontal overflow`);
         const fieldLayout = await page.locator('.assistance-fields').evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length);
-        assert.equal(fieldLayout, width < 768 ? 2 : 3);
+        assert.equal(fieldLayout, 1, 'each field occupies its own row');
+        const inputBoxes = await form.locator('.assistance-field :is(input, select, textarea)').evaluateAll(elements => elements.map(element => {
+          const box = element.getBoundingClientRect();
+          return { top: box.top, bottom: box.bottom, left: box.left };
+        }));
+        for (let index = 1; index < inputBoxes.length; index++) {
+          assert.ok(inputBoxes[index].top >= inputBoxes[index - 1].bottom, 'input boxes never share a row');
+          assert.ok(Math.abs(inputBoxes[index].left - inputBoxes[0].left) < 1, 'input boxes align consistently');
+        }
         if (width === 390 || width === 1440) {
           await page.locator('.assistance-panel').screenshot({ path: resolve('.qa', `contact-${width}-${theme}.png`), style: '.site-chrome, .floating-call, .skip-link, nextjs-portal { visibility: hidden !important; }' });
           await page.locator('.site-footer').screenshot({ path: resolve('.qa', `footer-${width}-${theme}.png`), style: '.site-chrome, .floating-call, .skip-link, nextjs-portal { visibility: hidden !important; }' });

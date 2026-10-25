@@ -61,7 +61,7 @@ The owner also confirmed the provider model, partner credentials, provincial req
 
 ### Formspree enquiries and WhatsApp
 
-The contact section is a compact unified card: phone help first, then six fields in three desktop columns or two mobile columns. Its single-line message area can be resized vertically. The full form fits beneath the header at the tested 320?568, 390?664 and 1440?900 sizes. There is no agreement checkbox; the notice beside Send explains that submitting requests contact and that Formspree processes details, including in the US. The same component is used on the homepage and `/request-help`.
+The contact section is a compact unified card: phone help first, then six fields with exactly one input per row at every screen width. Aligned labels sit beside 40px controls; input text stays at 16px, and the Send action remains at least 44px high. The desktop form is centred within 880px. The extra form tagline is removed. The single-line message area can be resized vertically. There is no agreement checkbox; the notice beside Send explains that submitting requests contact and that Formspree processes details, including in the US. The same component is used on the homepage and `/request-help`.
 
 The owner supplied `https://formspree.io/f/xkjjownd`. The public destination and WhatsApp draft are in `src/lib/contact.ts`; the footer derives its chat number from `siteConfig.supportPhone`. No API key, backend or new environment variable is needed. Name, phone, location and service are required; email and message are optional. Initial enquiries can use an intersection or neighbourhood. The visible submit notice explains Formspree processing, including in the US, and links to the privacy notice.
 

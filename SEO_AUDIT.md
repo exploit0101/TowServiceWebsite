@@ -1,5 +1,9 @@
 # Technical SEO review — October 22, 2026
 
+## Single-column enquiry form — October 25, 2026
+
+The form now shows one field per row, with shorter controls and no secondary form tagline. Its six explicit labels, native POST action, keyboard order and server-rendered HTML remain. The existing H1, page titles/descriptions, absolute canonicals, internal service links, Organization/Service/BreadcrumbList schema and nineteen approved sitemap URLs are preserved. This layout change adds no scripts, dependencies or keyword-heavy text.
+
 ## Changings reference refresh — October 25, 2026
 
 The homepage now server-renders eleven concise service links/icons in a static grid. It retains one H1 and logical service headings. All existing unique service routes, canonical metadata, crawl rules and nineteen approved sitemap URLs are preserved. The hero's compact text is responsive, with complete provider/arrival facts visible on tested mobile opening screens. The owner-supplied support email is used consistently in native mail links, contact details and Organization schema. WhatsApp opens a draft via a native link. No new third-party widget, tracking script or client-only main copy is introduced. The unused homepage carousel JavaScript is no longer imported. Preview and production export/metadata checks pass; no SEO ranking or field Core Web Vitals result is claimed.
