@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
-import "@/components/service-carousel.css";
 import "@/components/service-ticker.css";
 import "@/components/brand.css";
 import "@/components/customer-reviews.css";
 import "@/components/contact-form.css";
 import "@/components/theme.css";
+import "@/components/refinements.css";
 import { themeInitializationScript } from '@/lib/theme';
 import { BrandLogo } from "@/components/brand-logo";
 import { ServiceTicker } from "@/components/service-ticker";
@@ -103,21 +103,6 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        {callsEnabled && phoneContact && (
-          <a
-            className="floating-call"
-            href={phoneContact.href}
-          >
-            <span className="floating-call-icon">
-              <Phone size={22} aria-hidden="true" />
-            </span>
-            <span>
-              <small>CALL EASYTOWING</small>
-              <strong>{phoneContact.display}</strong>
-            </span>
-            <ArrowUpRight size={19} aria-hidden="true" />
-          </a>
-        )}
         <Consent enabled={isLive && siteConfig.approvals.analytics} />
         {isLive && (
           <JsonLd

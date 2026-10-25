@@ -4,7 +4,6 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { services } from '../src/lib/content';
-import { homepageServiceIds } from '../src/lib/service-catalog';
 import launch from '../config/launch.json';
 import { launchErrors } from '../src/lib/launch';
 import { resolveSiteConfig } from '../src/lib/configuration';
@@ -81,12 +80,12 @@ const home = readFileSync(join(root, 'index.html'), 'utf8');
 for (const route of ['/', '/request-help']) {
   const html = readFileSync(localFile(`${basePath}${route}`), 'utf8');
   assert.ok(html.includes(`action="${formspreeEndpoint}" method="POST"`), `${route}: native Formspree form is exported`);
-  for (const field of ['name', 'phone', 'location', 'email', 'service', 'message', 'consent', '_gotcha']) assert.ok(html.includes(`name="${field}"`), `${route}: enquiry field ${field}`);
+  for (const field of ['name', 'phone', 'location', 'email', 'service', 'message', 'contact_notice', '_gotcha']) assert.ok(html.includes(`name="${field}"`), `${route}: enquiry field ${field}`);
   for (const service of availableServices) assert.ok(html.includes(`<option value="${service.name.replace(/&/g, '&amp;')}">`), `${route}: approved service ${service.id} available`);
   assert.ok(html.includes(whatsappLink(configured.supportPhone)!.replace(/&/g, '&amp;')), `${route}: correct WhatsApp number and draft`);
 }
 for (const id of ['services','fleet','reviews','contact']) assert.ok(home.includes(`id="${id}"`),`Home: #${id} section exists`);
-assert.doesNotMatch(home,/service-carousel-track[^"]*is-expanded/,'Home carousel starts collapsed');
+assert.ok(home.includes('class="service-list"'), 'Compact service grid is server-rendered');
 assert.equal((home.match(/class="review-card"/g)||[]).length,3,'Home renders the three owner-supplied customer quotes');
 assert.ok(home.includes('Rating and customer feedback supplied by EasyTowing'),'Review source remains visible');
 assert.ok(home.replace(/<!--[\s\S]*?-->/g,'').includes('25-minute arrival estimate'),'Home shows the owner-confirmed arrival estimate');
@@ -114,7 +113,7 @@ function hasServiceLink(markup: string, id: string) {
   return [...markup.matchAll(/href="([^"]+)"/g)].some(match => match[1].replace(/\/$/, '') === `${basePath}/services/${id}`);
 }
 for (const [route,shown] of [
-  ['/',homepageServiceIds.map(id => availableServices.find(service => service.id === id)).filter((service): service is typeof services[number] => Boolean(service))],
+  ['/',availableServices],
   ['/services',availableServices],
 ] as const) {
   const markup=readFileSync(localFile(`${basePath}${route}`),'utf8');
@@ -124,7 +123,7 @@ for (const [route,shown] of [
     const card=serviceCards.find(markup => hasServiceLink(markup,service.id));
     assert.ok(card,`${route}: ${service.name} service detail link`);
     assert.match(card,/<svg\b[^>]*aria-hidden="true"/,`${route}: ${service.name} decorative service icon`);
-    assert.ok(card.includes(`href="${expectedTelephone}"`),`${route}: ${service.name} uses configured phone`);
+    if (route !== '/') assert.ok(card.includes(`href="${expectedTelephone}"`),`${route}: ${service.name} uses configured phone`);
   }
 }
 assert.ok(!home.includes('/_next/image?'), 'Static image needs no Next image server');

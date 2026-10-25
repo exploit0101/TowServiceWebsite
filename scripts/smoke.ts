@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import { services } from '../src/lib/content';
-import { homepageServiceIds } from '../src/lib/service-catalog';
 import { callsEnabled, isDemoPhone, phoneContact, siteConfig } from '../src/lib/site-config';
 const escapeHtml = (text:string) => text.replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'}[character]!));
 async function main() {
@@ -39,7 +38,7 @@ for (const route of routes) {
   assert.ok(!html.includes('rel="canonical"'),`${route}: no invented canonical origin`);
   assert.ok(!html.includes('googletagmanager.com/gtag/js'),`${route}: no analytics loaded`);
   if (route === '/' || route === '/services') {
-    const expectedServices = route === '/' ? homepageServiceIds.map(id => services.find(service => service.id === id)!) : services;
+    const expectedServices = services;
     const cards = [...html.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]).filter(markup => services.some(service => markup.includes(`href="/services/${service.id}"`)));
     assert.equal(cards.length, expectedServices.length, `${route}: all intended service cards rendered on the server`);
     for (const service of expectedServices) {
@@ -47,7 +46,7 @@ for (const route of routes) {
       assert.ok(card, `${route}: ${service.name} detail link`);
       assert.ok(card.includes(escapeHtml(service.name)), `${route}: ${service.name} visible label`);
       assert.match(card, /<svg\b[^>]*aria-hidden="true"/, `${route}: ${service.name} decorative SVG icon`);
-      if (phoneContact) assert.ok(card.includes(`href="${phoneContact.href}"`), `${route}: ${service.name} uses the configured dial target`);
+      if (phoneContact && route !== '/') assert.ok(card.includes(`href="${phoneContact.href}"`), `${route}: ${service.name} uses the configured dial target`);
     }
   }
   if (serviceRoutes.includes(route)) {
@@ -60,7 +59,7 @@ for (const route of routes) {
     assert.ok(html.includes('href="/services"'), `${route}: link back to service hub`);
   }
   if (route === '/') {
-    assert.match(html,/class="service-carousel-track"/,'homepage starts with the service carousel');
+    assert.match(html,/class="service-list"/,'homepage renders the compact service grid');
     assert.ok(!html.includes('id="how-it-works"') && !html.includes('/#how-it-works'),'removed process section has no section or navigation target');
     assert.ok(!html.includes('Rebranded vehicle image'),'hero image has no removed label');
     assert.match(html,/<h1\b[^>]*>[\s\S]*?Winnipeg towing[\s\S]*?Made easy\./,'homepage has the Winnipeg towing headline');

@@ -1,0 +1,183 @@
+/* Owner's compact phone, services and contact references. */
+.header-phone-number { flex-direction: row; align-items: center; gap: 10px; padding: 7px 11px; border: 1px solid #eadcb8; border-radius: 13px; background: linear-gradient(110deg, #fff2c9, #fffdf8); }
+.header-phone-number .header-phone-icon { display: grid; place-items: center; width: 37px; height: 37px; flex-shrink: 0; border-radius: 50%; background: #ffce4a; color: #173244; }
+.header-phone-number .header-phone-copy { display: block; color: #173244; letter-spacing: 0; }
+.header-phone-copy small { display: block; font-size: 10px; margin-bottom: 3px; font-weight: 650; }
+.header-phone-number .header-phone-copy small { line-height: 1.1; }
+.header-phone-number strong { line-height: 1.1; }
+.header-phone-number strong { display: block; font-size: 21px; letter-spacing: -.6px; }
+.hero-status-row { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+.hero { padding: 36px 0 30px; }
+.hero-status-row .availability-badge { margin: 0; }
+.hero-status-row .hero-rating { margin: 0; gap: 5px; padding: 0; border: 0; background: transparent; }
+.hero-status-row .hero-rating strong { font-size: 15px; }
+.hero-contact-icon { display: inline-grid; place-items: center; width: 48px; height: 48px; min-width: 44px; min-height: 44px; border: 1px solid #c7d6df; border-radius: 11px; background: #fff; transition: transform 160ms, background 160ms; }
+.hero-whatsapp { color: #176842; border-color: #a6cdb8; background: #eff9f3; }
+.hero-email { color: #214759; }
+a[href^="mailto:"] { overflow-wrap: anywhere; }
+.contact-card a[href^="mailto:"] { font-size: 17px; line-height: 1.5; }
+.hero-contact-icon:hover { transform: translateY(-2px); background: #fff1c9; }
+#services { padding-top: 32px; padding-bottom: 48px; }
+#services .section-heading { margin-bottom: 22px; }
+#services .section-heading h2 { font-size: 33px; margin-top: 10px; }
+#services .section-heading p { font-size: 12px; }
+.service-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: hidden; border: 1px solid #3a5363; border-radius: 17px; background: #173342; box-shadow: 0 12px 30px #142b3c0a; }
+.service-list-item { min-width: 0; border-right: 1px solid #3a5363; border-bottom: 1px solid #3a5363; }
+.service-list-item:nth-child(3n) { border-right: 0; }
+.service-list-item:nth-last-child(-n+2) { border-bottom: 0; }
+.service-list-item a { display: flex; align-items: center; gap: 14px; min-height: 85px; height: 100%; padding: 18px 24px; color: #f0f5f8; transition: background 160ms; }
+.service-list-item a:hover, .service-list-item a:focus-visible { background: #254b5d; }
+.service-list-item a:focus-visible { outline: 3px solid #f3ca63; outline-offset: -4px; }
+.service-list-item svg { width: 28px; height: 28px; flex-shrink: 0; color: #f2cc65; }
+.service-list-item h3 { font-size: 15px; line-height: 1.35; margin: 0; font-weight: 650; }
+/* Dark outer reviews, white centre card, in both themes. */
+#reviews .review-card { background: linear-gradient(140deg, #203f54, #142c3d); border-color: #34566b; }
+#reviews .review-card .review-person > strong { color: #fff; }
+#reviews .review-card :is(.review-profile-details, blockquote) { color: #d1dee7; }
+#reviews .review-card .review-date-label { color: #d1dee7; background: #ffffff0d; }
+#reviews .review-card:nth-child(2) { background: #fff; border-color: #dce5eb; }
+#reviews .review-card:nth-child(2) .review-person > strong { color: #193245; }
+#reviews .review-card:nth-child(2) :is(.review-profile-details, blockquote) { color: #526674; }
+#reviews .review-card:nth-child(2) .review-date-label { color: #526674; background: #f1f5f7; }
+/* Compact contact panel, including the full six-field enquiry form. */
+.assistance-intro { padding: 15px 24px; gap: 20px; }
+.assistance-intro h2 { font-size: 24px; letter-spacing: -.65px; margin: 0 0 5px; }
+.assistance-intro h2 em { display: inline; font-size: inherit; }
+.assistance-intro p { font-size: 12px; }
+.assistance-priority { min-width: 0; }
+.assistance-call { padding: 12px 15px; gap: 10px; border-radius: 12px; }
+.assistance-call-icon { width: 34px; height: 34px; }
+.assistance-call strong { font-size: 25px; }
+.assistance-call small { font-size: 8px; margin-bottom: 4px; }
+.assistance-form-card { padding: 18px 24px; }
+.assistance-form-heading { gap: 10px; margin-bottom: 15px; }
+.assistance-form-heading h3 { font-size: 21px; margin-bottom: 3px; }
+.assistance-form-heading p { font-size: 12px; }
+.assistance-form-icon { width: 38px; height: 38px; border-radius: 11px; }
+.assistance-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px 16px; }
+.assistance-field-location, .assistance-field-wide { grid-column: auto; }
+.assistance-field label { font-size: 11px; gap: 5px; margin-bottom: 5px; }
+.assistance-field label small { font-size: 10px; }
+.assistance-field :is(input, select, textarea) { min-height: 44px; height: 44px; padding: 10px 11px; border-radius: 9px; font-size: 16px; line-height: 22px; scroll-margin: 12px 0 20px; }
+.assistance-field textarea { min-height: 44px; max-height: 180px; resize: vertical; }
+.assistance-form-footer { gap: 22px; margin-top: 15px; padding-top: 13px; }
+.assistance-send-notice { flex: 1; margin: 0; color: var(--contact-muted); font-size: 10px; line-height: 1.5; }
+.assistance-send-notice a { color: var(--contact-ink); text-decoration: underline; text-underline-offset: 2px; }
+.assistance-submit { min-width: 185px; min-height: 44px; font-size: 13px; border-radius: 9px; }
+.assistance-form-notice { margin-top: 9px; font-size: 10px; }
+.assistance-feedback { scroll-margin: 12px 0 20px; }
+html[data-theme="dark"] .header-phone-number { background: linear-gradient(110deg, #3c3827, #1a3040); border-color: #695a33; }
+html[data-theme="dark"] .header-phone-number .header-phone-copy { color: #f4dfb2; }
+html[data-theme="dark"] .hero-contact-icon { color: #e5f1f8; background: #193546; border-color: #577287; }
+html[data-theme="dark"] .hero-whatsapp { color: #a1e8bd; background: #163f30; border-color: #43795c; }
+html[data-theme="dark"] .hero-highlights { background: transparent; border: 0; }
+html[data-theme="dark"] .service-list { background: #173342; }
+@media (max-width: 960px) {
+  html { scroll-padding-top: 150px; }
+  .header-inner { padding-top: 9px; padding-bottom: 8px; }
+  .header-inner { min-height: 0; grid-template-rows: 40px auto; gap: 0; }
+  .header-contact { margin-top: 7px; padding-top: 6px; gap: 9px; }
+  .header-phone-number { padding: 4px 9px; }
+  .header-phone-number .header-phone-icon { width: 32px; height: 32px; }
+  .header-phone-number .header-phone-copy small { display: block; font-size: 9px; letter-spacing: 0; }
+  .header-phone-number strong { font-size: 21px; }
+  .header-call { min-height: 44px; padding: 10px 15px; }
+}
+@media (max-width: 767px) {
+  .service-list { grid-template-columns: repeat(2, minmax(0, 1fr)); border-radius: 13px; }
+  .service-list-item:nth-child(3n) { border-right: 1px solid #3a5363; }
+  .service-list-item:nth-child(2n) { border-right: 0; }
+  .service-list-item:nth-last-child(2) { border-bottom: 1px solid #3a5363; }
+  .service-list-item:last-child { grid-column: 1/-1; border: 0; }
+  .service-list-item a { min-height: 61px; padding: 12px 14px; gap: 11px; }
+  .service-list-item h3 { font-size: 13px; }
+  .service-list-item svg { width: 24px; height: 24px; }
+  .assistance-intro { grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 12px 15px; }
+  .assistance-intro h2 { font-size: 20px; line-height: 1.15; margin: 0; }
+  .assistance-intro h2 em { display: block; font-size: 14px; margin-top: 4px; }
+  .assistance-intro p, .assistance-call-icon, .assistance-call > svg { display: none; }
+  .assistance-call { padding: 10px 12px; }
+  .assistance-call strong { font-size: 22px; }
+  .assistance-call small { font-size: 7px; letter-spacing: .6px; }
+  .assistance-form-card { padding: 14px 15px; }
+  .assistance-form-heading { gap: 9px; margin-bottom: 12px; }
+  .assistance-form-heading h3 { font-size: 19px; }
+  .assistance-form-heading p { font-size: 10px; }
+  .assistance-form-heading p { display: none; }
+  .assistance-form-icon { width: 34px; height: 34px; }
+  .assistance-form-icon svg { width: 19px; height: 19px; }
+  .assistance-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 10px; }
+  .assistance-field label { font-size: 10px; gap: 3px; }
+  .assistance-field label > svg { width: 12px; height: 12px; }
+  .assistance-field label small { font-size: 9px; }
+  .assistance-field :is(input, select, textarea) { padding: 10px 8px; }
+  .assistance-form-footer { align-items: stretch; flex-direction: column-reverse; gap: 10px; margin-top: 12px; padding-top: 12px; }
+  .assistance-submit { width: 100%; min-width: 0; min-height: 44px; justify-content: space-between; padding: 10px 15px; }
+  .assistance-send-notice { font-size: 9px; }
+  .assistance-form-notice { font-size: 9px; line-height: 1.4; }
+}
+@media (max-width: 640px) {
+  .container { padding-inline: 16px; }
+  .service-ticker-inner { min-height: 30px; }
+  .service-ticker-group li { line-height: 30px; }
+  .service-ticker-pause { min-height: 30px; }
+  .site-header .brand { font-size: 23px; }
+  .site-header .brand-symbol { width: 47px; height: 35px; }
+  .site-header .brand small { font-size: 5px; letter-spacing: 1.6px; margin-top: 6px; }
+  .theme-toggle, .menu-toggle { width: 40px; height: 40px; flex-basis: 40px; }
+  .hero { padding: 18px 0 16px; }
+  .hero-status-row { gap: 14px; justify-content: space-between; margin-bottom: 12px; }
+  .hero-status-row .availability-badge { min-height: 25px; font-size: 9px; padding: 6px 9px; }
+  .hero-status-row .availability-badge { padding-block: 4px; }
+  .hero-status-row .availability-icon { width: 22px; height: 22px; flex-basis: 22px; }
+  .hero-status-row .hero-rating strong { font-size: 13px; }
+  .hero h1 { font-size: clamp(34px, 10vw, 42px); line-height: 1.04; letter-spacing: -2px; margin: 0 0 10px; }
+  .hero-copy > .hero-summary { font-size: 12px; line-height: 1.45; margin: 0; }
+  .hero .hero-actions { flex-wrap: nowrap; gap: 8px; margin-top: 13px; }
+  .hero .hero-actions .button { flex: 1; min-width: 0; min-height: 44px; font-size: 11px; padding: 10px 11px; gap: 7px; white-space: nowrap; }
+  .hero .hero-actions .button > svg:last-child { display: none; }
+  .hero-contact-icon { flex: 0 0 44px; width: 44px; height: 44px; }
+  .hero-highlights { gap: 8px 10px; margin-top: 14px; }
+  .hero-highlights li { gap: 7px; min-height: 29px; align-items: flex-start; }
+  .hero-highlights li > svg { width: 17px; height: 17px; flex-shrink: 0; margin-top: 1px; }
+  .hero-highlights strong { font-size: 10.5px; line-height: 1.3; }
+  .hero-highlights small { font-size: 9px; margin-top: 2px; line-height: 1.3; }
+  .hero-copy > .hero-note { font-size: 9px; line-height: 1.4; margin-top: 10px; }
+  #services { padding-top: 19px; padding-bottom: 30px; }
+  #services .section-heading { margin-bottom: 13px; gap: 0; }
+  #services .section-heading h2 { font-size: 24px; line-height: 1.15; margin-top: 7px; }
+  #services .section-heading p { display: none; }
+  #services .eyebrow { font-size: 8px; }
+  .site-footer { padding-bottom: 25px; }
+}
+@media (max-width: 640px) and (max-height: 640px) {
+  .hero { padding-top: 13px; padding-bottom: 13px; }
+  .hero h1 { font-size: 33px; }
+  .hero-copy > .hero-summary { display: none; }
+  .hero-status-row { margin-bottom: 9px; }
+  .hero-highlights { margin-top: 11px; gap: 6px 10px; }
+  #services { padding-top: 12px; }
+  #services .section-heading { margin-bottom: 9px; }
+  #services .section-heading h2 { font-size: 21px; margin-top: 0; }
+  .assistance-form-card { padding-top: 10px; padding-bottom: 10px; }
+}
+@media (max-width: 360px) {
+  .header-phone-number { gap: 6px; padding: 4px 6px; }
+  .header-phone-number .header-phone-icon { width: 29px; height: 29px; }
+  .header-phone-number strong { font-size: 18px; }
+  .header-phone-number .header-phone-copy small { font-size: 8px; }
+  .header-call { font-size: 11px; padding-inline: 10px; gap: 6px; }
+  .header-call > svg:last-of-type { display: none; }
+  .site-header .brand { font-size: 21px; }
+  .header-tools { gap: 5px; }
+  .assistance-intro { padding-inline: 12px; }
+  .assistance-intro h2 { font-size: 18px; }
+  .assistance-call strong { font-size: 19px; }
+  .assistance-call small { font-size: 6px; }
+  .assistance-form-card { padding-inline: 12px; }
+  .assistance-field label > svg { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-contact-icon, .service-list-item a { transition: none; }
+  .hero-contact-icon:hover { transform: none; }
+}

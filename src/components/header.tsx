@@ -98,10 +98,8 @@ export function Header({
                 href={contact.href}
                 onClick={close}
               >
-                <span>
-                  {demo ? "DEMO NUMBER · TEST ONLY" : "LET’S GET YOU MOVING"}
-                </span>
-                <strong>{contact.display}</strong>
+                <span className="header-phone-icon"><Phone size={21} aria-hidden="true" /></span>
+                <span className="header-phone-copy"><small>{demo ? "DEMO NUMBER · TEST ONLY" : "Call us now"}</small><strong>{contact.display}</strong></span>
               </a>
             )}
             {contact ? (

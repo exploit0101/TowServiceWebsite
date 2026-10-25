@@ -3,7 +3,7 @@
 Updated October 24, 2026 from the owner's confirmations and publication instruction.
 
 - [x] Legal business name: **EasyTowing**; advertised brand: **easytowing**.
-- [x] Real Canadian number: **672-889-9764**. Owner explicitly selected phone-only support; no email is fabricated.
+- [x] Real Canadian number: **672-889-9764**. Owner later supplied info.easytowing.ca@gmail.com for public email contact; it is used in mail links, contact information and Organization schema.
 - [x] Owner confirmed 24/7 call answering and partner dispatch.
 - [x] Owner confirmed every advertised service throughout Winnipeg, including heavy duty towing, motorcycles and winch outs.
 - [x] Owner confirmed the 25-minute estimate is supported by actual dispatch records. Copy explains that traffic, weather, safe access and available operators affect actual arrival.
@@ -19,7 +19,7 @@ These checkmarks record owner attestations and implementation checks; the softwa
 ## Formspree / WhatsApp addition — October 25, 2026
 
 - [x] Owner supplied Formspree endpoint `https://formspree.io/f/xkjjownd` and requested name, phone, address/location, email, service and message fields.
-- [x] Formspree processing and US transfers disclosed beside consent and on the privacy page. No GPS permission, payment fields or browser storage of entries.
+- [x] Formspree processing and US transfers disclosed beside Send and on the privacy page. No GPS permission, payment fields or browser storage of entries.
 - [x] Native POST fallback, pending state, acknowledged-success feedback, error recovery and hosted challenge handoff implemented. Server-side spam handling is provided by Formspree.
 - [x] Footer WhatsApp uses the configured business number, with an editable greeting. The visitor sends the message.
 - [ ] Owner operational check: confirm Formspree inbox notifications, active account/quota, allowed domain and appropriate submission retention/access settings in the dashboard; verify one actual enquiry reaches the intended inbox. This cannot be established by mocked UI tests.

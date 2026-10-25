@@ -1,6 +1,7 @@
 /** Public, owner-supplied form destination. No API key belongs in the browser. */
 export const formspreeEndpoint = 'https://formspree.io/f/xkjjownd';
 export const whatsappMessage = 'Hi, I am looking for your towing or roadside assistance services in Winnipeg. Can you help?';
+export const contactNotice = 'By sending this request, I ask EasyTowing to contact me about it. Details are processed by Formspree, including in the US.';
 
 export function whatsappLink(phone: string) {
   if (!/^\+[1-9]\d{6,14}$/.test(phone)) return null;
@@ -18,7 +19,6 @@ export function validateContact(data: FormData, services: readonly string[]): st
   const email = value('email');
   if (email.length > 254 || (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) return 'Please check your email address, or leave it blank.';
   if (value('message').length > 2000) return 'Please keep your message under 2,000 characters.';
-  if (data.get('consent') !== 'yes') return 'Please agree to be contacted about this request.';
   if (value('_gotcha')) return 'This request could not be submitted. Please call for help.';
   return null;
 }

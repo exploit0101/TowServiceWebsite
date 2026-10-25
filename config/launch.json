@@ -6,7 +6,7 @@
   "phoneMode": "verified",
   "supportPhone": "+16728899764",
   "displayPhone": "672-889-9764",
-  "supportEmail": "",
+  "supportEmail": "info.easytowing.ca@gmail.com",
   "canonicalDomain": "https://exploit0101.github.io",
   "pilotMarket": "winnipeg-bridgwater",
   "serviceHours": "24 hours a day, 7 days a week",
@@ -86,7 +86,7 @@
   },
   "approvalRecord": {
     "confirmedAt": "2026-10-24",
-    "confirmationSource": "Owner confirmed the business/provider arrangements, partner credentials, provincial requirements, rates and consent, privacy and legal text approvals; supplied legal name EasyTowing and explicitly selected phone-only support."
+    "confirmationSource": "Owner confirmed the business/provider arrangements, partner credentials, provincial requirements, rates and consent, privacy and legal text approvals; supplied legal name EasyTowing and explicitly selected phone-only support. Owner supplied info.easytowing.ca@gmail.com for public email contact on October 25, 2026."
   },
-  "supportChannel": "phone"
+  "supportChannel": "email"
 }

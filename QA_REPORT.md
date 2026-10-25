@@ -1,5 +1,17 @@
 # Verification report
 
+## Changings reference update — October 25, 2026
+
+Implemented the three local screenshot references. Removed the fixed yellow call footer, styled the header phone badge with a yellow handset, replaced the homepage carousel with a joined navy/gold grid of all eleven services, and made review cards dark/white/dark. The hero has WhatsApp and email icon links. The owner-supplied email is info.easytowing.ca@gmail.com and is also used on the contact page and in Organization schema.
+
+The compact form uses six fields in three desktop or two mobile columns. Its message box can be resized. The checkbox is removed; Send is accompanied by a visible request-to-contact/privacy notice, with the same notice included in the Formspree payload. No consent is fabricated as a checked checkbox. At 320×568, 390×664 and 1440×900, the full form fits beneath the sticky header. Mobile opening checks confirm the complete licence/insurance and arrival facts plus the first service row. Reference images stay in the local, ignored Changings folder.
+
+Changed application files: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/[page]/page.tsx`, `src/components/header.tsx`, `src/components/assistance-section.tsx`, `src/components/contact-form.tsx`, `src/components/whatsapp-link.tsx`, `src/lib/contact.ts`, `config/launch.json`. Added `src/components/compact-service-grid.tsx` and `src/components/refinements.css`. Updated browser/contact/HTTP/export checks, contact unit tests, `.gitignore` and release documentation.
+
+Passed local lint, typecheck, 55 tests, launch validation, 20-page HTTP checks, the production Pages build and 21-page/92-destination export verification. Browser checks passed at 320/375/390/768/1024/1440px, both themes, contrast, gallery keyboard interaction, mobile opening/form height, service strip pause and reduced motion. Form checks passed with mocked acknowledgement, 422/429/network/malformed responses, native verification and JavaScript disabled. Visually inspected the 390×664 opening, 320×568 form and dark/white/dark review stack. No actual form enquiry, phone call, email or WhatsApp message was sent. Live inbox/account delivery remains an external operational check.
+
+Runnable commands: `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test`, `npm.cmd run check:launch`, `npm.cmd run test:smoke`, `npm.cmd run test:browser`, `npm.cmd run test:contact`; production build/export commands are in README. Older findings below describe earlier designs.
+
 ## Unified assistance design — October 25, 2026
 
 Updated `src/components/assistance-section.tsx`, `src/components/contact-form.tsx` and `src/components/contact-form.css` to combine urgent calling and written enquiries into one card. The gold phone banner precedes the form, with a shared header, refined typography, label icons, three/two/one-column responsive fields, and a compact consent/submit row. Both themes are coordinated. Field order remains logical for keyboard users. The Formspree destination, six fields, eleven service options, consent and delivery handling are preserved.

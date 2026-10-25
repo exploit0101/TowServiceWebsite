@@ -1,15 +1,13 @@
-import Link from "next/link";
-import { ServiceCarousel } from "@/components/service-carousel";
+import { CompactServiceGrid } from "@/components/compact-service-grid";
 import { FleetGallery, type FleetImage } from "@/components/fleet-gallery";
 import { PrimaryAction } from "@/components/ui";
 import { AvailabilityBadge } from "@/components/availability-badge";
 import { CustomerReviews } from "@/components/customer-reviews";
 import { BrandMark } from "@/components/brand-logo";
 import { AssistanceSection } from "@/components/assistance-section";
-import {
-  ArrowRight,
-} from "@/components/icons";
-import { Clock3, MapPin, ShieldCheck, Timer, Star } from 'lucide-react';
+import { Clock3, MapPin, ShieldCheck, Timer, Star, Mail } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/whatsapp-link';
+import { whatsappLink } from '@/lib/contact';
 import { getDocumentedArrivalEstimate } from '@/lib/arrival';
 import { customerReviews, hasPublishableReviews } from '@/lib/reviews';
 import { services } from "@/lib/content";
@@ -20,7 +18,6 @@ import {
   isLive,
   siteConfig,
   callsEnabled,
-  phoneContact,
 } from "@/lib/site-config";
 
 export const metadata = pageMetadata(
@@ -83,7 +80,7 @@ const images: FleetImage[] = [
 export default function Home() {
   const arrival = getDocumentedArrivalEstimate(siteConfig.arrivalEstimate);
   const availability = getAvailability(siteConfig.availability);
-  const shown = homepageServiceIds.flatMap((id) =>
+  const shown = [...homepageServiceIds, 'battery-replacement', 'tire-repair'].flatMap((id) =>
     services.filter(
       (service) =>
         service.id === id && (!isLive || siteConfig.offers.includes(id)),
@@ -95,22 +92,22 @@ export default function Home() {
         <div className="hero-brand-watermark" aria-hidden="true"><BrandMark hero/></div>
         <div className="container hero-grid">
           <div className="hero-copy">
-            <AvailabilityBadge config={siteConfig.availability} />
+            <div className="hero-status-row">
+              <AvailabilityBadge config={siteConfig.availability} />
+              {hasPublishableReviews(customerReviews) && <a className="hero-rating" href="#reviews" aria-label={`${customerReviews.rating} out of 5. Rating supplied by EasyTowing. Read customer feedback.`}>
+                <Star size={16} aria-hidden="true"/><strong>{customerReviews.rating?.toFixed(1)}/5</strong>
+              </a>}
+            </div>
             <h1>
               Winnipeg towing.
               <br />
               <em>Made easy.</em>
             </h1>
-            <p className="hero-summary">Towing and roadside assistance across Winnipeg. One call for a clear quote and the help you need.</p>
+            <p className="hero-summary">24/7 roadside help. A clear quote. One call.</p>
             <div className="hero-actions">
               <PrimaryAction label="Call for roadside help" />
-              <Link href="#services" className="text-link">
-                Our services
-                <ArrowRight size={18} aria-hidden="true" />
-              </Link>
-              {hasPublishableReviews(customerReviews) && <a className="hero-rating" href="#reviews" aria-label={`${customerReviews.rating} out of 5. Rating supplied by EasyTowing. Read customer feedback.`}>
-                <Star size={20} aria-hidden="true"/><span><strong>{customerReviews.rating?.toFixed(1)}/5</strong><small>Customer feedback</small></span>
-              </a>}
+              {callsEnabled && whatsappLink(siteConfig.supportPhone) && <a className="hero-contact-icon hero-whatsapp" href={whatsappLink(siteConfig.supportPhone)!} target="_blank" rel="noopener noreferrer" aria-label="Message easytowing on WhatsApp (opens in a new tab)" title="Message us on WhatsApp"><WhatsAppIcon /></a>}
+              {siteConfig.supportEmail && <a className="hero-contact-icon hero-email" href={`mailto:${siteConfig.supportEmail}?subject=${encodeURIComponent('Roadside assistance enquiry')}`} aria-label={`Email easytowing at ${siteConfig.supportEmail}`} title={siteConfig.supportEmail}><Mail size={22} aria-hidden="true" /></a>}
             </div>
             <ul className="hero-highlights">
               <li><Clock3 aria-hidden="true"/><span><strong>{availability.dispatch24h ? 'Open 24 hours' : 'Call for availability'}</strong><small>{availability.dispatch24h ? '7 days a week' : 'Discuss dispatch timing'}</small></span></li>
@@ -118,34 +115,18 @@ export default function Home() {
               <li><ShieldCheck aria-hidden="true"/><span><strong>{siteConfig.approvals.partnerCredentialsAndInsurance ? 'Licensed & insured' : 'Independent'}</strong><small>Service partners</small></span></li>
               <li><Timer aria-hidden="true"/><span><strong>{arrival ? `${arrival.minutes}-minute arrival ${arrival.status === 'target' ? 'target' : 'estimate'}` : 'Arrival estimate'}</strong><small>Confirm timing on your call</small></span></li>
             </ul>
-            <p className="hero-note">Independent partners provide on-site service. Arrival varies with traffic, weather and availability.</p>
+            <p className="hero-note">Independent partners perform service. Arrival varies with conditions.</p>
           </div>
         </div>
       </section>
       <section id="services" className="section container">
         <div className="section-heading">
           <div>
-            <div className="eyebrow">
-              <span />
-              OUR SERVICES
-            </div>
-            <h2>
-              Whatever stopped you,
-              <br />
-              start here.
-            </h2>
+            <h2>Our services</h2>
           </div>
-          <p>
-            Choose the help you need.
-            <br />
-            Call to discuss availability and a quote.
-          </p>
+          <p>Choose a service. Call for availability and a quote.</p>
         </div>
-        <ServiceCarousel
-          items={shown}
-          phoneHref={callsEnabled ? phoneContact?.href : undefined}
-          displayPhone={phoneContact?.display}
-        />
+        <CompactServiceGrid items={shown} />
       </section>
       <section id="fleet" className="fleet-section">
         <div className="container">

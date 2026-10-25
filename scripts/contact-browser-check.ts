@@ -44,7 +44,7 @@ export async function checkContactForm(browser: Browser) {
       const formBox = await form.boundingBox();
       assert.ok(priorityBox && formBox && priorityBox.y + priorityBox.height <= formBox.y, 'urgent phone contact comes before the request form at every width');
       await expect(priority.locator('a[href^="tel:"]')).toHaveAttribute('href', 'tel:+16728899764');
-      for (const field of ['phone', 'email', 'location', 'service', 'message', 'consent']) {
+      for (const field of ['phone', 'email', 'location', 'service', 'message']) {
         await page.keyboard.press('Tab');
         await expect(form.locator(`[name="${field}"]`)).toBeFocused();
       }
@@ -55,7 +55,6 @@ export async function checkContactForm(browser: Browser) {
       await form.getByLabel('Phone number', { exact: false }).fill('not-a-phone');
       await form.getByLabel('Address / location', { exact: false }).fill('Winnipeg test intersection');
       await form.getByLabel('Service type', { exact: false }).selectOption({ index: 1 });
-      await form.getByRole('checkbox').check();
       await form.getByRole('button', { name: 'Send request', exact: true }).click();
       await expect(form.getByRole('alert')).toContainText('phone number');
       assert.equal(submissions.length, 0, 'invalid contact details do not submit');
@@ -66,22 +65,21 @@ export async function checkContactForm(browser: Browser) {
       await expect(form.getByRole('button', { name: 'Sending request' })).toBeDisabled();
       await expect(form.getByRole('status')).toContainText('Your request has been sent');
       assert.equal(submissions.length, 1, 'one POST per submission');
-      for (const field of ['name', 'phone', 'location', 'email', 'service', 'message', 'consent', '_gotcha']) assert.ok(submissions[0].includes(`name="${field}"`), `${field} reaches the provider`);
+      for (const field of ['name', 'phone', 'location', 'email', 'service', 'message', 'contact_notice', '_gotcha']) assert.ok(submissions[0].includes(`name="${field}"`), `${field} reaches the provider`);
       await expect(form.getByLabel('Name', { exact: false })).toHaveValue('');
-      await expect(form.getByRole('checkbox')).not.toBeChecked();
+      await expect(form.getByRole('checkbox')).toHaveCount(0);
       await expect(form.getByRole('status')).toBeFocused();
       const feedbackBox = await form.getByRole('status').boundingBox();
       const chromeBox = await page.locator('.site-chrome').boundingBox();
-      const callBox = await page.locator('.floating-call').boundingBox();
+      const callBox = {y: page.viewportSize()!.height - 5};
       assert.ok(feedbackBox && chromeBox && callBox);
       assert.ok(feedbackBox.y >= chromeBox.y + chromeBox.height, 'confirmation stays below the sticky header');
-      assert.ok(feedbackBox.y + feedbackBox.height <= callBox.y, 'confirmation stays above the floating call button, including short phones');
+      assert.ok(feedbackBox.y + feedbackBox.height <= callBox.y, 'confirmation stays inside the viewport, including short phones');
 
       await form.getByLabel('Name', { exact: false }).fill('QA Visitor');
       await form.getByLabel('Phone number', { exact: false }).fill('204-555-0100');
       await form.getByLabel('Address / location', { exact: false }).fill('Winnipeg test intersection');
       await form.getByLabel('Service type', { exact: false }).selectOption({ index: 1 });
-      await form.getByRole('checkbox').check();
       for (const failure of ['reject', 'busy', 'network', 'invalid-json'] as const) {
         mode = failure;
         await form.getByRole('button', { name: 'Send request', exact: true }).click();
@@ -89,9 +87,9 @@ export async function checkContactForm(browser: Browser) {
         await expect(form.getByRole('alert')).toBeFocused();
         const errorBox = await form.getByRole('alert').boundingBox();
         const stickyBox = await page.locator('.site-chrome').boundingBox();
-        const floatingBox = await page.locator('.floating-call').boundingBox();
+        const floatingBox = {y: page.viewportSize()!.height - 5};
         assert.ok(errorBox && stickyBox && floatingBox);
-        assert.ok(errorBox.y >= stickyBox.y + stickyBox.height && errorBox.y + errorBox.height <= floatingBox.y, 'delivery errors remain readable between fixed controls');
+        assert.ok(errorBox.y >= stickyBox.y + stickyBox.height && errorBox.y + errorBox.height <= floatingBox.y, 'delivery errors remain below the header and within the viewport');
         await expect(form.getByLabel('Name', { exact: false })).toHaveValue('QA Visitor');
         await expect(form.getByRole('button', { name: 'Send request', exact: true })).toBeEnabled();
         if (failure === 'reject') await expect(form.getByRole('button', { name: 'Continue with Formspree verification' })).toBeVisible();
@@ -112,7 +110,7 @@ export async function checkContactForm(browser: Browser) {
         await page.locator('.assistance-panel').scrollIntoViewIfNeeded();
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), `${width}px ${theme}: no horizontal overflow`);
         const fieldLayout = await page.locator('.assistance-fields').evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length);
-        assert.equal(fieldLayout, width < 768 ? 1 : width < 1024 ? 2 : 3);
+        assert.equal(fieldLayout, width < 768 ? 2 : 3);
         if (width === 390 || width === 1440) {
           await page.locator('.assistance-panel').screenshot({ path: resolve('.qa', `contact-${width}-${theme}.png`), style: '.site-chrome, .floating-call, .skip-link, nextjs-portal { visibility: hidden !important; }' });
           await page.locator('.site-footer').screenshot({ path: resolve('.qa', `footer-${width}-${theme}.png`), style: '.site-chrome, .floating-call, .skip-link, nextjs-portal { visibility: hidden !important; }' });
@@ -143,7 +141,6 @@ export async function checkContactForm(browser: Browser) {
     await form.locator('[name="phone"]').fill('204-555-0100');
     await form.locator('[name="location"]').fill('Winnipeg test intersection');
     await form.locator('[name="service"]').selectOption({ index: 1 });
-    await form.getByRole('checkbox').check();
     await form.getByRole('button', { name: 'Send request' }).click();
     await expect(page.getByRole('heading', { name: 'Native form test received' })).toBeVisible();
     console.log('PASS keyboard field order and native POST with JavaScript disabled. No live enquiry or WhatsApp message sent.');

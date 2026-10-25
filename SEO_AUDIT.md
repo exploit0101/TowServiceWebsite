@@ -1,5 +1,9 @@
 # Technical SEO review — October 22, 2026
 
+## Changings reference refresh — October 25, 2026
+
+The homepage now server-renders eleven concise service links/icons in a static grid. It retains one H1 and logical service headings. All existing unique service routes, canonical metadata, crawl rules and nineteen approved sitemap URLs are preserved. The hero's compact text is responsive, with complete provider/arrival facts visible on tested mobile opening screens. The owner-supplied support email is used consistently in native mail links, contact details and Organization schema. WhatsApp opens a draft via a native link. No new third-party widget, tracking script or client-only main copy is introduced. The unused homepage carousel JavaScript is no longer imported. Preview and production export/metadata checks pass; no SEO ranking or field Core Web Vitals result is claimed.
+
 ## Formspree and WhatsApp update — October 25, 2026
 
 The assistance form is included in server-rendered homepage/request-help HTML, with labelled controls and a real POST action. Existing single-H1 structure, canonical URLs, unique metadata, approved structured data and nineteen sitemap URLs are preserved. The request utility page remains excluded from indexing. Contact links expose the form and footer WhatsApp route without embedding a third-party widget. Form entries are sent in the POST body, never page/query URLs or analytics. New form-specific CSS supports both themes and mobile layouts; no new image payloads, dependency or third-party script is added. Privacy metadata now describes Formspree and WhatsApp accurately. Historical preview findings below are retained as a record of earlier checks.
