@@ -3,7 +3,7 @@
 Updated October 24, 2026 from the owner's confirmations and publication instruction.
 
 - [x] Legal business name: **EasyTowing**; advertised brand: **easytowing**.
-- [x] Real Canadian number: **672-889-9764**. Owner later supplied info.easytowing.ca@gmail.com for public email contact; it is used in mail links, contact information and Organization schema.
+- [x] Real Canadian number: **431-451-5110**. Owner later supplied info.easytowing.ca@gmail.com for public email contact; it is used in mail links, contact information and Organization schema.
 - [x] Owner confirmed 24/7 call answering and partner dispatch.
 - [x] Owner confirmed every advertised service throughout Winnipeg, including heavy duty towing, motorcycles and winch outs.
 - [x] Owner confirmed the 25-minute estimate is supported by actual dispatch records. Copy explains that traffic, weather, safe access and available operators affect actual arrival.

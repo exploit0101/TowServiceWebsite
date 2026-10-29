@@ -1,6 +1,6 @@
 # GitHub repository and Pages deployment
 
-The owner requested Git version control, GitHub source publication and hosting on GitHub Pages. The default artifact remains a **non-indexable preview** while required business details and approvals are incomplete. It uses the owner-provided 672-889-9764 number with native tel:+16728899764 links. Owner confirmation of availability does not complete the separate identity, service-zone, rates, privacy and compliance gates.
+The owner requested Git version control, GitHub source publication and hosting on GitHub Pages. The current owner-authorized production site is `https://easytowing.ca/`. On October 29, 2026 the owner changed the contact to **431-451-5110**, using `tel:+14314515110` and the corresponding WhatsApp chat destination. Default local builds remain non-indexable previews; the production workflow still validates the configured business data and recorded approvals.
 
 ## What is automated
 

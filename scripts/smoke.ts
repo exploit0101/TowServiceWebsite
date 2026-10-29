@@ -28,7 +28,7 @@ for (const route of routes) {
       assert.match(html, /DEMO PHONE/, `${route}: temporary number clearly disclosed`);
       assert.match(html, /No roadside service or dispatch/, `${route}: no live service implied`);
     } else {
-      assert.equal(expectedPhoneHref,'tel:+16728899764',`${route}: owner-provided easytowing number`);
+      assert.equal(expectedPhoneHref,'tel:+14314515110',`${route}: owner-provided easytowing number`);
       assert.ok(html.includes(escapeHtml(siteConfig.displayPhone)),`${route}: readable phone number`);
       assert.ok(!html.includes('DEMO PHONE'),`${route}: demo number removed`);
     }

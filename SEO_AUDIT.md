@@ -1,5 +1,11 @@
 # Technical SEO review — October 22, 2026
 
+## New contact number and compact service design — October 29, 2026
+
+The configured business number is now `+14314515110`, displayed as 431-451-5110. Native telephone links, WhatsApp destinations, homepage description and Organization schema share the updated configuration. Contact-page metadata also reads the configured number, removing its previous literal. Static export verification checks every Organization telephone against configuration as well as all native phone targets.
+
+The hero no longer contains Explore services or its arrow; header navigation and all eleven server-rendered service-detail links remain. Shorter navy/ivory cards preserve semantic headings, concise scope captions, decorative SVG icons, keyboard access and both-theme contrast. One H1, unique metadata, absolute easytowing.ca canonicals, approved schema and nineteen indexable sitemap URLs are preserved. No new dependency, image payload, third-party script or search-ranking claim was added.
+
 ## Custom domain and service cards — October 29, 2026
 
 The canonical origin is now `https://easytowing.ca` in source configuration and the GitHub repository variable. GitHub Pages supplies an empty base path for the custom domain; rebuilding removes the obsolete `/TowServiceWebsite/` prefix from CSS, JavaScript, images and internal links. HTTPS is enforced. Read-only checks confirm `www.easytowing.ca` and the former GitHub project URL permanently redirect to the apex domain. Canonicals, social URLs, Organization/Service/BreadcrumbList schema and the nineteen approved sitemap URLs use the new domain.

@@ -42,9 +42,9 @@ test('explicit demo phone opens the dial target while visibly remaining a previe
 });
 
 test('owner-provided phone is readable and opens the dialer before full production approval', () => {
-  const html=renderToStaticMarkup(createElement(Header,{brand:'easytowing',phone:'+16728899764',displayPhone:'672-889-9764',phoneMode:'owner-provided',live:false,pilotLabel:'Selected pilot'}));
-  assert.equal((html.match(/href="tel:\+16728899764"/g) || []).length,2);
-  assert.match(html,/<a[^>]*class="header-phone-number"[^>]*>[\s\S]*?672-889-9764[\s\S]*?<\/a>/);
+  const html=renderToStaticMarkup(createElement(Header,{brand:'easytowing',phone:'+14314515110',displayPhone:'431-451-5110',phoneMode:'owner-provided',live:false,pilotLabel:'Selected pilot'}));
+  assert.equal((html.match(/href="tel:\+14314515110"/g) || []).length,2);
+  assert.match(html,/<a[^>]*class="header-phone-number"[^>]*>[\s\S]*?431-451-5110[\s\S]*?<\/a>/);
   assert.match(html,/Call now/);
   assert.ok(!html.includes('preview-banner'), 'owner-provided phone uses compact prelaunch disclosure elsewhere');
   assert.ok(!html.includes('DEMO PHONE'));

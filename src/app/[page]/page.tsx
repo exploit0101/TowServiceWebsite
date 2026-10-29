@@ -7,7 +7,7 @@ import { isLive, siteConfig, callbacksEnabled, callsEnabled, phoneContact } from
 
 const pages = {
   about: { name: 'About', title: 'Roadside help, coordinated clearly.', eyebrow: 'ABOUT EASYTOWING', description: 'easytowing coordinates independent towing and roadside partners in Winnipeg. Learn how quotes, service acceptance and dispatch work.' },
-  contact: { name: 'Contact', title: 'Call easytowing.', eyebrow: 'CONTACT & AVAILABILITY', description: 'Call easytowing at 672-889-9764 for towing and roadside assistance in Winnipeg. Discuss your vehicle, location, availability and a quote.' },
+  contact: { name: 'Contact', title: 'Call easytowing.', eyebrow: 'CONTACT & AVAILABILITY', description: `Call easytowing at ${siteConfig.displayPhone} for towing and roadside assistance in Winnipeg. Discuss your vehicle, location, availability and a quote.` },
   'rates-and-disclosures': { name: 'Rates & disclosures', title: 'Know the cost before you agree.', eyebrow: 'QUOTES & SERVICE DETAILS', description: 'Ask about the total CAD quote, taxes, possible additional fees, operator identity and consent before accepting towing or roadside service.' },
   privacy: { name: 'Privacy', title: 'Privacy at easytowing.', eyebrow: 'YOUR INFORMATION', description: 'How easytowing handles service enquiries through Formspree, WhatsApp links, phone contact, appearance preferences and optional analytics.' },
   terms: { name: 'Terms', title: 'Using easytowing.', eyebrow: 'WEBSITE & SERVICE INFORMATION', description: 'Understand enquiries, independent service partners, quotes, consent, destination choices and dispatch confirmation when arranging roadside help.' },

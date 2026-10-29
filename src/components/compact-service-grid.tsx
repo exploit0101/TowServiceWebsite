@@ -7,15 +7,15 @@ import { callsEnabled, phoneContact } from '@/lib/site-config';
 
 const captions: Record<ServiceId, string> = {
   'local-towing': 'Local breakdown transport',
-  'heavy-duty-towing': 'Equipment matched to your vehicle',
-  'motorcycle-towing': 'Transport for your motorcycle',
+  'heavy-duty-towing': 'Heavy vehicle transport',
+  'motorcycle-towing': 'Motorcycle transport',
   'battery-boost': 'Help for a discharged battery',
   'winch-out': 'Stuck in snow or mud?',
   'flat-tire': 'Find the right next step',
   'flat-tire-help': 'Fit your usable spare',
   'lockout': 'Keys locked inside?',
   'fuel-delivery': 'Fuel when you run low',
-  'battery-replacement': 'Check fitment and availability',
+  'battery-replacement': 'Check battery fitment',
   'tire-repair': 'A repair assessment first',
 };
 

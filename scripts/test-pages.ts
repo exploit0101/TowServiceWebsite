@@ -39,8 +39,10 @@ for (const route of routes) {
   assert.match(html,/easytowing/,`${route}: owner brand`);
   if (production) {
     assert.ok(html.includes(`rel="canonical" href="${canonical(route)}"`), `${route}: canonical matches deployed route`);
-    const structured = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]) as { '@type'?: string });
-    assert.ok(structured.some(item => item['@type'] === 'Organization'), `${route}: verified organization schema`);
+    const structured = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]) as { '@type'?: string; telephone?: string });
+    const organization = structured.find(item => item['@type'] === 'Organization');
+    assert.ok(organization, `${route}: verified organization schema`);
+    assert.equal(organization.telephone, configured.supportPhone, `${route}: organization uses the current contact number`);
   } else assert.ok(!html.includes('rel="canonical"') && !html.includes('application/ld+json'), `${route}: no unverified launch metadata`);
   assert.doesNotMatch(html,/aggregateRating|ratingValue|reviewCount/,`${route}: no invented rating data`);
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];

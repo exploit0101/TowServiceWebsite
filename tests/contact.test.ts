@@ -19,11 +19,11 @@ test('enquiry rejects unknown services, invalid contact details, spam and excess
   }
 });
 test('WhatsApp links use the actual international business number and a URL-encoded draft', () => {
-  const link = whatsappLink('+16728899764');
+  const link = whatsappLink('+14314515110');
   assert.ok(link);
   const url = new URL(link);
   assert.equal(url.origin, 'https://wa.me');
-  assert.equal(url.pathname, '/16728899764');
+  assert.equal(url.pathname, '/14314515110');
   assert.equal(url.searchParams.get('text'), whatsappMessage);
-  for (const invalid of ['', '672-889-9764', '+0000', '+1<script>']) assert.equal(whatsappLink(invalid), null);
+  for (const invalid of ['', '431-451-5110', '+0000', '+1<script>']) assert.equal(whatsappLink(invalid), null);
 });

@@ -7,7 +7,7 @@ import { services } from '../src/lib/content';
 const origin = (process.env.TEST_ORIGIN || 'http://127.0.0.1:3000').replace(/\/+$/, '');
 const screenshotDirectory = resolve('.qa');
 const widths = [320,375,390,768,1024,1440];
-const phoneHref = 'tel:+16728899764';
+const phoneHref = 'tel:+14314515110';
 const homepageServices = services;
 
 async function checkLayout(page: Page, label: string) {
@@ -41,7 +41,7 @@ async function checkLayout(page: Page, label: string) {
   const readablePhone=page.locator('.header-phone-number');
   await expect(readablePhone).toBeVisible();
   await expect(readablePhone).toHaveAttribute('href',phoneHref);
-  await expect(readablePhone).toContainText('672-889-9764');
+  await expect(readablePhone).toContainText('431-451-5110');
   const numberBox=await readablePhone.boundingBox();
   const callBox=await page.locator('.header-call').boundingBox();
   assert.ok(numberBox && callBox,`${label}: both header contact actions have layout`);
@@ -60,6 +60,9 @@ async function checkHomeInteractions(page: Page, width: number) {
   const grid=await page.locator('.service-list').evaluate(element=>({columns:getComputedStyle(element).gridTemplateColumns.split(' ').length,width:element.clientWidth,content:element.scrollWidth}));
   assert.equal(grid.columns,width<768?2:3);
   assert.ok(grid.content<=grid.width+1);
+  await expect(page.locator('.hero-explore')).toHaveCount(0);
+  const surfaces=await cards.locator(':scope > a').evaluateAll(elements => new Set(elements.map(element => getComputedStyle(element).backgroundImage)).size);
+  assert.equal(surfaces,2,'service cards mix light and dark surfaces');
   for (const card of await cards.all()) {
     await expect(card.locator('.service-card-icon svg')).toHaveCount(1);
     assert.equal(await card.evaluate(element => getComputedStyle(element).animationName), 'none', 'service cards stay still');
@@ -67,7 +70,7 @@ async function checkHomeInteractions(page: Page, width: number) {
     assert.ok(text.content<=text.width+1, 'service card text fits without clipping');
   }
   await expect(page.locator('.service-help-card a')).toHaveAttribute('href',phoneHref);
-  await expect(page.locator('.hero-whatsapp')).toHaveAttribute('href',/^https:\/\/wa.me\/16728899764\?text=/);
+  await expect(page.locator('.hero-whatsapp')).toHaveAttribute('href',/^https:\/\/wa.me\/14314515110\?text=/);
   await expect(page.locator('.hero-email')).toHaveAttribute('href',/^mailto:info.easytowing.ca@gmail.com/);
   await expect(page.locator('#reviews')).toBeVisible();
   await expect(page.locator('#reviews .review-summary')).toContainText('4.9/5');
@@ -159,16 +162,18 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
       await expect.poll(async () => (await page.locator('#services').boundingBox())?.y).toBeGreaterThanOrEqual(height-1);
       const hero=await page.locator('.hero').boundingBox();
       const facts=await page.locator('.hero-highlights').boundingBox();
-      const explore=await page.locator('.hero-explore').boundingBox();
+      const note=await page.locator('.hero-note').boundingBox();
       assert.ok(hero && Math.abs(hero.y+hero.height-height)<2,'the hero fills the first screen at '+width+'x'+height);
-      assert.ok(facts && facts.y+facts.height<height && explore && explore.y+explore.height<=height,'hero trust facts and explore link remain in the first screen at '+width+'x'+height);
-      await page.locator('.hero-explore').click();
+      assert.ok(facts && facts.y+facts.height<height && note && note.y+note.height<=height,'hero trust facts and provider note remain in the first screen at '+width+'x'+height);
+      const menu=page.getByRole('button',{name:'Open navigation',exact:true});
+      if (await menu.isVisible()) await menu.click();
+      await page.locator('#main-navigation').getByRole('link',{name:'Services',exact:true}).click();
       await expect(page).toHaveURL(/#services$/);
       await expect.poll(async () => {
         const heading=await page.locator('#services h2').boundingBox();
         const chrome=await page.locator('.site-chrome').boundingBox();
         return !!(heading && chrome && heading.y>=chrome.height && heading.y+heading.height<=height);
-      },{message:'Explore services scrolls the heading into view below the sticky header'}).toBe(true);
+      },{message:'Services navigation scrolls the heading into view below the sticky header'}).toBe(true);
     }
     for (const [width,height] of [[320,568],[390,664],[1440,900]]) {
       await page.setViewportSize({width,height});
@@ -210,7 +215,7 @@ async function checkTextContrast(page: Page, label: string) {
     },
     };
     const {color,over,luminance,contrast}=helpers;
-    const selectors=['.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','.hero-explore','#services .eyebrow','.service-list-item h3','.service-card-copy p','.service-help-card h3','.service-help-card a','.review-card blockquote','.review-person > strong','.review-source','.assistance-intro h2','.assistance-intro h2 em','.assistance-intro p','.assistance-facts span','.assistance-call strong','.assistance-call small','.assistance-details','.assistance-form-caption','.assistance-form-heading h3','.assistance-form-heading p','.assistance-field label','.assistance-field label small','.assistance-send-notice','.assistance-send-notice a','.assistance-submit','.assistance-form-notice','.footer-whatsapp'];
+    const selectors=['.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','#services .eyebrow','.service-list-item h3','.service-card-copy p','.service-help-card h3','.service-help-card a','.review-card blockquote','.review-person > strong','.review-source','.assistance-intro h2','.assistance-intro h2 em','.assistance-intro p','.assistance-facts span','.assistance-call strong','.assistance-call small','.assistance-details','.assistance-form-caption','.assistance-form-heading h3','.assistance-form-heading p','.assistance-field label','.assistance-field label small','.assistance-send-notice','.assistance-send-notice a','.assistance-submit','.assistance-form-notice','.footer-whatsapp'];
     return selectors.flatMap(selector => Array.from(document.querySelectorAll<HTMLElement>(selector))).filter(element => element.getClientRects().length && element.textContent?.trim()).map(element => {
       const chain:Element[]=[];
       for (let ancestor:Element|null=element;ancestor;ancestor=ancestor.parentElement) chain.unshift(ancestor);

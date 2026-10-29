@@ -1,5 +1,15 @@
 # Verification report
 
+## Hero spacing, shorter mixed service cards and new number — October 29, 2026
+
+Removed the Explore services link and its arrow, redistributed vertical spacing between hero content groups, and retained the first-screen layout with all four trust facts and provider note visible on short phones. Services still begin below the hero. Cards are shorter: measured 128px on desktop and 154–155px on small phones, with horizontal icon/text on desktop and stacked content on mobile. Navy and ivory cards form a responsive checkerboard and retain readable contrast in both themes.
+
+The owner changed the business contact to **431-451-5110** (`+14314515110`). Updated `config/launch.json`; all shared phone, WhatsApp, form-help, footer and Organization-schema contacts derive from it. Contact-page metadata now uses the configured number instead of a literal. Updated phone/WhatsApp fixtures and browser expectations. Source searches found no obsolete number in application/configuration/test sources. Carrier answering and actual WhatsApp account delivery were not tested.
+
+Application changes: `src/app/page.tsx`, `src/app/[page]/page.tsx`, `src/components/compact-service-grid.tsx`, `src/components/refinements.css`, `config/launch.json`. Verification changes: `scripts/browser-check.ts`, `scripts/contact-browser-check.ts`, `scripts/smoke.ts`, `scripts/test-pages.ts`, `tests/carousel.test.ts`, `tests/components.test.ts`, `tests/contact.test.ts`, `tests/phone.test.ts`. Current release notes in README and PRELAUNCH_CHECKLIST were updated.
+
+Passed local `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test` (56 tests), `npm.cmd run test:browser` (six widths, both themes, contrast, first-screen fit, anchor navigation, service links/icons and gallery keyboard flow), `npm.cmd run test:contact` (mocked delivery/error/native POST flows) and `npm.cmd run test:smoke` (20 public routes and five blocked routes). Production `npm.cmd run build:pages` and `npm.cmd run test:pages` passed: 21 pages, 91 local destinations/assets, matching contact numbers, approved metadata/schema and nineteen sitemap URLs. Visually inspected desktop, 390×664 and 320×568 hero/card layouts. No phone call, form enquiry, email or WhatsApp message was sent. Canonical domain remains `https://easytowing.ca`.
+
 ## Custom domain, first-screen hero and service cards — October 29, 2026
 
 Fixed the custom-domain mismatch: the deployed HTML still requested `/TowServiceWebsite/` assets, which returned 404 on `easytowing.ca`, while the same files at the root returned 200. Updated `config/launch.json`, added `public/CNAME`, and set the existing GitHub `CANONICAL_DOMAIN` variable to `https://easytowing.ca`. The workflow already derives the correct empty base path from Pages settings. Domain repair commit `b7a6d53` deployed successfully in run `40887762284`. Browser checks passed on the repaired public domain across 320/375/390/768/1024/1440px, both themes, images, navigation, native contact URLs and gallery keyboard controls. HTTPS and permanent redirects from `www` and the former GitHub project URL were checked.

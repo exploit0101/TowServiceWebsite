@@ -26,7 +26,7 @@ test('telephone contact rejects missing or mismatched display numbers', () => {
 });
 
 test('owner-provided easytowing display number matches its native dial target', () => {
-  assert.deepEqual(getPhoneContact('+16728899764','672-889-9764'), {
-    href:'tel:+16728899764',display:'672-889-9764',
+  assert.deepEqual(getPhoneContact('+14314515110','431-451-5110'), {
+    href:'tel:+14314515110',display:'431-451-5110',
   });
 });

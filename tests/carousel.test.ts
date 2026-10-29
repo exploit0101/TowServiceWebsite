@@ -9,7 +9,7 @@ import { homepageServiceIds } from '../src/lib/service-catalog';
 const items=homepageServiceIds.map(id => services.find(service => service.id === id)!);
 
 test('the service carousel renders every real service link and an accessible motion control before hydration', () => {
-  const html=renderToStaticMarkup(createElement(ServiceCarousel,{items,phoneHref:'tel:+16728899764',displayPhone:'672-889-9764'}));
+  const html=renderToStaticMarkup(createElement(ServiceCarousel,{items,phoneHref:'tel:+14314515110',displayPhone:'431-451-5110'}));
   assert.match(html,/role="region" aria-label="Service options" aria-roledescription="carousel"/);
   assert.match(html,/class="service-carousel-track"/);
   assert.match(html,/Resume movement/,'server-rendered motion control honours the safe reduced-motion fallback');
@@ -22,7 +22,7 @@ test('the service carousel renders every real service link and an accessible mot
     assert.ok(card,item.id + ': real service article');
     assert.ok(card.includes('href="/services/' + item.id + '"'),item.id + ': detail link');
     assert.match(card,/<svg\b[^>]*aria-hidden="true"/,item.id + ': decorative icon');
-    assert.ok(card.includes('href="tel:+16728899764"'),item.id + ': configured dial target');
+    assert.ok(card.includes('href="tel:+14314515110"'),item.id + ': configured dial target');
   }
 });
 

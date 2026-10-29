@@ -43,7 +43,7 @@ export async function checkContactForm(browser: Browser) {
       const priorityBox = await priority.boundingBox();
       const formBox = await form.boundingBox();
       assert.ok(priorityBox && formBox && priorityBox.y + priorityBox.height <= formBox.y, 'urgent phone contact comes before the request form at every width');
-      await expect(priority.locator('a[href^="tel:"]')).toHaveAttribute('href', 'tel:+16728899764');
+      await expect(priority.locator('a[href^="tel:"]')).toHaveAttribute('href', 'tel:+14314515110');
       for (const field of ['phone', 'location', 'email', 'service', 'message']) {
         await page.keyboard.press('Tab');
         await expect(form.locator(`[name="${field}"]`)).toBeFocused();
@@ -102,7 +102,7 @@ export async function checkContactForm(browser: Browser) {
       await expect(whatsapp).toHaveAttribute('target', '_blank');
       await expect(whatsapp).toHaveAttribute('rel', 'noopener noreferrer');
       const url = new URL((await whatsapp.getAttribute('href'))!);
-      assert.equal(url.pathname, '/16728899764');
+      assert.equal(url.pathname, '/14314515110');
       assert.equal(url.searchParams.get('text'), whatsappMessage);
       await page.evaluate(() => document.activeElement instanceof HTMLElement && document.activeElement.blur());
       for (const theme of ['light', 'dark']) {
