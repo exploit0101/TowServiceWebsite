@@ -1,5 +1,13 @@
 # Verification report
 
+## Compact hero and full mobile service grid — October 29, 2026
+
+Removed the full-screen hero minimum height and reduced the hero, section-heading and service-grid spacing. Our Services and its first row now appear on the opening screen. Mobile cards show a 28px icon tile beside the service name in 50px-high links; captions, arrow decorations and the redundant phone-help tile are hidden on mobile. All eleven service links remain, with the final service spanning both columns. The full services section fits in one short-phone viewport below the sticky header when viewing that section. Desktop cards are reduced to 88px high. Navy/ivory styling, phone 431-451-5110, WhatsApp/email, provider facts, reviews and form behaviour are retained.
+
+Changed `src/app/page.tsx`, `src/components/refinements.css`, `scripts/browser-check.ts`, README and SEO/QA reports. Browser assertions now verify that the first service row is visible on initial load, that the entire service section fits below the header, and that compact links retain at least 44px of target height. These checks passed at 320×568, 390×664, 768×900 and 1440×900. Full browser checks passed at six widths, including both themes, contrast, navigation, gallery keyboard flow, loaded images, ticker motion/pause and complete form height. Desktop and short-phone screenshots were visually inspected.
+
+Passed `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test` (56 tests), `npm.cmd run test:browser`, production `npm.cmd run build:pages` and `npm.cmd run test:pages` (21 pages, 91 local destinations/assets, canonical/schema/contact validation and nineteen sitemap URLs). No new dependency, image or business claim was added. No phone call, enquiry or WhatsApp message was sent. Existing account-level carrier/inbox/Search Console checks are unchanged.
+
 ## Hero spacing, shorter mixed service cards and new number — October 29, 2026
 
 Removed the Explore services link and its arrow, redistributed vertical spacing between hero content groups, and retained the first-screen layout with all four trust facts and provider note visible on short phones. Services still begin below the hero. Cards are shorter: measured 128px on desktop and 154–155px on small phones, with horizontal icon/text on desktop and stacked content on mobile. Navy and ivory cards form a responsive checkerboard and retain readable contrast in both themes.

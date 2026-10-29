@@ -68,6 +68,8 @@ async function checkHomeInteractions(page: Page, width: number) {
     assert.equal(await card.evaluate(element => getComputedStyle(element).animationName), 'none', 'service cards stay still');
     const text=await card.locator('.service-card-copy').evaluate(element=>({width:element.clientWidth,content:element.scrollWidth}));
     assert.ok(text.content<=text.width+1, 'service card text fits without clipping');
+    const target=await card.locator(':scope > a').boundingBox();
+    assert.ok(target && target.height>=44,'compact service cards keep a clear tap target');
   }
   await expect(page.locator('.service-help-card a')).toHaveAttribute('href',phoneHref);
   await expect(page.locator('.hero-whatsapp')).toHaveAttribute('href',/^https:\/\/wa.me\/14314515110\?text=/);
@@ -159,11 +161,14 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
       await page.goto('about:blank');
       await page.setViewportSize({width,height});
       await page.goto(origin,{waitUntil:'networkidle'});
-      await expect.poll(async () => (await page.locator('#services').boundingBox())?.y).toBeGreaterThanOrEqual(height-1);
       const hero=await page.locator('.hero').boundingBox();
       const facts=await page.locator('.hero-highlights').boundingBox();
       const note=await page.locator('.hero-note').boundingBox();
-      assert.ok(hero && Math.abs(hero.y+hero.height-height)<2,'the hero fills the first screen at '+width+'x'+height);
+      const first=await page.locator('.service-list-item').first().boundingBox();
+      const section=await page.locator('#services').boundingBox();
+      const chrome=await page.locator('.site-chrome').boundingBox();
+      assert.ok(hero && first && first.y+first.height<=height,'services start on the opening screen at '+width+'x'+height);
+      assert.ok(section && chrome && section.height<=height-chrome.height-16,'the full service section fits below the sticky header at '+width+'x'+height);
       assert.ok(facts && facts.y+facts.height<height && note && note.y+note.height<=height,'hero trust facts and provider note remain in the first screen at '+width+'x'+height);
       const menu=page.getByRole('button',{name:'Open navigation',exact:true});
       if (await menu.isVisible()) await menu.click();
@@ -182,7 +187,7 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
       const chrome=await page.locator('.site-chrome').boundingBox();
       assert.ok(form && chrome && form.height<=height-chrome.height,'the entire form fits below the header at '+width+'x'+height);
     }
-    console.log('PASS first-screen hero, services below the fold, anchor navigation, complete form height, service ticker pause and 24/7 pulse.');
+    console.log('PASS compact opening hero, first-screen services, complete service-grid fit, anchor navigation, form height, service ticker pause and 24/7 pulse.');
   } finally {await context.close();}
 }
 

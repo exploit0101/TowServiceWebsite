@@ -122,7 +122,6 @@ export default function Home() {
       <section id="services" className="section container">
         <div className="section-heading">
           <div>
-            <div className="eyebrow"><span />ROADSIDE HELP, MADE EASY</div>
             <h2>Our services<span className="services-heading-dot" aria-hidden="true">.</span></h2>
           </div>
           <p>Choose a service. Call for availability and a quote.</p>

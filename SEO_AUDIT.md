@@ -1,5 +1,9 @@
 # Technical SEO review — October 22, 2026
 
+## Compact opening and mobile service tiles — October 29, 2026
+
+The hero no longer fills the viewport; Our Services begins on the opening screen. All eleven service names, headings and detail links remain server-rendered. Mobile tiles hide the optional scope caption and decorative link arrow for a compact icon/name presentation; full scope remains available on every service page. The generic services eyebrow was removed. No page, metadata, canonical, approved sitemap URL or structured-data claim changed. The number remains 431-451-5110. Production export checks validate all 21 pages, 91 local destinations/assets and nineteen approved sitemap URLs. Responsive checks preserve contrast and accessible tap targets in both themes; no ranking or field Core Web Vitals claim is made.
+
 ## New contact number and compact service design — October 29, 2026
 
 The configured business number is now `+14314515110`, displayed as 431-451-5110. Native telephone links, WhatsApp destinations, homepage description and Organization schema share the updated configuration. Contact-page metadata also reads the configured number, removing its previous literal. Static export verification checks every Organization telephone against configuration as well as all native phone targets.
