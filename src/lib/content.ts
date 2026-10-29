@@ -116,21 +116,21 @@ export const services: readonly Service[] = [
   {
     id: 'flat-tire', number: '06', name: 'Flat tire', problem: 'NOT SURE WHAT YOUR TIRE NEEDS?',
     short: 'A flat tire. Choose a suitable next step.',
-    description: 'Help assessing a flat tire and arranging a spare change, repair enquiry or tow as appropriate.',
+    description: 'Help assessing a flat tire and arranging a spare-wheel change or tow as appropriate.',
     icon: 'flat-tire', tag: 'WHEN YOU NEED A PLAN FOR A FLAT',
     title: 'Flat tire help to assess your next step.',
-    intro: 'A flat tire does not always call for the same service. Describe the damage, spare availability and stopping location so the team can check whether a tire change, repair assessment or towing is appropriate.',
+    intro: 'A flat tire does not always call for the same service. Describe the damage, spare availability and stopping location so the team can check whether a spare-wheel change or towing is appropriate.',
     scope: [
       'An initial discussion of the tire problem, stopping location and available spare.',
-      'Matching the enquiry to spare-wheel installation, a repair assessment or towing when a suitable partner is available.',
-      'The actual work, equipment, repair suitability and price must be confirmed before service; tire replacement is not included automatically.',
+      'Matching the enquiry to spare-wheel installation or towing when a suitable partner is available.',
+      'The actual work, equipment and price must be confirmed before service; new tires and puncture repairs are not included.',
     ],
     prepare: [
       'Whether the tire is losing pressure or fully flat, and any visible damage you can describe safely.',
-      'Whether you have a usable spare, tire repair kit and wheel-lock key.',
+      'Whether you have a usable spare and wheel-lock key.',
       'Your vehicle type and whether it is stopped away from moving traffic on suitable ground.',
     ],
-    limit: 'Do not drive on a flat or visibly damaged tire. An initial enquiry cannot establish that a tire is repairable or that a roadside wheel change is safe; the partner must assess the situation.',
+    limit: 'Do not drive on a flat or visibly damaged tire. A partner must assess whether a roadside wheel change is safe; ask about towing if a spare-wheel change is unsuitable.',
   },
   {
     id: 'flat-tire-help', number: '07', name: 'Tire change', problem: 'HAVE A SPARE TO FIT?',
@@ -142,7 +142,7 @@ export const services: readonly Service[] = [
     scope: [
       'Fitment of a suitable spare you already have, if safe and compatible.',
       'Availability depends on access, wheel condition and any locking wheel nuts.',
-      'New tires, puncture repairs and damaged-wheel recovery are not included unless specifically agreed.',
+      'New tires and puncture repairs are not included. Damaged-wheel recovery requires a separate towing assessment.',
     ],
     prepare: [
       'Whether you have a usable spare and its location in the vehicle.',
@@ -207,25 +207,6 @@ export const services: readonly Service[] = [
       'Any known battery-access restrictions; share further vehicle details only with the confirmed partner when needed.',
     ],
     limit: 'A new battery will not resolve every starting or charging fault. High-voltage traction batteries are outside this roadside replacement scope.',
-  },
-  {
-    id: 'tire-repair', number: '11', name: 'Tire repair', problem: 'PUNCTURED TIRE?',
-    short: 'A puncture. Assess before repair.',
-    description: 'Puncture assessment and repair where tire condition, equipment and location allow.',
-    icon: 'tire-repair', tag: 'WHEN A TIRE MAY BE REPAIRABLE',
-    title: 'Tire repair starts with a proper suitability assessment.',
-    intro: 'Not every puncture can be repaired, and not every repair can be performed safely at the roadside. A suitable partner must assess the tire, damage and available facilities before recommending and quoting the work.',
-    scope: [
-      'Inspection to establish whether the tire is suitable for repair.',
-      'Repair only when the damage, tire condition, equipment and safe working location permit.',
-      'Tire replacement, wheel damage and transport to a repair facility are quoted separately if needed.',
-    ],
-    prepare: [
-      'Your vehicle type and tire size, if you can check them safely.',
-      'Where the visible damage is, whether the tire is flat and whether it was driven flat.',
-      'Whether a usable spare and wheel-lock key are available as an alternative.',
-    ],
-    limit: 'Do not drive on a flat or visibly damaged tire. Sidewall damage and other unsafe conditions may rule out repair; ask about a spare-wheel change or towing when needed.',
   },
 ];
 

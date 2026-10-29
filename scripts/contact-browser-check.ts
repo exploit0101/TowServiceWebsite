@@ -136,7 +136,7 @@ export async function checkContactForm(browser: Browser) {
       await expect(page.getByRole('heading', { name: 'Formspree verification test' })).toBeVisible();
       await page.goto(`${origin}/request-help/`, { waitUntil: 'networkidle' });
       await expect(page.getByRole('form', { name: 'Request roadside assistance' })).toHaveCount(1);
-      console.log(`PASS ${width}px: SSR form, all 11 services, validation, mocked success/422/429/network/malformed response, hosted verification, both themes and WhatsApp draft.`);
+      console.log(`PASS ${width}px: SSR form, all ${services.length} services, validation, mocked success/422/429/network/malformed response, hosted verification, both themes and WhatsApp draft.`);
     } finally { await context.close(); }
   }
   const noScript = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 } });

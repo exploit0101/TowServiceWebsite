@@ -1,4 +1,4 @@
-import { Truck, Container, Motorbike, Zap, Cable, CircleDashed, KeyRound, CircleDot, Fuel, BatteryPlus, Wrench, type LucideIcon } from 'lucide-react';
+import { Truck, Container, Motorbike, Zap, Cable, CircleDashed, KeyRound, CircleDot, Fuel, BatteryPlus, type LucideIcon } from 'lucide-react';
 import type { ServiceIconName } from '@/lib/service-catalog';
 
 const towingDrawings = {
@@ -29,7 +29,6 @@ const serviceIcons = {
   tire: CircleDot,
   fuel: Fuel,
   'battery-replacement': BatteryPlus,
-  'tire-repair': Wrench,
 } satisfies Record<ServiceIconName, LucideIcon>;
 
 export function ServiceIcon({ icon, className, size = 24, strokeWidth = 1.65 }: {

@@ -3,7 +3,7 @@
 Updated October 24, 2026 from the owner's confirmations and publication instruction.
 
 - [x] Legal business name: **EasyTowing**; advertised brand: **easytowing**.
-- [x] Real Canadian number: **431-451-5110**. Owner later supplied info.easytowing.ca@gmail.com for public email contact; it is used in mail links, contact information and Organization schema.
+- [x] Real Canadian number: **431-451-5110**. Owner later supplied infoeasytowing@gmail.com for public email contact; it is used in mail links, contact information and Organization schema.
 - [x] Owner confirmed 24/7 call answering and partner dispatch.
 - [x] Owner confirmed every advertised service throughout Winnipeg, including heavy duty towing, motorcycles and winch outs.
 - [x] Owner confirmed the 25-minute estimate is supported by actual dispatch records. Copy explains that traffic, weather, safe access and available operators affect actual arrival.
@@ -11,7 +11,7 @@ Updated October 24, 2026 from the owner's confirmations and publication instruct
 - [x] Quoting copy uses CAD and explains taxes, possible additional fees and consent; no invented prices or certificate numbers.
 - [x] Three actual customer quotes were supplied by the owner. Rating and feedback are visibly described as supplied by EasyTowing. No invented reviewer identity, dates, platform affiliation or total count.
 - [x] Public project/draft wording and the How it works section removed. Essential role, safety, privacy and quotation information remains.
-- [x] Production validator passes. GitHub Pages has a guarded production export, base-path-correct canonicals, approved schema and nineteen sitemap URLs.
+- [x] Production validator passes. GitHub Pages has a guarded production export, base-path-correct canonicals, approved schema and eighteen sitemap URLs.
 - [x] Homepage and static request page include the owner-requested Formspree enquiry form. The separate server callback API and optional analytics stay disabled unless separately configured.
 
 These checkmarks record owner attestations and implementation checks; the software does not provide a legal determination. Keep underlying operating/partner documents outside the public repository. The original `winnipeg-bridgwater` pilot key is historical; current advertised coverage is Winnipeg.

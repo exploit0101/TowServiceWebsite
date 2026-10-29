@@ -15,7 +15,6 @@ export const homepageServiceIds = [
 export const serviceIds = [
   ...homepageServiceIds,
   'battery-replacement',
-  'tire-repair',
 ] as const;
 
 export type ServiceId = typeof serviceIds[number];
@@ -30,5 +29,4 @@ export type ServiceIconName =
   | 'lockout'
   | 'tire'
   | 'fuel'
-  | 'battery-replacement'
-  | 'tire-repair';
+  | 'battery-replacement';

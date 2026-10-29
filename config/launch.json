@@ -6,7 +6,7 @@
   "phoneMode": "verified",
   "supportPhone": "+14314515110",
   "displayPhone": "431-451-5110",
-  "supportEmail": "info.easytowing.ca@gmail.com",
+  "supportEmail": "infoeasytowing@gmail.com",
   "canonicalDomain": "https://easytowing.ca",
   "pilotMarket": "winnipeg-bridgwater",
   "serviceHours": "24 hours a day, 7 days a week",
@@ -42,8 +42,7 @@
     "flat-tire-help",
     "lockout",
     "fuel-delivery",
-    "battery-replacement",
-    "tire-repair"
+    "battery-replacement"
   ],
   "prices": [
     "Confirm a quote in CAD before service, including applicable taxes and possible additional fees. Any change to the agreed work or price requires consent."
@@ -63,7 +62,6 @@
     "/services/lockout",
     "/services/fuel-delivery",
     "/services/battery-replacement",
-    "/services/tire-repair",
     "/about",
     "/contact",
     "/rates-and-disclosures",
@@ -86,7 +84,7 @@
   },
   "approvalRecord": {
     "confirmedAt": "2026-10-24",
-    "confirmationSource": "Owner confirmed the business/provider arrangements, partner credentials, provincial requirements, rates and consent, privacy and legal text approvals; supplied legal name EasyTowing and explicitly selected phone-only support. Owner supplied info.easytowing.ca@gmail.com for public email contact on October 25, 2026."
+    "confirmationSource": "Owner confirmed the business/provider arrangements, partner credentials, provincial requirements, rates and consent, privacy and legal text approvals; supplied legal name EasyTowing and initially selected phone-only support. Owner subsequently supplied public email contact, updated to infoeasytowing@gmail.com at the owner's request on October 29, 2026."
   },
   "supportChannel": "email"
 }

@@ -1,5 +1,9 @@
 # Technical SEO review — October 22, 2026
 
+## Email update and retired service — October 29, 2026
+
+Public contact links and Organization schema use `infoeasytowing@gmail.com`. Tire Repair is removed from the catalogue, homepage, service hub metadata, related links, form choices, approved routes and sitemap. The former service URL returns 404 rather than advertising unavailable work. Flat-tire content now describes spare-wheel changes or towing, without offering repairs. There are ten service pages, twenty exported public pages and eighteen approved indexable URLs. Existing metadata uniqueness, one-H1 structure, absolute easytowing.ca canonicals and provider disclosures remain verified. Export checks validate the configured schema email and absence of the retired route.
+
 ## Compact opening and mobile service tiles — October 29, 2026
 
 The hero no longer fills the viewport; Our Services begins on the opening screen. All eleven service names, headings and detail links remain server-rendered. Mobile tiles hide the optional scope caption and decorative link arrow for a compact icon/name presentation; full scope remains available on every service page. The generic services eyebrow was removed. No page, metadata, canonical, approved sitemap URL or structured-data claim changed. The number remains 431-451-5110. Production export checks validate all 21 pages, 91 local destinations/assets and nineteen approved sitemap URLs. Responsive checks preserve contrast and accessible tap targets in both themes; no ranking or field Core Web Vitals claim is made.

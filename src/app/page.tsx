@@ -80,7 +80,7 @@ const images: FleetImage[] = [
 export default function Home() {
   const arrival = getDocumentedArrivalEstimate(siteConfig.arrivalEstimate);
   const availability = getAvailability(siteConfig.availability);
-  const shown = [...homepageServiceIds, 'battery-replacement', 'tire-repair'].flatMap((id) =>
+  const shown = [...homepageServiceIds, 'battery-replacement'].flatMap((id) =>
     services.filter(
       (service) =>
         service.id === id && (!isLive || siteConfig.offers.includes(id)),

@@ -16,7 +16,6 @@ const captions: Record<ServiceId, string> = {
   'lockout': 'Keys locked inside?',
   'fuel-delivery': 'Fuel when you run low',
   'battery-replacement': 'Check battery fitment',
-  'tire-repair': 'A repair assessment first',
 };
 
 export function CompactServiceGrid({ items }: { items: readonly Service[] }) {

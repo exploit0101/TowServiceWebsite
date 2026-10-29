@@ -1,5 +1,13 @@
 # Verification report
 
+## New email and removal of Tire Repair — October 29, 2026
+
+Changed public support email to `infoeasytowing@gmail.com` through `config/launch.json`, which supplies the hero email action, contact page and Organization schema. Removed Tire Repair from the service catalogue, icon type/map, homepage selection, ticker, related-service links, enquiry choices, accepted callback IDs, approved offers and sitemap configuration. Flat-tire copy now offers a spare-wheel change or towing, with puncture repairs excluded. The removed `/services/tire-repair/` route returns 404 and is absent from the static artifact. Mobile grid spanning now applies only to an odd final service, keeping the ten remaining services in five even rows.
+
+Application changes: `config/launch.json`, `src/app/page.tsx`, `src/app/services/page.tsx`, `src/lib/content.ts`, `src/lib/service-catalog.ts`, `src/components/compact-service-grid.tsx`, `src/components/service-icon.tsx`, `src/components/refinements.css`. Updated browser/contact/HTTP/export checks, contact/service validation tests, README, PRELAUNCH_CHECKLIST and this SEO/QA documentation. Export checks now compare Organization email with the configured address; validation tests reject the removed service.
+
+Passed `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test` (56 tests), `npm.cmd run test:browser` (six widths, both themes, first-screen services, complete mobile-grid fit and native email URL), `npm.cmd run test:contact` (ten choices and mocked/native form flows), `npm.cmd run test:smoke` (19 public destinations and six blocked/removed paths), production `npm.cmd run build:pages` and `npm.cmd run test:pages` (20 pages, 90 local destinations/assets and eighteen approved sitemap URLs). No email, phone call, live form enquiry or WhatsApp message was sent. The Formspree endpoint remains unchanged; account-level notification settings are separate from public contact links.
+
 ## Compact hero and full mobile service grid — October 29, 2026
 
 Removed the full-screen hero minimum height and reduced the hero, section-heading and service-grid spacing. Our Services and its first row now appear on the opening screen. Mobile cards show a 28px icon tile beside the service name in 50px-high links; captions, arrow decorations and the redundant phone-help tile are hidden on mobile. All eleven service links remain, with the final service spanning both columns. The full services section fits in one short-phone viewport below the sticky header when viewing that section. Desktop cards are reduced to 88px high. Navy/ivory styling, phone 431-451-5110, WhatsApp/email, provider facts, reviews and form behaviour are retained.

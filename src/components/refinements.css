@@ -112,7 +112,7 @@ html[data-theme="dark"] .service-list-item > a:is(:hover, :focus-visible) { bord
   .service-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .service-list-item:nth-child(4n+1), .service-list-item:nth-child(4n+4) { --card-bg: linear-gradient(140deg, #244759, #142f41); --card-ink: #f4f8fa; --card-muted: #c1d2dd; --card-line: #36566a; --card-icon-bg: linear-gradient(145deg, #4a4b39, #344237); --card-icon-ink: #ffcf62; --card-icon-line: #8e7b49; --card-arrow: #b6cbd8; }
   .service-list-item > a { grid-template-columns: 28px minmax(0, 1fr); min-height: 50px; padding: 8px; gap: 8px; border-radius: 10px; }
-  .service-list-item:last-of-type { grid-column: 1/-1; }
+  .service-list-item:last-of-type:nth-child(odd) { grid-column: 1/-1; }
   .service-card-icon { width: 28px; height: 28px; border-radius: 8px; }
   .service-card-icon > svg { width: 21px; height: 21px; }
   .service-list-item .service-card-arrow, .service-card-copy p { display: none; }

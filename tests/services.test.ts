@@ -9,7 +9,7 @@ import { RequestForm } from '../src/components/request-form';
 import { ServiceIcon } from '../src/components/service-icon';
 
 const expectedHomepageIds = ['local-towing', 'heavy-duty-towing', 'motorcycle-towing', 'battery-boost', 'winch-out', 'flat-tire', 'flat-tire-help', 'lockout', 'fuel-delivery'];
-const expectedIds = [...expectedHomepageIds, 'battery-replacement', 'tire-repair'];
+const expectedIds = [...expectedHomepageIds, 'battery-replacement'];
 const request = {phone:'204-555-0100', name:'Alex', area:'General neighbourhood', consent:true, website:''};
 
 test('the full service catalogue preserves existing routes and provides distinct scope and metadata', () => {
@@ -53,7 +53,7 @@ test('callback validation accepts all supported service choices and rejects unsu
     assert.ok(result.ok, `${service}: supported request choice`);
     assert.equal(result.value.service, service);
   }
-  for (const service of ['collision-recovery', 'impound', 'toString', ''])
+  for (const service of ['tire-repair', 'collision-recovery', 'impound', 'toString', ''])
     assert.equal(validateRequest({...request, service}).ok, false, `${service}: unsupported request`);
 });
 

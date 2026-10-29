@@ -73,7 +73,7 @@ async function checkHomeInteractions(page: Page, width: number) {
   }
   await expect(page.locator('.service-help-card a')).toHaveAttribute('href',phoneHref);
   await expect(page.locator('.hero-whatsapp')).toHaveAttribute('href',/^https:\/\/wa.me\/14314515110\?text=/);
-  await expect(page.locator('.hero-email')).toHaveAttribute('href',/^mailto:info.easytowing.ca@gmail.com/);
+  await expect(page.locator('.hero-email')).toHaveAttribute('href',/^mailto:infoeasytowing@gmail\.com(?:\?|$)/);
   await expect(page.locator('#reviews')).toBeVisible();
   await expect(page.locator('#reviews .review-summary')).toContainText('4.9/5');
   await expect(page.locator('#reviews .review-card')).toHaveCount(3);
@@ -319,7 +319,7 @@ async function main() {
       assert.ok(response,`${width}px home navigation returns a response`);
       assert.equal(response.status(),200,`${width}px home loads`);
       const serverHtml=await response.text();
-      assert.equal((serverHtml.match(/<article class="service-list-item"/g) || []).length,homepageServices.length,'all eleven homepage categories are server-rendered');
+      assert.equal((serverHtml.match(/<article class="service-list-item"/g) || []).length,homepageServices.length,'all available homepage categories are server-rendered');
       await expect(page.locator('h1')).toHaveCount(1);
       await expect(page.locator('h1')).toContainText('Winnipeg towing');
       await expect(page.locator('h1')).toContainText('Made easy.');

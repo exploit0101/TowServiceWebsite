@@ -84,7 +84,7 @@ for (const route of routes) {
   console.log(`PASS ${route}: SSR, H1, preview metadata, contact and schema guards`);
 }
 for (const route of discovered) { const response=await fetch(`${origin}${route}`); assert.equal(response.status,200,`Broken internal link: ${route}`); }
-for (const route of ['/areas/winnipeg-bridgwater','/areas/winnipeg-transcona','/areas/brampton-bramalea','/services/collision-recovery','/nonexistent']) assert.equal((await fetch(`${origin}${route}`)).status,404,`${route}: unapproved route must be 404`);
+for (const route of ['/areas/winnipeg-bridgwater','/areas/winnipeg-transcona','/areas/brampton-bramalea','/services/collision-recovery','/services/tire-repair','/nonexistent']) assert.equal((await fetch(`${origin}${route}`)).status,404,`${route}: unapproved or removed route must be 404`);
 const robots=await (await fetch(`${origin}/robots.txt`)).text();
 assert.match(robots,/Allow: \/\s/); assert.match(robots,/Disallow: \/api\//);
 assert.ok(!/^Disallow: \/\s*$/m.test(robots),'Crawlers must reach HTML to read noindex and load rendering assets');
@@ -92,7 +92,7 @@ assert.ok(!robots.includes('Sitemap:'),'Preview does not advertise an indexable 
 const sitemap=await (await fetch(`${origin}/sitemap.xml`)).text(); assert.ok(!sitemap.includes('<loc>'));
 const callback=await fetch(`${origin}/api/callback`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:'204-555-0100'})});
 assert.equal(callback.status,503); assert.match((await callback.json()).error,/not available/);
-console.log(`PASS ${discovered.size} internal destinations; 5 blocked routes; robots, empty sitemap and disabled callback API.`);
+console.log(`PASS ${discovered.size} internal destinations; 6 blocked routes; robots, empty sitemap and disabled callback API.`);
 for (const imagePath of fleetImages) {
   const image=await fetch(`${origin}${imagePath}`);
   assert.equal(image.status,200,imagePath); assert.match(image.headers.get('content-type') || '',/image\/webp/);

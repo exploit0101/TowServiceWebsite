@@ -14,7 +14,7 @@ test('enquiry accepts minimum details without requiring email or a precise addre
   assert.equal(formspreeEndpoint, 'https://formspree.io/f/xkjjownd');
 });
 test('enquiry rejects unknown services, invalid contact details, spam and excessive text', () => {
-  for (const change of [{ name: ' ' }, { name: 'a'.repeat(81) }, { phone: '911' }, { phone: 'not-a-phone' }, { location: '' }, { location: 'a'.repeat(201) }, { service: 'Unapproved service' }, { email: 'bad-email' }, { message: 'a'.repeat(2001) }, { _gotcha: 'spam' }]) {
+  for (const change of [{ name: ' ' }, { name: 'a'.repeat(81) }, { phone: '911' }, { phone: 'not-a-phone' }, { location: '' }, { location: 'a'.repeat(201) }, { service: 'Unapproved service' }, { service: 'Tire repair' }, { email: 'bad-email' }, { message: 'a'.repeat(2001) }, { _gotcha: 'spam' }]) {
     assert.ok(validateContact(enquiry(change), serviceNames), JSON.stringify(change));
   }
 });
