@@ -10,6 +10,8 @@ Passed: `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test` (56 tests), 
 
 Production export passed with `GITHUB_PAGES_BASE_PATH=''`, `GITHUB_PAGES_PRODUCTION=1` and `CANONICAL_DOMAIN=https://easytowing.ca`: `npm.cmd run build:pages` and `npm.cmd run test:pages` verified 21 pages, 91 local destinations/assets, correct domain canonicals, approved schema, all nineteen sitemap URLs and route exclusions. No new dependency, raster image, claim, business data or tracking integration was added. Search Console verification and live inbox delivery remain external account checks; no rankings or field performance result is claimed.
 
+The first design deployment was held by a browser-test timing failure after resizing a page with an active `#services` smooth scroll. The opening-screen cases now load fresh documents, and anchor assertions wait until the service heading is visible below the header. The corrected suite also passed against the production static artifact at port 4173; the checks were retained rather than relaxed.
+
 ## ImageAssistanceBox form style — October 25, 2026
 
 Updated `src/components/contact-form.tsx` and `src/components/refinements.css` to follow the supplied reference with full-width, single-column fields, prompts inside each box, a navy towing-photo surface, gold heading and full-width gold Send button. Outside label text is visually hidden while native HTML labels remain available to screen readers. Field order follows the image: name, phone, location, email, service and message. The background uses the existing optimized 40,402-byte wheel-lift WebP; no competitor photo or claims are used. The message field is slightly taller on regular screens and stays compact on short phones.

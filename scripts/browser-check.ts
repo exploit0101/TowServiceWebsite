@@ -151,8 +151,11 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
     const facts=await page.locator('.hero-highlights').boundingBox();
     assert.ok(facts && facts.y+facts.height<=664,'all four trust facts fit the mobile opening screen');
     for (const [width,height] of [[320,568],[390,664],[768,900],[1440,900]]) {
+      // Each opening-screen check starts a fresh document. Reusing a scrolled
+      // #services page can preserve an in-progress smooth scroll after resizing.
+      await page.goto('about:blank');
       await page.setViewportSize({width,height});
-      await page.evaluate(() => window.scrollTo(0,0));
+      await page.goto(origin,{waitUntil:'networkidle'});
       await expect.poll(async () => (await page.locator('#services').boundingBox())?.y).toBeGreaterThanOrEqual(height-1);
       const hero=await page.locator('.hero').boundingBox();
       const facts=await page.locator('.hero-highlights').boundingBox();
@@ -161,9 +164,11 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
       assert.ok(facts && facts.y+facts.height<height && explore && explore.y+explore.height<=height,'hero trust facts and explore link remain in the first screen at '+width+'x'+height);
       await page.locator('.hero-explore').click();
       await expect(page).toHaveURL(/#services$/);
-      const heading=await page.locator('#services h2').boundingBox();
-      const chrome=await page.locator('.site-chrome').boundingBox();
-      assert.ok(heading && chrome && heading.y>=chrome.height,'explore services keeps the heading clear of the sticky header');
+      await expect.poll(async () => {
+        const heading=await page.locator('#services h2').boundingBox();
+        const chrome=await page.locator('.site-chrome').boundingBox();
+        return !!(heading && chrome && heading.y>=chrome.height && heading.y+heading.height<=height);
+      },{message:'Explore services scrolls the heading into view below the sticky header'}).toBe(true);
     }
     for (const [width,height] of [[320,568],[390,664],[1440,900]]) {
       await page.setViewportSize({width,height});
