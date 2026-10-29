@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Menu, X, Phone } from "./icons";
 import { BrandLogo } from "./brand-logo";
 import { ThemeToggle } from './theme-toggle';
@@ -22,6 +22,16 @@ export function Header({
   phoneMode = "unconfigured",
 }: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const chrome = headerRef.current?.closest<HTMLElement>('.site-chrome');
+    if (!chrome) return;
+    const measure = () => document.documentElement.style.setProperty('--site-chrome-height', `${chrome.getBoundingClientRect().height}px`);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(chrome);
+    return () => observer.disconnect();
+  }, []);
   const demo = phoneMode === "demo";
   const contact =
     live || demo || phoneMode === "owner-provided" || phoneMode === "verified"
@@ -54,7 +64,7 @@ export function Header({
             : "Service is not currently available."}
         </div>
       )}
-      <header className="site-header">
+      <header className="site-header" ref={headerRef}>
         <div className="container header-inner">
           <Link
             href="/"

@@ -60,6 +60,13 @@ async function checkHomeInteractions(page: Page, width: number) {
   const grid=await page.locator('.service-list').evaluate(element=>({columns:getComputedStyle(element).gridTemplateColumns.split(' ').length,width:element.clientWidth,content:element.scrollWidth}));
   assert.equal(grid.columns,width<768?2:3);
   assert.ok(grid.content<=grid.width+1);
+  for (const card of await cards.all()) {
+    await expect(card.locator('.service-card-icon svg')).toHaveCount(1);
+    assert.equal(await card.evaluate(element => getComputedStyle(element).animationName), 'none', 'service cards stay still');
+    const text=await card.locator('.service-card-copy').evaluate(element=>({width:element.clientWidth,content:element.scrollWidth}));
+    assert.ok(text.content<=text.width+1, 'service card text fits without clipping');
+  }
+  await expect(page.locator('.service-help-card a')).toHaveAttribute('href',phoneHref);
   await expect(page.locator('.hero-whatsapp')).toHaveAttribute('href',/^https:\/\/wa.me\/16728899764\?text=/);
   await expect(page.locator('.hero-email')).toHaveAttribute('href',/^mailto:info.easytowing.ca@gmail.com/);
   await expect(page.locator('#reviews')).toBeVisible();
@@ -142,8 +149,22 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
     assert.notEqual(await page.locator('.availability-dot').evaluate(e=>getComputedStyle(e).animationName),'none');
     await expect(page.locator('.service-list-item')).toHaveCount(services.length);
     const facts=await page.locator('.hero-highlights').boundingBox();
-    const first=await page.locator('.service-list-item').first().boundingBox();
-    assert.ok(facts && first && facts.y+facts.height<=664 && first.y+first.height<=664,'trust facts and first service row fit a short mobile opening screen');
+    assert.ok(facts && facts.y+facts.height<=664,'all four trust facts fit the mobile opening screen');
+    for (const [width,height] of [[320,568],[390,664],[768,900],[1440,900]]) {
+      await page.setViewportSize({width,height});
+      await page.evaluate(() => window.scrollTo(0,0));
+      await expect.poll(async () => (await page.locator('#services').boundingBox())?.y).toBeGreaterThanOrEqual(height-1);
+      const hero=await page.locator('.hero').boundingBox();
+      const facts=await page.locator('.hero-highlights').boundingBox();
+      const explore=await page.locator('.hero-explore').boundingBox();
+      assert.ok(hero && Math.abs(hero.y+hero.height-height)<2,'the hero fills the first screen at '+width+'x'+height);
+      assert.ok(facts && facts.y+facts.height<height && explore && explore.y+explore.height<=height,'hero trust facts and explore link remain in the first screen at '+width+'x'+height);
+      await page.locator('.hero-explore').click();
+      await expect(page).toHaveURL(/#services$/);
+      const heading=await page.locator('#services h2').boundingBox();
+      const chrome=await page.locator('.site-chrome').boundingBox();
+      assert.ok(heading && chrome && heading.y>=chrome.height,'explore services keeps the heading clear of the sticky header');
+    }
     for (const [width,height] of [[320,568],[390,664],[1440,900]]) {
       await page.setViewportSize({width,height});
       await page.locator('.assistance-form-card').scrollIntoViewIfNeeded();
@@ -151,7 +172,7 @@ async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.lau
       const chrome=await page.locator('.site-chrome').boundingBox();
       assert.ok(form && chrome && form.height<=height-chrome.height,'the entire form fits below the header at '+width+'x'+height);
     }
-    console.log('PASS compact mobile fold, complete form height, service ticker pause and 24/7 pulse.');
+    console.log('PASS first-screen hero, services below the fold, anchor navigation, complete form height, service ticker pause and 24/7 pulse.');
   } finally {await context.close();}
 }
 
@@ -184,7 +205,7 @@ async function checkTextContrast(page: Page, label: string) {
     },
     };
     const {color,over,luminance,contrast}=helpers;
-    const selectors=['.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','.service-list-item h3','.review-card blockquote','.review-person > strong','.review-source','.assistance-intro h2','.assistance-intro h2 em','.assistance-intro p','.assistance-facts span','.assistance-call strong','.assistance-call small','.assistance-details','.assistance-form-caption','.assistance-form-heading h3','.assistance-form-heading p','.assistance-field label','.assistance-field label small','.assistance-send-notice','.assistance-send-notice a','.assistance-submit','.assistance-form-notice','.footer-whatsapp'];
+    const selectors=['.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','.hero-explore','#services .eyebrow','.service-list-item h3','.service-card-copy p','.service-help-card h3','.service-help-card a','.review-card blockquote','.review-person > strong','.review-source','.assistance-intro h2','.assistance-intro h2 em','.assistance-intro p','.assistance-facts span','.assistance-call strong','.assistance-call small','.assistance-details','.assistance-form-caption','.assistance-form-heading h3','.assistance-form-heading p','.assistance-field label','.assistance-field label small','.assistance-send-notice','.assistance-send-notice a','.assistance-submit','.assistance-form-notice','.footer-whatsapp'];
     return selectors.flatMap(selector => Array.from(document.querySelectorAll<HTMLElement>(selector))).filter(element => element.getClientRects().length && element.textContent?.trim()).map(element => {
       const chain:Element[]=[];
       for (let ancestor:Element|null=element;ancestor;ancestor=ancestor.parentElement) chain.unshift(ancestor);
@@ -315,7 +336,7 @@ async function main() {
       }
       assert.deepEqual(errors,[],`${width}px: no JavaScript or browser console errors`);
       await context.close();
-      console.log(`PASS ${width}px: layout, visible phone, compact service grid, mobile navigation, gallery keyboard flow and loaded images`);
+      console.log(`PASS ${width}px: layout, visible phone, service cards and icons, mobile navigation, gallery keyboard flow and loaded images`);
     }
     await checkThemeModes(browser);
     await checkMobileMotion(browser);

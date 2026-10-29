@@ -5,7 +5,7 @@ import { AvailabilityBadge } from "@/components/availability-badge";
 import { CustomerReviews } from "@/components/customer-reviews";
 import { BrandMark } from "@/components/brand-logo";
 import { AssistanceSection } from "@/components/assistance-section";
-import { Clock3, MapPin, ShieldCheck, Timer, Star, Mail } from 'lucide-react';
+import { ArrowDown, Clock3, MapPin, ShieldCheck, Timer, Star, Mail } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/whatsapp-link';
 import { whatsappLink } from '@/lib/contact';
 import { getDocumentedArrivalEstimate } from '@/lib/arrival';
@@ -117,12 +117,14 @@ export default function Home() {
             </ul>
             <p className="hero-note">Independent partners perform service. Arrival varies with conditions.</p>
           </div>
+          <a className="hero-explore" href="#services"><span><ArrowDown size={19} aria-hidden="true" /></span>Explore services</a>
         </div>
       </section>
       <section id="services" className="section container">
         <div className="section-heading">
           <div>
-            <h2>Our services</h2>
+            <div className="eyebrow"><span />ROADSIDE HELP, MADE EASY</div>
+            <h2>Our services<span className="services-heading-dot" aria-hidden="true">.</span></h2>
           </div>
           <p>Choose a service. Call for availability and a quote.</p>
         </div>

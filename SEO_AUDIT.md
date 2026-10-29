@@ -1,5 +1,11 @@
 # Technical SEO review — October 22, 2026
 
+## Custom domain and service cards — October 29, 2026
+
+The canonical origin is now `https://easytowing.ca` in source configuration and the GitHub repository variable. GitHub Pages supplies an empty base path for the custom domain; rebuilding removes the obsolete `/TowServiceWebsite/` prefix from CSS, JavaScript, images and internal links. HTTPS is enforced. Read-only checks confirm `www.easytowing.ca` and the former GitHub project URL permanently redirect to the apex domain. Canonicals, social URLs, Organization/Service/BreadcrumbList schema and the nineteen approved sitemap URLs use the new domain.
+
+The opening hero fills the first screen, and the services section begins below it. Eleven linked service articles, their headings, concise scope captions and decorative SVG icons are server-rendered. The service grid has no carousel JavaScript, raster icon downloads or new dependencies. The header measures its height for responsive hero and anchor clearance; it does not control indexing or main content visibility. One H1, unique metadata, approved indexing rules and the existing contact form are preserved. Browser checks cover text contrast in both themes, native links and six responsive widths. These checks do not establish rankings or field Core Web Vitals.
+
 ## Reference-style assistance form — October 25, 2026
 
 The form's labels are now visually hidden, with native label/control associations preserved for assistive technology and clear prompts inside each field. All controls and the native POST action remain server-rendered. A reused, 40KB optimized decorative image uses the deployment-aware asset helper; the export check validates its base path. No new dependency or third-party script is introduced. Existing page metadata, single H1, canonicals, structured data, service links and nineteen approved sitemap URLs are preserved.
