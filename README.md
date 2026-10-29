@@ -2,7 +2,7 @@
 
 Short, call-first towing and roadside website built with Next.js 16, React, TypeScript and Lucide icons. The owner-provided number is **672-889-9764** (`tel:+16728899764`).
 
-Website: https://exploit0101.github.io/TowServiceWebsite/
+Website: https://easytowing.ca/
 
 ## Run and check
 
@@ -44,7 +44,8 @@ The nine primary categories are car towing, heavy duty towing, motorcycle towing
 Pushes to `main` run `.github/workflows/pages.yml`, verify the exported site and publish it to GitHub Pages.
 
 ```powershell
-$env:GITHUB_PAGES_BASE_PATH = '/TowServiceWebsite'
+$env:GITHUB_PAGES_BASE_PATH = '' # Custom domain serves from /
+$env:GITHUB_PAGES_PRODUCTION = '1'
 npm.cmd run build:pages
 npm.cmd run test:pages
 ```

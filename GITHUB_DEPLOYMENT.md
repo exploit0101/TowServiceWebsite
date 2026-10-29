@@ -23,12 +23,13 @@ GitHub authentication must be completed by the account owner. Do not paste acces
 ## Local Pages checks
 
 ```powershell
-$env:GITHUB_PAGES_BASE_PATH = '/TowServiceWebsite'
+$env:GITHUB_PAGES_BASE_PATH = '' # easytowing.ca serves from /
+$env:GITHUB_PAGES_PRODUCTION = '1'
 npm.cmd run build:pages
 npm.cmd run test:pages
 ```
 
-The workflow uses the actual configured Pages base path; the example above matches the workspace name. `pages-out` contains the deployable static artifact. The normal local portal still runs with `npm.cmd run dev`.
+The workflow uses the actual configured Pages base path. The custom domain uses an empty base path; a repository-only site would use `/TowServiceWebsite`. `pages-out` contains the deployable static artifact. The normal local portal still runs with `npm.cmd run dev`.
 
 Next.js 16 exports built on Windows can nest RSC payloads where the browser requests dotted filenames ([upstream issue #85374](https://github.com/vercel/next.js/issues/85374)). The Pages build adds matching flat aliases only for nested segment payloads inside exported page directories. It preserves originals and unrelated assets, leaves already-flat Linux output unchanged, and fails if an existing payload has different contents. This keeps link prefetching usable without a host rewrite or framework patch.
 
@@ -48,7 +49,11 @@ No public indexing, completed service performance or actual mobile dialer handof
 
 References: [Next.js static export](https://nextjs.org/docs/app/guides/static-exports), [Next.js basePath](https://nextjs.org/docs/app/api-reference/config/next-config-js/basePath), [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
-## Current release configuration - October 24, 2026
+## Custom domain update - October 29, 2026
+
+GitHub Pages is configured for `easytowing.ca`, with HTTPS enforced and a certificate covering the apex and `www` hostnames. The canonical origin in both source configuration and the GitHub repository variable is `https://easytowing.ca`. The workflow's Configure Pages step now supplies an empty base path. A fresh build is required after changing domains: old `/TowServiceWebsite/` asset URLs return 404 on the root-hosted custom domain. The artifact includes `public/CNAME`; all CSS, JavaScript, images, internal links, schema and sitemap URLs are verified against the root deployment before publishing.
+
+## Initial production release - October 24, 2026
 
 The owner supplied EasyTowing as legal name, selected phone-only support and confirmed the operating approvals. `check:launch` now passes. Production mode is enabled through repository variable `PRODUCTION_SITE=true`, with canonical origin `https://exploit0101.github.io`. This release has nineteen approved indexable URLs; canonicals, social/schema URLs and sitemap entries retain `/TowServiceWebsite/`. The phone request utility and legacy pilot page remain noindex. Default local/preview builds retain their noindex behavior. The current support number is real and owner-confirmed; no demo phone is used.
 

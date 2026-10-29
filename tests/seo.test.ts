@@ -64,6 +64,18 @@ test('repository deployment metadata, social assets, breadcrumbs and sitemap sha
   assert.deepEqual(createRobots(context), { rules: { userAgent: '*', allow: '/', disallow: '/TowServiceWebsite/api/' }, sitemap: 'https://exploit0101.github.io/TowServiceWebsite/sitemap.xml' });
 });
 
+test('custom-domain deployment uses root URLs consistently without the former repository prefix', () => {
+  const context = { ...liveContext, origin: 'https://easytowing.ca', basePath: '', trailingSlash: true };
+  const expected = 'https://easytowing.ca/services/battery-boost/';
+  const metadata = createPageMetadata('Battery boost', 'Fixture description', '/services/battery-boost', context);
+  assert.equal(metadata.alternates?.canonical, expected);
+  assert.ok(metadata.openGraph && 'url' in metadata.openGraph);
+  assert.equal(metadata.openGraph.url, expected);
+  assert.deepEqual(createSitemap(context), [{ url: 'https://easytowing.ca/' }, { url: expected }]);
+  assert.deepEqual(createRobots(context), { rules: { userAgent: '*', allow: '/', disallow: '/api/' }, sitemap: 'https://easytowing.ca/sitemap.xml' });
+  assert.equal(canonicalUrl('/images/easytowing-flatbed.webp', context.origin, context.basePath, true), 'https://easytowing.ca/images/easytowing-flatbed.webp');
+});
+
 test('repository base path does not open preview indexing or schema/canonical gates', () => {
   const context = { ...previewContext, origin: 'https://exploit0101.github.io', basePath: '/TowServiceWebsite' };
   const metadata = createPageMetadata('Preview', 'Fixture description', '/', context);
