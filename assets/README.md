@@ -1,5 +1,32 @@
 # Towing hero image
 
+## Current vehicle-photo phone decals — November 1, 2026
+
+The owner requested the current website number, **431-451-5110**, on every image containing a phone decal. Built-in ImageGen edited each of the six existing vehicle photographs separately. All six outputs were visually reviewed for the exact digits and preservation of the scene and easytowing branding. The emblem, favicon and legacy yellow-truck illustration have no phone number and were inspected without alteration. Supplied originals in `Images/` remain unchanged. Historical prompts below describe the earlier imagery and previous contact number.
+
+The final project files are `public/images/easytowing-{flatbed,highway,wheel-lift,loading,flatbed-night,recovery}.webp`, plus the seven `-320w`, `-480w`, `-640w`, `-768w`, `-960w`, `-1200w` and `-1440w` variants for each photo: **48 replaced files**. This includes the photo behind the assistance form and the source used by social metadata. Existing filenames, dimensions, alt text, responsive loading and gallery disclosures are retained. Sharp was used only to resize/encode the reviewed outputs: source quality 84 and responsive quality 80. The six source files are 143,864–195,842 bytes, all below 200 KB.
+
+`assets/vehicle-image-contact.json` records the reviewed number and SHA-256 of all 48 delivered files. `scripts/test-pages.ts` verifies the configured phone, complete image list and exported bytes before deployment. This binds a manual visual review to the shipped files; it is not automatic text recognition or proof of an owned fleet.
+
+### Final edit prompt set
+
+One built-in image edit was made for each target: `easytowing-flatbed.webp`, `easytowing-highway.webp`, `easytowing-wheel-lift.webp`, `easytowing-loading.webp`, `easytowing-flatbed-night.webp` and `easytowing-recovery.webp`. Each target was supplied as the sole reference image, with `transparent_background=false`. The following prompt was used verbatim with `{name}` replaced by its target name:
+
+> Use case: text-localization, precise localized photo edit. Edit target: the single supplied easytowing-{name} website vehicle photograph. Replace ONLY the existing printed phone number "672-889-9764" on the truck door or placard with the exact current business number "431-451-5110". Exact digits four-three-one, hyphen, four-five-one, hyphen, five-one-one-zero. Require the text to read exactly 431-451-5110. Preserve the existing easytowing wordmark, underline, typeface style, ink colour, apparent text size and location. Render the new number as a real physical decal matching the same panel perspective, lighting, paint texture and reflections. Completely remove every old number; no duplicate, mixed or ghost digits. Preserve the rest of the original photo as closely as possible: identical camera framing, original landscape aspect ratio and dimensions, truck and car shapes/positions, wheels, equipment, straps, any existing person, background, weather, light and colours. Do not recompose, crop, zoom, add objects, change branding, add service claims or place any text outside the existing number location. This is a single image replacement, not a collage.
+
+Raw output files are retained at `C:/Users/PC/.codex/generated_images/01a16431-ef8c-7751-81b5-957c52bef2a5/` and are not runtime dependencies:
+
+| Target | ImageGen output |
+| --- | --- |
+| flatbed | `exec-756d9e3d-ed34-4190-8bf8-3ea455d1d651.png` |
+| highway | `exec-63411ec1-f420-4743-8816-d781e103869f.png` |
+| wheel-lift | `exec-81129ed9-adc7-4776-8f30-bbd7ced3d217.png` |
+| loading | `exec-917562d7-20dd-4b51-aafd-063647638b7f.png` |
+| flatbed-night | `exec-74cd5e8a-d01a-4218-b459-6b1766a7905d.png` |
+| recovery | `exec-01a3f490-20da-40cf-af69-54d3b6deef21.png` |
+
+## Original illustration record — October 22, 2026
+
 Generated for this project with the built-in ImageGen tool on October 22, 2026. It is a conceptual 3D render, not evidence of an actual company-owned vehicle, customer job or partner fleet. The website displays this disclosure.
 
 - Retained source: `assets/source/towing-3d-hero.png`.

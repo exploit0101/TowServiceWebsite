@@ -1,5 +1,9 @@
 # Technical SEO review — October 22, 2026
 
+## Vehicle image contact consistency — November 1, 2026
+
+All six vehicle photographs and their 42 responsive versions now show 431-451-5110, matching the visible contact links and Organization telephone. Intrinsic dimensions, alt text, source URLs, responsive sizes and social-image metadata are unchanged. All six sources remain under 200 KB; WebP delivery is preserved. No new indexable page, keyword copy, script or third-party request was introduced. Production export checks validate the reviewed image-contact number and hashes for all 48 files, in addition to existing page/schema/sitemap checks. This is a consistency and delivery check, with visual review of the edited text; it is not a field performance or ranking result.
+
 ## Email update and retired service — October 29, 2026
 
 Public contact links and Organization schema use `infoeasytowing@gmail.com`. Tire Repair is removed from the catalogue, homepage, service hub metadata, related links, form choices, approved routes and sitemap. The former service URL returns 404 rather than advertising unavailable work. Flat-tire content now describes spare-wheel changes or towing, without offering repairs. There are ten service pages, twenty exported public pages and eighteen approved indexable URLs. Existing metadata uniqueness, one-H1 structure, absolute easytowing.ca canonicals and provider disclosures remain verified. Export checks validate the configured schema email and absence of the retired route.

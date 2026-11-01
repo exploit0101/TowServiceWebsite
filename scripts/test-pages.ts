@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { formspreeEndpoint, whatsappLink } from '../src/lib/contact';
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,6 +21,17 @@ const expectedTelephone = `tel:${configured.supportPhone}`;
 const titles = new Set<string>();
 const descriptions = new Set<string>();
 const assets = new Set<string>();
+// Phone decals are manually reviewed; these hashes bind that review to every
+// exported image version so a later phone change cannot silently leave old art.
+const imageContact = JSON.parse(readFileSync(new URL('../assets/vehicle-image-contact.json', import.meta.url), 'utf8')) as { phone: string; files: { path: string; sha256: string }[] };
+assert.equal(imageContact.phone, configured.supportPhone, 'Vehicle image decals must match the current business number');
+const vehicleNames = ['flatbed','highway','wheel-lift','loading','flatbed-night','recovery'];
+const expectedVehicleImages = vehicleNames.flatMap(name => ['', ...[320,480,640,768,960,1200,1440].map(width => `-${width}w`)].map(suffix => `/images/easytowing-${name}${suffix}.webp`));
+assert.deepEqual(imageContact.files.map(image => image.path).sort(), expectedVehicleImages.sort(), 'Every source and responsive vehicle image has a current-number review');
+for (const image of imageContact.files) {
+  const file = localFile(`${basePath}${image.path}`);
+  assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex'), image.sha256, `Exported image matches reviewed current-number artwork: ${image.path}`);
+}
 function localFile(url: string) {
   const pathname = decodeURIComponent(new URL(url, 'https://pages.test').pathname);
   assert.ok(!basePath || pathname === basePath || pathname.startsWith(`${basePath}/`), `Missing base path: ${url}`);
@@ -111,7 +123,7 @@ for (const match of home.matchAll(/(?:srcSet|imageSrcSet)="([^"]+)"/gi)) {
     assets.add(url);
   }
 }
-for (const name of ['flatbed','highway','wheel-lift','loading','flatbed-night','recovery']) {
+for (const name of vehicleNames) {
   const path=`${basePath}/images/easytowing-${name}.webp`;
   assert.ok(home.includes(path.replace('.webp', '-640w.webp')),`${name}: responsive image uses the repository base path`);
   assert.ok(statSync(localFile(path)).size < 300000,`${name}: optimized source is under 300KB`);

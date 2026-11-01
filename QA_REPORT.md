@@ -1,5 +1,15 @@
 # Verification report
 
+## Current phone number in every vehicle photo — November 1, 2026
+
+Inspected all six published vehicle photos, the header/hero emblem, favicon and legacy yellow-truck illustration. Each vehicle photo contained the obsolete phone number. Built-in ImageGen edited only the phone decal to **431-451-5110** while retaining the existing branding and scene as closely as possible. All six outputs were visually checked for the exact digits. Sharp resized/encoded the selected outputs into the existing six WebP source files and seven responsive widths each: 48 replaced files in `public/images/`. Supplied `Images/` originals remain unchanged. The logo/illustrations contain no phone number and were not edited.
+
+The source dimensions remain 1448×1086 for flatbed/highway and 1600×900 for the other four images, preserving existing gallery and social-image layout. Source file sizes are 143,864–195,842 bytes at WebP quality 84; responsive variants use quality 80. The gallery, expanded-image dialog, social preview and assistance-form background reuse these files. Visually inspected the optimized gallery and expanded night image in the browser. Existing illustrative-vehicle captions remain.
+
+Added `assets/vehicle-image-contact.json` with the reviewed number and SHA-256 for all 48 delivered files. `scripts/test-pages.ts` requires this number to match the configured phone, requires the complete image set and compares every exported image hash with its reviewed file. This checks delivery consistency after manual visual review; no OCR capability is claimed. `assets/README.md` records exact prompts, sources and final paths; README and SEO audit were updated.
+
+Passed `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test` (56 tests), `npm.cmd run test:browser` (six widths, both themes, gallery keyboard flow and complete image loading), production `npm.cmd run build:pages` and `npm.cmd run test:pages` (20 pages, 90 local destinations/assets, all 48 image hashes and eighteen approved sitemap URLs). No routing, content, contact details, forms, dependencies or tracking behaviour changed. No enquiry, phone call or message was sent. The publication check compares downloaded live files with the same reviewed hashes.
+
 ## New email and removal of Tire Repair — October 29, 2026
 
 Changed public support email to `infoeasytowing@gmail.com` through `config/launch.json`, which supplies the hero email action, contact page and Organization schema. Removed Tire Repair from the service catalogue, icon type/map, homepage selection, ticker, related-service links, enquiry choices, accepted callback IDs, approved offers and sitemap configuration. Flat-tire copy now offers a spare-wheel change or towing, with puncture repairs excluded. The removed `/services/tire-repair/` route returns 404 and is absent from the static artifact. Mobile grid spanning now applies only to an odd final service, keeping the ten remaining services in five even rows.
