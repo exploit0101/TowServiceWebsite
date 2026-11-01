@@ -7,6 +7,7 @@ import "@/components/customer-reviews.css";
 import "@/components/contact-form.css";
 import "@/components/theme.css";
 import "@/components/refinements.css";
+import "@/components/service-landing.css";
 import { themeInitializationScript } from '@/lib/theme';
 import { BrandLogo } from "@/components/brand-logo";
 import { ServiceTicker } from "@/components/service-ticker";

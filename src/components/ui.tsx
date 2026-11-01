@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowUpRight, AlertTriangle, Phone, ArrowRight } from './icons';
 import { isLive, callbacksEnabled, callsEnabled, isDemoPhone, phoneContact } from '@/lib/site-config';
 export function PrimaryAction({ label }: { label?: string }) {
-  return callsEnabled && phoneContact ? <a href={phoneContact.href} className="button button-yellow" aria-label={isDemoPhone ? `Open dialer with demo number ${phoneContact.display}` : undefined}><Phone size={19}/>{isDemoPhone ? 'Call · demo number' : label || 'Call to check availability'}<ArrowUpRight size={18}/></a> : <Link href="/services" className="button button-yellow">Find your next step<ArrowUpRight size={19}/></Link>;
+  return callsEnabled && phoneContact ? <a href={phoneContact.href} className="button button-yellow" aria-label={isDemoPhone ? `Open dialer with demo number ${phoneContact.display}` : undefined}><Phone size={19} aria-hidden="true"/>{isDemoPhone ? 'Call · demo number' : label || 'Call'}<ArrowUpRight size={18} aria-hidden="true"/></a> : <Link href="/services" className="button button-yellow">Find your next step<ArrowUpRight size={19} aria-hidden="true"/></Link>;
 }
 export function SafetyNote() {
   return <aside className="safety-note"><AlertTriangle size={22} /><div><strong>Your safety comes first.</strong><p>If there is immediate danger, call 911. Do not use this website while driving or standing in an active traffic lane. This website is not an emergency service.</p></div></aside>;

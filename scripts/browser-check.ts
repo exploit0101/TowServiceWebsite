@@ -220,7 +220,7 @@ async function checkTextContrast(page: Page, label: string) {
     },
     };
     const {color,over,luminance,contrast}=helpers;
-    const selectors=['.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','#services .eyebrow','.service-list-item h3','.service-card-copy p','.service-help-card h3','.service-help-card a','.review-card blockquote','.review-person > strong','.review-source','.assistance-intro h2','.assistance-intro h2 em','.assistance-intro p','.assistance-facts span','.assistance-call strong','.assistance-call small','.assistance-details','.assistance-form-caption','.assistance-form-heading h3','.assistance-form-heading p','.assistance-field label','.assistance-field label small','.assistance-send-notice','.assistance-send-notice a','.assistance-submit','.assistance-form-notice','.footer-whatsapp'];
+    const selectors=['.service-landing h1','.service-landing h1 em','.service-landing-eyebrow','.service-landing-lead','.service-landing-note','.service-landing-phone','.service-landing-request','.service-landing-facts strong','.service-landing-facts small','.service-included h2','.service-included-intro','.service-included li p','.service-prepare h2','.service-prepare li p','.service-fine-details summary','.service-fine-details details > p','.service-landing-cta h2','.service-landing-cta p','.service-landing-cta-phone','.service-artwork-caption strong','.service-artwork-caption span','.hero h1','.hero h1 em','.hero-summary','.hero-note','.hero-highlights strong','.hero-highlights small','.hero-rating','#services .eyebrow','.service-list-item h3','.service-card-copy p','.service-help-card h3','.service-help-card a','.review-card blockquote','.review-person > strong','.review-source','.assistance-intro h2','.assistance-intro h2 em','.assistance-intro p','.assistance-facts span','.assistance-call strong','.assistance-call small','.assistance-details','.assistance-form-caption','.assistance-form-heading h3','.assistance-form-heading p','.assistance-field label','.assistance-field label small','.assistance-send-notice','.assistance-send-notice a','.assistance-submit','.assistance-form-notice','.footer-whatsapp'];
     return selectors.flatMap(selector => Array.from(document.querySelectorAll<HTMLElement>(selector))).filter(element => element.getClientRects().length && element.textContent?.trim()).map(element => {
       const chain:Element[]=[];
       for (let ancestor:Element|null=element;ancestor;ancestor=ancestor.parentElement) chain.unshift(ancestor);
@@ -285,12 +285,16 @@ async function checkThemeModes(browser: Awaited<ReturnType<typeof chromium.launc
         assert.equal(response?.status(),200,`${width}px dark ${path} loads`);
         await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
         await checkLayout(page,`${width}px dark ${path}`);
+        try { if (path.startsWith('/services/')) await checkTextContrast(page,`${width}px dark ${path}`); }
+        catch (error) { contrastFailures.push(error instanceof Error ? error.message : String(error)); }
       }
       await page.getByRole('button',{name:'Switch to light theme',exact:true}).click();
       await expect(page.locator('html')).toHaveAttribute('data-theme','light');
       await page.reload({waitUntil:'networkidle'});
       await expect(page.locator('html')).toHaveAttribute('data-theme','light');
       assert.equal(await page.evaluate(() => localStorage.getItem('easytowing-theme')),'light','switching back to light also persists');
+      try { await checkTextContrast(page,`${width}px light service`); }
+      catch (error) { contrastFailures.push(error instanceof Error ? error.message : String(error)); }
       assert.deepEqual(errors,[],`${width}px theme changes have no browser errors`);
       assert.deepEqual(contrastFailures,[],`${width}px both themes meet the checked text contrast thresholds`);
       console.log(`PASS ${width}px themes: light default despite dark OS, explicit toggle, saved choice across reload/routes, readable text and no layout overflow.`);

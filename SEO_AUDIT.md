@@ -1,5 +1,11 @@
 # Technical SEO review — October 22, 2026
 
+## Service destinations for ad sitelinks — November 1, 2026
+
+The ten existing service URLs retain their unique titles, descriptions, absolute canonicals, approved Service/BreadcrumbList/Organization schema and sitemap inclusion. Each now has one direct service-and-Winnipeg H1, a concise service-specific lead, full scope/preparation/limits in server-rendered HTML, internal related-service links and prominent native calling. The shared action label is Call. Native SVG artwork and CSS add no raster downloads, third-party script or client-only main copy. Written requests continue to the existing noindex request utility. No new review, price, office, fleet-ownership or response-time claim is added.
+
+The copy-ready sitelink reference uses unique labels, same-domain destinations and service-relevant descriptions. Character limits and catalogue coverage are checked in `tests/sitelinks.test.ts`; browser checks cover all ten URLs in both themes and short-phone viewports. Google approval/display is outside the website checks. Eighteen approved sitemap URLs, twenty public exported pages and retirement of the tire-repair route are preserved. Search Console and conversion/account setup remain separate operational tasks.
+
 ## Vehicle image contact consistency — November 1, 2026
 
 All six vehicle photographs and their 42 responsive versions now show 431-451-5110, matching the visible contact links and Organization telephone. Intrinsic dimensions, alt text, source URLs, responsive sizes and social-image metadata are unchanged. All six sources remain under 200 KB; WebP delivery is preserved. No new indexable page, keyword copy, script or third-party request was introduced. Production export checks validate the reviewed image-contact number and hashes for all 48 files, in addition to existing page/schema/sitemap checks. This is a consistency and delivery check, with visual review of the edited text; it is not a field performance or ranking result.

@@ -39,6 +39,10 @@ Four supplied photos were rebranded with built-in ImageGen, and two additional v
 
 The nine primary categories are car towing, heavy duty towing, motorcycle towing, boosting & jump start, winch out, flat tire, tire change, lockout and fuel delivery. Battery replacement remains available as a secondary service, giving ten scoped detail routes under `/services`. Tire repair has been removed from the catalogue, form choices and sitemap; its former route returns 404. About, contact, rates/disclosures, privacy, terms and accessibility pages remain linked. The homepage contact section and `/request-help` provide the owner-requested Formspree service enquiry form. Calls remain the urgent-help option.
 
+All ten service detail pages use a dedicated landing-page layout: a service/Winnipeg heading, concise introduction, first-screen Call button and readable number, a dimensional native SVG service illustration, a written-request link, scope cards, preparation panel, keyboard-operable safety/quote details and related services. The default shared call label is **Call**. Both themes and small phones are supported without a new bottom call bar. Existing service-specific scope, safety, quotation/consent and independent-provider information is preserved. No new testimonials, ratings, prices or arrival promises are added to these pages.
+
+[Google Ads sitelink copy and URLs](docs/GOOGLE_ADS_SITELINKS.csv) provides ten distinct destinations with short link labels and two description lines. [Usage notes and official references](docs/GOOGLE_ADS_SITELINKS.md) explain how to copy the fields into Google Ads. This is a reference sheet, with no campaign/account association or automatic ad-account changes. Run `npm.cmd run test:services` to check every service page at 320/390/768/1440px in both themes, including first-screen Call visibility, request links, keyboard details and related links. The Pages workflow runs this suite against its production artifact.
+
 ## GitHub Pages
 
 Pushes to `main` run `.github/workflows/pages.yml`, verify the exported site and publish it to GitHub Pages.

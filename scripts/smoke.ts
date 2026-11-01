@@ -53,7 +53,8 @@ for (const route of routes) {
     const service = services.find(item => `/services/${item.id}` === route)!;
     assert.equal(description, escapeHtml(service.description), `${route}: scoped meta description`);
     assert.ok(title.includes(escapeHtml(service.name)), `${route}: service-specific title`);
-    assert.ok(html.includes(escapeHtml(service.title)), `${route}: scoped service headline`);
+    const heading=html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]*>/g,'');
+    assert.ok(heading?.includes(escapeHtml(service.name)) && heading.includes('in Winnipeg.'), `${route}: scoped service and location headline`);
     assert.ok(html.includes(escapeHtml(service.intro)), `${route}: service-specific scope is server-rendered`);
     assert.ok(html.includes(escapeHtml(service.limit)), `${route}: service-specific limitations are visible`);
     assert.ok(html.includes('href="/services"'), `${route}: link back to service hub`);
