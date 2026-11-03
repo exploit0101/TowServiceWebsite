@@ -84,7 +84,7 @@
   },
   "measurementApprovalRecord": {
     "confirmedAt": "2026-11-03",
-    "confirmationSource": "Owner requested GA4 and Google Ads conversion tracking through CHANGES.md. Implementation requires separate visitor opt-ins and real account destination IDs; no tracking IDs have been supplied."
+    "confirmationSource": "Owner requested GA4 and Google Ads conversion tracking through CHANGES.md and then supplied the GA4 Measurement ID, configured as a public GitHub Actions variable. Google Ads ID and conversion labels have not been supplied. Measurement requires separate visitor opt-ins."
   },
   "approvalRecord": {
     "confirmedAt": "2026-10-24",

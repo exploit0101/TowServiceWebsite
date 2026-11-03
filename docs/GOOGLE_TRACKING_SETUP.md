@@ -1,6 +1,6 @@
 # Google measurement setup
 
-Updated November 3, 2026. Integration is implemented; live Google destination IDs have not been supplied. Tracking stays off until real account values are configured. The Privacy page reads the same configuration as the integration.
+Updated November 3, 2026. The owner supplied the GA4 Measurement ID, now configured as a public repository variable. GA4 loads only after Usage analytics consent. Google Ads remains inactive until its ID and conversion labels are supplied. The Privacy page reads the same configuration as the integration.
 
 ## Account values
 

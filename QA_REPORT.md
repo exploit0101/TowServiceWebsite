@@ -2,7 +2,7 @@
 
 ## CHANGES.md: measurement, contact and light cards — November 3, 2026
 
-Implemented separate consent-based GA4/Google Ads destinations, native phone-tap micro-events, confirmed Formspree lead events, route-aware manual page views, tab-session preferences and withdrawal controls. Privacy copy uses the same validated configuration as the integration. Google requests stay blocked before opt-in; form fields are never attached to application measurement events. The Pages workflow forwards actual account variables when provided. Account IDs and labels are still missing, so live measurement remains off; account receipt and attribution cannot be verified by code tests.
+Implemented separate consent-based GA4/Google Ads destinations, native phone-tap micro-events, confirmed Formspree lead events, route-aware manual page views, tab-session preferences and withdrawal controls. Privacy copy uses the same validated configuration as the integration. Google requests stay blocked before opt-in; form fields are never attached to application measurement events. The Pages workflow forwards actual account variables when provided. The owner subsequently supplied a GA4 Measurement ID, configured through the public repository variable. Google Ads ID/labels remain missing. Account receipt and attribution cannot be established by code tests.
 
 All compact homepage/related-service choices and expanded service-hub cards now use light surfaces with navy text in both themes. Mobile card sizes and the first-screen services layout are preserved. Homepage, Privacy and Contact use `infoeasytowing@gmail.com`; static checks reject inconsistent public mail links. The service-hub title and description explicitly identify Winnipeg.
 
@@ -16,7 +16,7 @@ Validation:
 - Active measurement tested with test-only IDs at 320/390/1440px: opt-ins, reload, internal navigation, analytics-only/ads-only choices, phone events, form failure/success and withdrawal passed. All Google/Formspree requests were intercepted; no real enquiry, call or conversion was sent.
 - Existing form suite passed at 320/390/768/1440px, including native no-JavaScript POST, validation, provider error/challenge responses and WhatsApp draft checks.
 - Production static build passed: 20 public pages, 92 local destinations/assets, 18 approved sitemap URLs, current contact/schema and all 48 reviewed vehicle images. Test destination IDs were absent from the artifact.
-- The actual no-ID production artifact passed inactive tracking/privacy checks at 320/390/1440px.
+- The initial no-ID production artifact passed inactive tracking/privacy checks at 320/390/1440px. The subsequent GA4-only production artifact passed the active browser suite at 320/390/1440px with Google/Formspree mocked; the compiled destination matches the owner-supplied ID and Privacy describes analytics only. Google returned its tag script with HTTP 200. Ads remains disabled; receipt in the owner property still requires account-side verification.
 
 Run `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test`; with a server, run `test:browser`, `test:services`, `test:contact` and `test:tracking`. Production export uses empty `GITHUB_PAGES_BASE_PATH`, `GITHUB_PAGES_PRODUCTION=1`, `CANONICAL_DOMAIN=https://easytowing.ca`, then `npm.cmd run build:pages` and `npm.cmd run test:pages`. No field Core Web Vitals, account receipt, legal approval or search position is inferred from these checks.
 
