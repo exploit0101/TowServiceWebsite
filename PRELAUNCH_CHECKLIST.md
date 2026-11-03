@@ -32,13 +32,13 @@ npm.cmd run check:launch
 npm.cmd run lint
 npm.cmd run typecheck
 npm.cmd test
-$env:GITHUB_PAGES_BASE_PATH = '/TowServiceWebsite'
+$env:GITHUB_PAGES_BASE_PATH = '' # easytowing.ca custom domain
 $env:GITHUB_PAGES_PRODUCTION = '1'
 npm.cmd run build:pages
 npm.cmd run test:pages
 ```
 
-The GitHub workflow uses `PRODUCTION_SITE=true` and optionally `CANONICAL_DOMAIN` repository variables. The canonical origin is currently `https://exploit0101.github.io`; the configured repository path is applied consistently. Default local/preview builds remain noindex.
+The GitHub workflow uses `PRODUCTION_SITE=true` and optionally `CANONICAL_DOMAIN` repository variables. The canonical origin is `https://easytowing.ca`; its Pages base path is empty. Default local/preview builds remain noindex.
 
 ## Ongoing verification
 
@@ -47,3 +47,9 @@ The GitHub workflow uses `PRODUCTION_SITE=true` and optionally `CANONICAL_DOMAIN
 - [ ] Measure field Core Web Vitals and continue tracking qualified calls and completed jobs, rather than counting taps as bookings.
 - [ ] Update hours, coverage, arrival estimates, reviews, rates and partner information when the underlying facts change.
 - [ ] If switching to Ontario, separately verify the applicable operating, certification, consent, rate and restricted-highway requirements before advertising there.
+
+## Optional measurement - November 3, 2026
+
+- [x] Owner requested GA4 and Google Ads tracking through `CHANGES.md`; separate visitor opt-ins, phone micro-events, confirmed-delivery form events and configuration-aware privacy copy are implemented.
+- [ ] Supply actual GA4/Ads IDs and conversion labels, apply the account settings in [setup instructions](docs/GOOGLE_TRACKING_SETUP.md), rebuild and verify account receipt. No IDs were provided; live tracking remains off.
+- [ ] Add Search Console verification token if needed, submit `https://easytowing.ca/sitemap.xml` and inspect actual indexing. Rankings cannot be guaranteed.

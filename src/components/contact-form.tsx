@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState, type FormEvent, type CSSProperties 
 import { ArrowUpRight, CheckCircle2, LoaderCircle } from 'lucide-react';
 import { formspreeEndpoint, validateContact, contactNotice } from '@/lib/contact';
 import { publicAssetPath } from '@/lib/asset-path';
+import { reportLeadSent } from '@/lib/tracking-client';
 
 type ServiceOption = { id: string; name: string };
 type Feedback = { kind: 'success' | 'error'; message: string; verification?: boolean } | null;
@@ -57,6 +58,7 @@ export function ContactForm({ services, phoneHref, displayPhone }: {
         }
         return;
       }
+      reportLeadSent();
       form.reset();
       setFeedback({ kind: 'success', message: 'Your request has been sent. We’ll use your details to respond. A booking and dispatch still need to be confirmed.' });
     } catch {

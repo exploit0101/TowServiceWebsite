@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { chromium, expect, type Browser } from '@playwright/test';
 import { formspreeEndpoint, whatsappMessage } from '../src/lib/contact';
 import { services } from '../src/lib/content';
+import { prepareBrowserPrivacy } from './browser-privacy';
 
 const origin = (process.env.TEST_ORIGIN || 'http://127.0.0.1:3000').replace(/\/+$/, '');
 
@@ -11,6 +12,7 @@ export async function checkContactForm(browser: Browser) {
   await mkdir(resolve('.qa'), { recursive: true });
   for (const width of [320, 390, 768, 1440]) {
     const context = await browser.newContext({ viewport: { width, height: width === 320 ? 568 : 900 }, reducedMotion: 'reduce' });
+    await prepareBrowserPrivacy(context);
     const page = await context.newPage();
     let mode: 'success' | 'reject' | 'busy' | 'network' | 'invalid-json' | 'native' = 'success';
     const submissions: string[] = [];

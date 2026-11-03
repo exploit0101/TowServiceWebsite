@@ -65,6 +65,9 @@ for (const route of routes) {
   const telephoneTargets = [...html.matchAll(/href="(tel:[^"]+)"/g)].map(match => match[1]);
   assert.ok(telephoneTargets.length >= 2 && telephoneTargets.every(target => target === expectedTelephone), `${route}: configured dialer links`);
   assert.ok(html.includes(configured.displayPhone), `${route}: readable phone number`);
+  const mailTargets = [...html.matchAll(/href="mailto:([^"?]+)(?:[^\"]*)"/g)].map(match => match[1]);
+  assert.ok(mailTargets.every(email => email === configured.supportEmail), `${route}: every public email link uses the current support address`);
+  if (route === '/' || route === '/privacy' || route === '/contact') assert.ok(mailTargets.length > 0, `${route}: verified support email is available`);
   for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     const url = match[1].replace(/&amp;/g, '&');
     if (url.startsWith('/') && !url.startsWith('//')) {

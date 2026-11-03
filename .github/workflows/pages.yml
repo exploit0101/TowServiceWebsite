@@ -44,6 +44,11 @@ jobs:
           GITHUB_PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           GITHUB_PAGES_PRODUCTION: ${{ vars.PRODUCTION_SITE == 'true' && '1' || '0' }}
           CANONICAL_DOMAIN: ${{ vars.CANONICAL_DOMAIN }}
+          GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
+          NEXT_PUBLIC_GOOGLE_TAG_ID: ${{ vars.NEXT_PUBLIC_GOOGLE_TAG_ID }}
+          NEXT_PUBLIC_GOOGLE_ADS_ID: ${{ vars.NEXT_PUBLIC_GOOGLE_ADS_ID }}
+          NEXT_PUBLIC_GOOGLE_ADS_PHONE_LABEL: ${{ vars.NEXT_PUBLIC_GOOGLE_ADS_PHONE_LABEL }}
+          NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL: ${{ vars.NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL }}
       - name: Verify the exported site
         run: npm run test:pages
         env:
@@ -67,6 +72,7 @@ jobs:
           TEST_ORIGIN="http://127.0.0.1:4173${PAGES_BASE_PATH}" npm run test:browser
           TEST_ORIGIN="http://127.0.0.1:4173${PAGES_BASE_PATH}" npm run test:services
           TEST_ORIGIN="http://127.0.0.1:4173${PAGES_BASE_PATH}" npm run test:contact
+          TEST_ORIGIN="http://127.0.0.1:4173${PAGES_BASE_PATH}" npm run test:tracking
       - name: Upload the Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

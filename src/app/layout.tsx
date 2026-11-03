@@ -8,6 +8,7 @@ import "@/components/contact-form.css";
 import "@/components/theme.css";
 import "@/components/refinements.css";
 import "@/components/service-landing.css";
+import "@/components/consent.css";
 import { themeInitializationScript } from '@/lib/theme';
 import { BrandLogo } from "@/components/brand-logo";
 import { ServiceTicker } from "@/components/service-ticker";
@@ -16,6 +17,7 @@ import { services } from "@/lib/content";
 import { Header } from "@/components/header";
 import { Phone, ArrowUpRight } from "@/components/icons";
 import { Consent } from "@/components/consent";
+import { trackingConfig } from '@/lib/tracking-config';
 import {
   brand,
   isLive,
@@ -104,7 +106,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <Consent enabled={isLive && siteConfig.approvals.analytics} />
+        <Consent config={trackingConfig} />
         {isLive && (
           <JsonLd
             data={{

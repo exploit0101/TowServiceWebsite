@@ -3,6 +3,7 @@ import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { chromium, expect, type Page } from '@playwright/test';
 import { services } from '../src/lib/content';
+import { prepareBrowserPrivacy } from './browser-privacy';
 
 const origin = (process.env.TEST_ORIGIN || 'http://127.0.0.1:3000').replace(/\/+$/, '');
 const screenshotDirectory = resolve('.qa');
@@ -52,6 +53,20 @@ async function checkLayout(page: Page, label: string) {
   await expect(page.locator('footer')).not.toContainText(/pre-launch/i);
 }
 
+async function checkLightServiceCards(page: Page) {
+  const surfaces=await page.locator('.service-list-item > a, .expanded-service-grid .service-card').evaluateAll(elements=>elements.map(element=>{
+    const style=getComputedStyle(element);
+    return { background:style.backgroundColor,color:style.color };
+  }));
+  assert.ok(surfaces.length>=9,'service choices are available for visual checks');
+  for (const surface of surfaces) {
+    const background=surface.background.match(/[\d.]+/g)!.map(Number);
+    const ink=surface.color.match(/[\d.]+/g)!.map(Number);
+    assert.ok(background.slice(0,3).every(value=>value>230),'every service choice has a light surface in either theme');
+    assert.ok(ink.slice(0,3).every(value=>value<100),'light service cards retain dark, readable type');
+  }
+}
+
 async function checkHomeInteractions(page: Page, width: number) {
   const cards=page.locator('#services .service-list-item');
   await expect(cards).toHaveCount(services.length);
@@ -62,7 +77,8 @@ async function checkHomeInteractions(page: Page, width: number) {
   assert.ok(grid.content<=grid.width+1);
   await expect(page.locator('.hero-explore')).toHaveCount(0);
   const surfaces=await cards.locator(':scope > a').evaluateAll(elements => new Set(elements.map(element => getComputedStyle(element).backgroundImage)).size);
-  assert.equal(surfaces,2,'service cards mix light and dark surfaces');
+  assert.equal(surfaces,1,'service cards share a uniform light surface');
+  await checkLightServiceCards(page);
   for (const card of await cards.all()) {
     await expect(card.locator('.service-card-icon svg')).toHaveCount(1);
     assert.equal(await card.evaluate(element => getComputedStyle(element).animationName), 'none', 'service cards stay still');
@@ -143,6 +159,7 @@ async function checkHomeInteractions(page: Page, width: number) {
 
 async function checkMobileMotion(browser: Awaited<ReturnType<typeof chromium.launch>>) {
   const context=await browser.newContext({viewport:{width:390,height:664},reducedMotion:'no-preference'});
+  await prepareBrowserPrivacy(context);
   try {
     const page=await context.newPage();
     await page.goto(origin,{waitUntil:'networkidle'});
@@ -249,6 +266,7 @@ async function checkTextContrast(page: Page, label: string) {
 async function checkThemeModes(browser: Awaited<ReturnType<typeof chromium.launch>>) {
   for (const width of [390,1440]) {
     const context=await browser.newContext({viewport:{width,height:900},colorScheme:'dark',reducedMotion:'reduce'});
+    await prepareBrowserPrivacy(context);
     const page=await context.newPage();
     page.setDefaultTimeout(15000);
     const errors:string[]=[];
@@ -265,6 +283,7 @@ async function checkThemeModes(browser: Awaited<ReturnType<typeof chromium.launc
 
       await page.getByRole('button',{name:'Switch to dark theme',exact:true}).click();
       await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+      await checkLightServiceCards(page);
       await expect(page.getByRole('button',{name:'Switch to light theme',exact:true})).toHaveAttribute('aria-pressed','true');
       assert.equal(await page.evaluate(() => localStorage.getItem('easytowing-theme')),'dark','dark mode is remembered after the explicit choice');
       await checkLayout(page,`${width}px dark home`);
@@ -280,11 +299,12 @@ async function checkThemeModes(browser: Awaited<ReturnType<typeof chromium.launc
       await page.screenshot({path:resolve(screenshotDirectory,`easytowing-${width}-dark-full.png`),fullPage:true});
       await page.locator('.hero').screenshot({path:resolve(screenshotDirectory,`easytowing-${width}-dark-hero.png`)});
 
-      for (const path of ['/contact','/services/battery-boost']) {
+      for (const path of ['/contact','/services','/services/battery-boost']) {
         const response=await page.goto(`${origin}${path}/`,{waitUntil:'networkidle',timeout:60000});
         assert.equal(response?.status(),200,`${width}px dark ${path} loads`);
         await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
         await checkLayout(page,`${width}px dark ${path}`);
+        if (path.startsWith('/services')) await checkLightServiceCards(page);
         try { if (path.startsWith('/services/')) await checkTextContrast(page,`${width}px dark ${path}`); }
         catch (error) { contrastFailures.push(error instanceof Error ? error.message : String(error)); }
       }
@@ -314,6 +334,7 @@ async function main() {
     }
     for (const width of widths) {
       const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:'reduce'});
+      await prepareBrowserPrivacy(context);
       const page=await context.newPage();
       page.setDefaultTimeout(15000);
       const errors:string[]=[];

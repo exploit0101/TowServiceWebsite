@@ -1,38 +1,60 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-declare global { interface Window { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void; } }
-export function Consent({ enabled }: { enabled: boolean }) {
-  const [choice, setChoice] = useState<'accepted' | 'declined' | null>(null);
+import { hasTracking, parseTrackingChoice, trackingChoiceKey, trackingPermissions, type TrackingChoice, type TrackingConfig } from '@/lib/tracking';
+import { applyTrackingChoice, trackContactEvent, trackPageView } from '@/lib/tracking-client';
+
+let memoryChoice: TrackingChoice | null = null;
+function snapshot() {
+  try { return parseTrackingChoice(sessionStorage.getItem(trackingChoiceKey)) ?? memoryChoice; }
+  catch { return memoryChoice; }
+}
+function subscribe(listener: () => void) {
+  window.addEventListener('easytowing:measurement-choice', listener);
+  return () => window.removeEventListener('easytowing:measurement-choice', listener);
+}
+function saveChoice(choice: TrackingChoice) {
+  memoryChoice = choice;
+  try { sessionStorage.setItem(trackingChoiceKey, choice); } catch { /* Works when storage is blocked. */ }
+  window.dispatchEvent(new Event('easytowing:measurement-choice'));
+}
+export function Consent({ config }: { config: TrackingConfig }) {
+  const choice = useSyncExternalStore(subscribe, snapshot, () => null);
   const [settings, setSettings] = useState(false);
-  const tag = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID;
+  const pathname = usePathname();
+  const enabled = hasTracking(config);
+  const selected = trackingPermissions(choice, config);
   useEffect(() => {
-    if (choice !== 'accepted' || !enabled || !tag) return;
-    const trackPhone = (event: MouseEvent) => {
-      const anchor = event.target instanceof Element ? event.target.closest('a[href^="tel:"]') : null;
-      if (anchor) window.gtag?.('event', 'phone_link_click', { event_category: 'micro_conversion' });
+    if (!enabled) return;
+    applyTrackingChoice(choice, config);
+    trackPageView();
+    const phone = (event: MouseEvent) => {
+      if (event.target instanceof Element && event.target.closest('a[href^="tel:"]')) trackContactEvent('phone_link_click');
     };
-    document.addEventListener('click', trackPhone);
-    return () => document.removeEventListener('click', trackPhone);
-  }, [choice, enabled, tag]);
-  function choose(value: 'accepted' | 'declined') {
-    setChoice(value); setSettings(false);
-    // Session-only consent: no non-essential persistence or URL identifiers before consent.
-    if (value === 'accepted' && window.gtag) window.gtag('consent', 'update', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
-    if (value === 'accepted' && enabled && tag && /^G-[A-Z0-9]+$/.test(tag) && !document.getElementById('google-tag')) {
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function (...args: unknown[]) { window.dataLayer?.push(args); };
-      window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
-      window.gtag('js', new Date());
-      window.gtag('config', tag, { send_page_view: false, ads_data_redaction: true, allow_google_signals: false, allow_ad_personalization_signals: false });
-      // Do not transmit query strings, caller details or advertising identifiers.
-      window.gtag('event', 'page_view', { page_location: `${location.origin}${location.pathname}`, page_title: document.title });
-      const script = document.createElement('script'); script.id = 'google-tag'; script.async = true; script.src = `https://www.googletagmanager.com/gtag/js?id=${tag}`; document.head.appendChild(script);
-    }
-    if (value === 'declined' && window.gtag) {
-      window.gtag('consent', 'update', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
-    }
-  }
-  if (!enabled || !tag) return null;
-  return <><button className="privacy-settings" onClick={() => setSettings(!settings)}>Analytics preferences</button>{(!choice || settings) && <aside className="consent-panel" aria-label="Analytics preferences"><strong>Optional analytics</strong><p>With your permission, Google receives usage information to help improve this site. You can decline and still use every service. <Link href="/privacy">Read the privacy notice</Link>.</p><div><button className="button button-dark" onClick={() => choose('declined')}>Decline</button><button className="button button-yellow" onClick={() => choose('accepted')}>Allow analytics</button></div></aside>}</>;
+    const lead = () => trackContactEvent('generate_lead');
+    document.addEventListener('click', phone);
+    window.addEventListener('easytowing:lead-sent', lead);
+    return () => { document.removeEventListener('click', phone); window.removeEventListener('easytowing:lead-sent', lead); };
+  }, [choice, config, enabled]);
+  useEffect(() => { if (enabled) trackPageView(); }, [enabled, pathname]);
+  if (!enabled) return null;
+  function choose(value: TrackingChoice) { saveChoice(value); setSettings(false); }
+  return <>
+    <button className="privacy-settings" onClick={() => setSettings(!settings)} aria-expanded={!choice || settings} aria-controls="measurement-preferences">Privacy choices</button>
+    {(!choice || settings) && <aside className="consent-panel" id="measurement-preferences" aria-label="Optional measurement">
+      <strong>Your privacy, your choice</strong>
+      <p>Allow Google to measure website use or ad enquiries. These optional tools may use cookies and process information outside Canada. You can use every service without them. <Link href="/privacy">Privacy notice</Link>.</p>
+      <form key={choice || 'new'} onSubmit={event => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        choose(data.has('analytics') ? data.has('ads') ? 'all' : 'analytics' : data.has('ads') ? 'ads' : 'none');
+      }}>
+        {config.ga4Id && <label><input type="checkbox" name="analytics" defaultChecked={selected.analytics}/><span>Usage analytics<small>Page views, phone taps and delivered enquiries.</small></span></label>}
+        {config.adsId && <label><input type="checkbox" name="ads" defaultChecked={selected.ads}/><span>Ad measurement<small>Measure enquiries from Google Ads. No personalised ads.</small></span></label>}
+        <div className="consent-actions"><button className="button consent-decline" type="button" onClick={() => choose('none')}>Decline all</button><button className="button consent-save" type="submit">Save choices</button></div>
+      </form>
+      <small className="consent-session">Your choice is remembered in this tab. Change it anytime below.</small>
+    </aside>}
+  </>;
 }

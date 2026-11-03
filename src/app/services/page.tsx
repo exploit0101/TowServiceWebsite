@@ -4,7 +4,7 @@ import { isLive, siteConfig } from '@/lib/site-config';
 import { ServiceGrid } from '@/components/service-grid';
 import { Breadcrumbs, PageIntro, SafetyNote, NextStep } from '@/components/ui';
 
-export const metadata = pageMetadata('Roadside assistance & towing services', 'Explore towing, jump starts, lockouts, tire changes, fuel delivery and battery replacement. Read the scope and request availability by phone.', '/services');
+export const metadata = pageMetadata('Towing & roadside services in Winnipeg', `Explore Winnipeg towing, jump starts, tire changes, lockouts and fuel delivery. Call ${siteConfig.displayPhone} to discuss your vehicle and get a quote.`, '/services');
 
 export default function ServicesPage() {
   const shown = isLive ? services.filter(service => siteConfig.offers.includes(service.id)) : services;

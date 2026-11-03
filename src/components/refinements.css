@@ -34,7 +34,7 @@ a[href^="mailto:"] { overflow-wrap: anywhere; }
 .services-heading-dot { color: #a76f00; }
 .service-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .service-list-item { min-width: 0; --card-bg: linear-gradient(145deg, #fffdf7, #f4f7f8); --card-ink: #183346; --card-muted: #536b7a; --card-line: #dce5e9; --card-icon-bg: linear-gradient(145deg, #fff8e5, #ffe4a0); --card-icon-ink: #815500; --card-icon-line: #ecd8a4; --card-arrow: #69808f; }
-.service-list-item > a { position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 12px; height: 100%; min-height: 88px; padding: 14px 18px; border: 1px solid var(--card-line); border-radius: 14px; background: var(--card-bg); color: var(--card-ink); box-shadow: 0 5px 16px #142b3c06; transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
+.service-list-item > a { position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 12px; height: 100%; min-height: 88px; padding: 14px 18px; border: 1px solid var(--card-line); border-radius: 14px; background: var(--card-bg); background-color: #fffdf7; color: var(--card-ink); box-shadow: 0 5px 16px #142b3c06; transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
 .service-list-item > a:hover, .service-list-item > a:focus-visible { transform: translateY(-4px); border-color: #b48524; box-shadow: 0 12px 24px #142b3c0e; }
 .service-list-item > a:focus-visible { outline: 3px solid #a97000; outline-offset: 3px; }
 .service-card-icon { display: grid; place-items: center; width: 42px; height: 42px; flex-shrink: 0; border: 1px solid var(--card-icon-line); border-radius: 12px; color: var(--card-icon-ink); background: var(--card-icon-bg); box-shadow: inset 0 1px 0 #ffffff38, 0 4px 8px #142b3c08; }
@@ -43,10 +43,10 @@ a[href^="mailto:"] { overflow-wrap: anywhere; }
 .service-list-item h3 { margin: 0; font-size: 15px; line-height: 1.3; font-weight: 750; letter-spacing: -.25px; }
 .service-card-copy { min-width: 0; }
 .service-card-copy p { margin: 4px 0 0; font-size: 11px; line-height: 1.5; color: var(--card-muted); }
-.service-help-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 0; padding: 10px 18px 10px 68px; border: 1px solid #31546a; border-radius: 14px; background: radial-gradient(ellipse at 100% 0, #315265, transparent 75%), #173346; color: #fff; }
-.service-help-icon { position: absolute; top: 50%; left: 16px; transform: translateY(-50%); display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #6e7771; border-radius: 50%; color: #ffcf62; background: #ffffff08; }
+.service-help-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 0; padding: 10px 18px 10px 68px; border: 1px solid #dce5e9; border-radius: 14px; background: linear-gradient(145deg, #fffdf7, #f4f7f8); color: #183346; }
+.service-help-icon { position: absolute; top: 50%; left: 16px; transform: translateY(-50%); display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #ecd8a4; border-radius: 50%; color: #815500; background: #fff3d2; }
 .service-help-card h3 { margin: 0 0 2px; font-size: 14px; line-height: 1.35; font-weight: 650; }
-.service-help-card a { display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; color: #ffdb83; font-size: 22px; line-height: 1.2; font-weight: 800; letter-spacing: -.5px; }
+.service-help-card a { display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; color: #183346; font-size: 22px; line-height: 1.2; font-weight: 800; letter-spacing: -.5px; }
 /* Dark outer reviews, white centre card, in both themes. */
 #reviews .review-card { background: linear-gradient(140deg, #203f54, #142c3d); border-color: #34566b; }
 #reviews .review-card .review-person > strong { color: #fff; }
@@ -92,10 +92,11 @@ html[data-theme="dark"] .hero-whatsapp { color: #a1e8bd; background: #163f30; bo
 html[data-theme="dark"] .hero-highlights { background: transparent; border: 0; }
 html[data-theme="dark"] #services .eyebrow { color: #b2c2ce; }
 html[data-theme="dark"] .services-heading-dot { color: #ffcf62; }
-html[data-theme="dark"] .service-list-item > a:is(:hover, :focus-visible) { border-color: #e5bb60; }
-@media (min-width: 768px) {
-  .service-list-item:nth-child(odd) { --card-bg: linear-gradient(140deg, #244759, #142f41); --card-ink: #f4f8fa; --card-muted: #c1d2dd; --card-line: #36566a; --card-icon-bg: linear-gradient(145deg, #4a4b39, #344237); --card-icon-ink: #ffcf62; --card-icon-line: #8e7b49; --card-arrow: #b6cbd8; }
-}
+html[data-theme="dark"] .service-list-item > a:is(:hover, :focus-visible) { border-color: #a97000; }
+/* Service choices remain uniformly light in either site theme. */
+html[data-theme] .expanded-service-grid .service-card { background: #fffdf7; color: #183346; border-color: #dce5e9; --muted: #536b7a; --line: #dce5e9; }
+html[data-theme] .expanded-service-grid .service-symbol { background: #fff3d2; color: #795400; }
+html[data-theme] .expanded-service-grid .service-call-card { background: #f8f4e8; color: #183346; border: 1px solid #e4d6b2; }
 @media (max-width: 960px) {
   :root { --site-chrome-height: 156px; }
   .header-inner { padding-top: 9px; padding-bottom: 8px; }
@@ -110,7 +111,6 @@ html[data-theme="dark"] .service-list-item > a:is(:hover, :focus-visible) { bord
 @media (max-width: 767px) {
   #services .section-heading { align-items: flex-start; }
   .service-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-  .service-list-item:nth-child(4n+1), .service-list-item:nth-child(4n+4) { --card-bg: linear-gradient(140deg, #244759, #142f41); --card-ink: #f4f8fa; --card-muted: #c1d2dd; --card-line: #36566a; --card-icon-bg: linear-gradient(145deg, #4a4b39, #344237); --card-icon-ink: #ffcf62; --card-icon-line: #8e7b49; --card-arrow: #b6cbd8; }
   .service-list-item > a { grid-template-columns: 28px minmax(0, 1fr); min-height: 50px; padding: 8px; gap: 8px; border-radius: 10px; }
   .service-list-item:last-of-type:nth-child(odd) { grid-column: 1/-1; }
   .service-card-icon { width: 28px; height: 28px; border-radius: 8px; }

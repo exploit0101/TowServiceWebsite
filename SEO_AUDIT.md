@@ -1,5 +1,13 @@
 # Technical SEO review — October 22, 2026
 
+## Requested contact, cards and measurement updates — November 3, 2026
+
+The services hub now has a Winnipeg-specific title and concise local meta description. All ten service routes retain server-rendered copy, one H1, unique metadata, canonical URLs, internal links, Service/BreadcrumbList data and approved sitemap entries. Light service-card styling changes presentation without hiding names or links from HTML. Source and exported homepage/Privacy/Contact links all use the configured `infoeasytowing@gmail.com`; Organization schema uses the same address.
+
+The static export passes 20-page, 92-destination/asset and 18-approved-sitemap checks; the retired tire-repair route remains excluded. Tracking is consent-gated and asynchronous, with no Google request before opt-in. No account IDs were supplied, so no measurement is active on the current release and the Privacy notice states that accurately. Configured deployments describe the actual analytics/advertising choices instead. Build variables also support the owner's Search Console verification token.
+
+Technical checks do not establish search rankings or guarantee first-page placement. Search Console sitemap submission/index inspection, useful original content, genuine business signals and measured performance remain ongoing work. No keyword stuffing, thin location pages, fabricated ratings schema, address, certifications or performance claims were added. See [measurement setup](docs/GOOGLE_TRACKING_SETUP.md) for account configuration and verification limits.
+
 ## Service destinations for ad sitelinks — November 1, 2026
 
 The ten existing service URLs retain their unique titles, descriptions, absolute canonicals, approved Service/BreadcrumbList/Organization schema and sitemap inclusion. Each now has one direct service-and-Winnipeg H1, a concise service-specific lead, full scope/preparation/limits in server-rendered HTML, internal related-service links and prominent native calling. The shared action label is Call. Native SVG artwork and CSS add no raster downloads, third-party script or client-only main copy. Written requests continue to the existing noindex request utility. No new review, price, office, fleet-ownership or response-time claim is added.

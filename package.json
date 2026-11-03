@@ -16,7 +16,8 @@
     "test:smoke": "tsx scripts/smoke.ts",
     "test:browser": "tsx scripts/browser-check.ts",
     "test:services": "tsx scripts/service-browser-check.ts",
-    "test:contact": "tsx scripts/contact-browser-check.ts"
+    "test:contact": "tsx scripts/contact-browser-check.ts",
+    "test:tracking": "tsx scripts/tracking-browser-check.ts"
   },
   "dependencies": {
     "lucide-react": "1.61.0",

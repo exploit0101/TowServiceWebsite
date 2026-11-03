@@ -1,5 +1,25 @@
 # Verification report
 
+## CHANGES.md: measurement, contact and light cards — November 3, 2026
+
+Implemented separate consent-based GA4/Google Ads destinations, native phone-tap micro-events, confirmed Formspree lead events, route-aware manual page views, tab-session preferences and withdrawal controls. Privacy copy uses the same validated configuration as the integration. Google requests stay blocked before opt-in; form fields are never attached to application measurement events. The Pages workflow forwards actual account variables when provided. Account IDs and labels are still missing, so live measurement remains off; account receipt and attribution cannot be verified by code tests.
+
+All compact homepage/related-service choices and expanded service-hub cards now use light surfaces with navy text in both themes. Mobile card sizes and the first-screen services layout are preserved. Homepage, Privacy and Contact use `infoeasytowing@gmail.com`; static checks reject inconsistent public mail links. The service-hub title and description explicitly identify Winnipeg.
+
+Changed implementation files: `src/lib/tracking{,-config,-client}.ts`, `src/components/consent.tsx`, `consent.css`, `contact-form.tsx`, `refinements.css`, `src/app/layout.tsx`, `src/app/[page]/page.tsx`, `src/app/services/page.tsx`, `config/launch.json`, `.env.example`, `.github/workflows/pages.yml` and `scripts/build-pages.ts`. Verification adds `tests/tracking.test.ts`, `scripts/tracking-browser-check.ts`, `scripts/browser-privacy.ts`; updates existing browser/contact/service/export checks and `package.json`. Setup and operational limitations are documented in `docs/GOOGLE_TRACKING_SETUP.md`, README, deployment and prelaunch notes.
+
+Validation:
+
+- Lint and TypeScript checks passed; 61 unit/component/SEO tests passed.
+- Browser checks passed at 320/375/390/768/1024/1440px, including uniform light cards, contrast in both themes, first-screen services, mobile navigation, form fit and gallery keyboard controls.
+- All ten service pages passed at 320×568, 390×844, 768×900 and 1440×1000 in both themes.
+- Active measurement tested with test-only IDs at 320/390/1440px: opt-ins, reload, internal navigation, analytics-only/ads-only choices, phone events, form failure/success and withdrawal passed. All Google/Formspree requests were intercepted; no real enquiry, call or conversion was sent.
+- Existing form suite passed at 320/390/768/1440px, including native no-JavaScript POST, validation, provider error/challenge responses and WhatsApp draft checks.
+- Production static build passed: 20 public pages, 92 local destinations/assets, 18 approved sitemap URLs, current contact/schema and all 48 reviewed vehicle images. Test destination IDs were absent from the artifact.
+- The actual no-ID production artifact passed inactive tracking/privacy checks at 320/390/1440px.
+
+Run `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test`; with a server, run `test:browser`, `test:services`, `test:contact` and `test:tracking`. Production export uses empty `GITHUB_PAGES_BASE_PATH`, `GITHUB_PAGES_PRODUCTION=1`, `CANONICAL_DOMAIN=https://easytowing.ca`, then `npm.cmd run build:pages` and `npm.cmd run test:pages`. No field Core Web Vitals, account receipt, legal approval or search position is inferred from these checks.
+
 ## Service landing pages and Google Ads sitelink reference — November 1, 2026
 
 Redesigned all ten service detail routes with a shared, server-rendered landing-page component and individual copy/illustrations. Each page leads with the actual service and Winnipeg, a concise problem-specific introduction, a Call button and readable 431-451-5110 link, plus the existing request page. Native SVG service artwork in a dimensional gold tile adds a distinct visual without a new image download or dependency. Scope cards, a preparation panel, native safety/quotation details, related services and the independent-provider explanation preserve practical information. The shared default CTA label changed from “Call to check availability” to “Call”; availability/quote/dispatch qualifications remain in contextual text. Existing homepage composition is retained.

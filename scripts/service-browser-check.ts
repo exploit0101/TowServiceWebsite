@@ -3,6 +3,7 @@ import { mkdir } from 'node:fs/promises';
 import { chromium, expect } from '@playwright/test';
 import { services } from '../src/lib/content';
 import launch from '../config/launch.json';
+import { prepareBrowserPrivacy } from './browser-privacy';
 
 const origin=(process.env.TEST_ORIGIN || 'http://127.0.0.1:3000').replace(/\/+$/,'');
 async function main() {
@@ -11,6 +12,7 @@ await mkdir('.qa',{recursive:true});
 try {
   for(const [width,height] of [[320,568],[390,844],[768,900],[1440,1000]]) {
     const context=await browser.newContext({viewport:{width,height},reducedMotion:'reduce'});
+    await prepareBrowserPrivacy(context);
     const page=await context.newPage();
     const errors:string[]=[];
     page.on('pageerror',error=>errors.push(error.message));

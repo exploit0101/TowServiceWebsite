@@ -80,7 +80,11 @@
     "legalTexts": true,
     "callbackStaffing": false,
     "restrictedHighwayHandling": false,
-    "analytics": false
+    "analytics": true
+  },
+  "measurementApprovalRecord": {
+    "confirmedAt": "2026-11-03",
+    "confirmationSource": "Owner requested GA4 and Google Ads conversion tracking through CHANGES.md. Implementation requires separate visitor opt-ins and real account destination IDs; no tracking IDs have been supplied."
   },
   "approvalRecord": {
     "confirmedAt": "2026-10-24",

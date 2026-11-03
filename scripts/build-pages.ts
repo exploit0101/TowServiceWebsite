@@ -48,7 +48,7 @@ try {
   const result = spawnSync(process.execPath, [join(root, 'node_modules', 'next', 'dist', 'bin', 'next'), 'build', '--webpack'], {
     cwd: staging,
     stdio: 'inherit',
-    env: { ...process.env, GITHUB_PAGES_BUILD: '1', GITHUB_PAGES_DEMO: production ? '0' : '1', GITHUB_PAGES_PRODUCTION: production ? '1' : '0', GITHUB_PAGES_BASE_PATH: basePath, SITE_DEPLOYMENT: production ? 'production' : 'preview', ...(!production ? { NEXT_PUBLIC_GOOGLE_TAG_ID: '' } : {}), NEXT_TELEMETRY_DISABLED: '1' },
+    env: { ...process.env, GITHUB_PAGES_BUILD: '1', GITHUB_PAGES_DEMO: production ? '0' : '1', GITHUB_PAGES_PRODUCTION: production ? '1' : '0', GITHUB_PAGES_BASE_PATH: basePath, SITE_DEPLOYMENT: production ? 'production' : 'preview', ...(!production ? { NEXT_PUBLIC_GOOGLE_TAG_ID: '', NEXT_PUBLIC_GOOGLE_ADS_ID: '', NEXT_PUBLIC_GOOGLE_ADS_PHONE_LABEL: '', NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL: '' } : {}), NEXT_TELEMETRY_DISABLED: '1' },
   });
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`GitHub Pages build failed (${result.status}).`);

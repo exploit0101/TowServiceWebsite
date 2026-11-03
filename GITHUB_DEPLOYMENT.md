@@ -12,7 +12,7 @@ The workflow derives the repository base path from GitHub Pages configuration. P
 
 GitHub Pages serves static files, not a Node.js server. Every Pages build omits the server callback endpoint and disables callback delivery. Preview builds also omit all area routes; approved production builds export only the selected pilot area. The preview form continues to demonstrate its process locally and sends no requests. Tapping a call action opens the device's dialer with the owner-provided number. The visitor completes the call; tapping does not book or dispatch service.
 
-The separate standard Next.js application retains its server routes for a future approved deployment on a server-capable host. Its production launch checker remains enforced. Pages publishing does not turn approval flags on, mark fictional phone numbers as real, or activate Google Ads, analytics or callback processing.
+The separate standard Next.js application retains its server routes for a future approved deployment on a server-capable host. Its production launch checker remains enforced. Pages publishing does not turn approval flags on, verify phone numbers or enable callback processing. Optional Google measurement also requires configured destination IDs and a separate visitor opt-in; see [tracking setup](docs/GOOGLE_TRACKING_SETUP.md).
 
 ## Repository publication
 
@@ -60,3 +60,7 @@ The owner supplied EasyTowing as legal name, selected phone-only support and con
 The website shows the owner-confirmed 25-minute estimate and Winnipeg-wide coverage. Customer feedback is the actual text supplied by the owner, with its company-supplied source label. No reviewer names, dates, total count, Google affiliation or aggregate-rating schema are invented.
 
 Production deployment of `8d3a3b0` succeeded in [run 40113021374](https://github.com/exploit0101/TowServiceWebsite/actions/runs/40113021374). Public HTTPS checks confirm the updated content, nineteen indexable pages with matching canonicals/sitemap, real 404 responses and the correct native dialer targets. The public mobile Lighthouse run scored SEO/accessibility/best practices 100 and performance 96; see QA_REPORT.md for laboratory conditions and limits.
+
+## Google tag build variables - November 3, 2026
+
+The Pages workflow forwards `NEXT_PUBLIC_GOOGLE_TAG_ID`, `NEXT_PUBLIC_GOOGLE_ADS_ID`, `NEXT_PUBLIC_GOOGLE_ADS_PHONE_LABEL`, `NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL` and optional `GOOGLE_SITE_VERIFICATION` from repository Actions variables. These are public identifiers. Blank or invalid destinations stay inactive, and preview builds strip tracking configuration. Rebuild after changing variables. See [setup and account checks](docs/GOOGLE_TRACKING_SETUP.md).
