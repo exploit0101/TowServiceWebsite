@@ -51,6 +51,6 @@ The GitHub workflow uses `PRODUCTION_SITE=true` and optionally `CANONICAL_DOMAIN
 ## Optional measurement - November 3, 2026
 
 - [x] Owner requested GA4 and Google Ads tracking through `CHANGES.md`; separate visitor opt-ins, phone micro-events, confirmed-delivery form events and configuration-aware privacy copy are implemented.
-- [x] Owner supplied a GA4 Measurement ID; configured the repository variable for consent-gated analytics.
-- [ ] Supply Google Ads ID/conversion labels, apply the account settings in [setup instructions](docs/GOOGLE_TRACKING_SETUP.md) and verify receipt in the owner accounts. Google Ads remains inactive.
+- [x] Owner supplied a GA4 Measurement ID, then asked to skip Google tracking. Removed its deployment variable and disabled analytics approval; no consent prompt is shown.
+- [x] Google Ads measurement remains disabled. No Google IDs or conversion labels are required while tracking is deferred. A new owner instruction is needed before reactivation.
 - [ ] Add Search Console verification token if needed, submit `https://easytowing.ca/sitemap.xml` and inspect actual indexing. Rankings cannot be guaranteed.

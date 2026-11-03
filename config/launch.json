@@ -80,11 +80,11 @@
     "legalTexts": true,
     "callbackStaffing": false,
     "restrictedHighwayHandling": false,
-    "analytics": true
+    "analytics": false
   },
   "measurementApprovalRecord": {
     "confirmedAt": "2026-11-03",
-    "confirmationSource": "Owner requested GA4 and Google Ads conversion tracking through CHANGES.md and then supplied the GA4 Measurement ID, configured as a public GitHub Actions variable. Google Ads ID and conversion labels have not been supplied. Measurement requires separate visitor opt-ins."
+    "confirmationSource": "Owner subsequently instructed that Google tracking be skipped to avoid customer consent prompts. GA4 and Google Ads measurement are disabled; the public GA4 deployment variable is removed. Reactivation requires a new owner instruction."
   },
   "approvalRecord": {
     "confirmedAt": "2026-10-24",

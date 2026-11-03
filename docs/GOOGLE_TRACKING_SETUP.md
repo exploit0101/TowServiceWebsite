@@ -1,6 +1,6 @@
 # Google measurement setup
 
-Updated November 3, 2026. The owner supplied the GA4 Measurement ID, now configured as a public repository variable. GA4 loads only after Usage analytics consent. Google Ads remains inactive until its ID and conversion labels are supplied. The Privacy page reads the same configuration as the integration.
+Updated November 3, 2026. **Tracking is disabled at the owner's request.** The GA4 deployment variable is removed and `config/launch.json` sets `approvals.analytics=false`. Google tags and consent prompts do not load, including for previously opted-in visitors. The following instructions are retained for future reference; reactivation requires a new owner instruction.
 
 ## Account values
 
@@ -14,7 +14,7 @@ In the repository's **Settings → Secrets and variables → Actions → Variabl
 | `NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL` | Conversion label for delivered service enquiries |
 | `GOOGLE_SITE_VERIFICATION` | Optional Search Console HTML verification token |
 
-These are public tag settings, not credentials. Never provide passwords, OAuth tokens or private API keys. Copy labels exactly, without the `AW-…/` prefix. GA4 and Ads can be configured independently; a missing label disables its Ads conversion event. Re-run the Pages workflow after changing variables: static builds compile these values at build time. Preview builds stay disabled regardless of IDs. Owner approval for the requested optional integration is recorded in `config/launch.json`.
+These are public tag settings, not credentials. Never provide passwords, OAuth tokens or private API keys. Copy labels exactly, without the `AW-…/` prefix. GA4 and Ads can be configured independently; a missing label disables its Ads conversion event. Re-run the Pages workflow after changing variables: static builds compile these values at build time. Preview builds stay disabled regardless of IDs. The current owner preference in `config/launch.json` disables the integration regardless of any destination IDs.
 
 ## Events and account settings
 

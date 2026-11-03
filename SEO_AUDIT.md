@@ -1,5 +1,9 @@
 # Technical SEO review — October 22, 2026
 
+## Google tracking deferred — November 3, 2026
+
+At the owner's request, Google Analytics/Ads measurement and the consent prompt are disabled. The GA4 deployment variable is removed and the build configuration blocks Google destinations even if a stale environment ID remains. Privacy metadata and visible copy reflect the disabled state. Existing service/homepage content, light cards, canonical URLs, robots rules, structured data and approved sitemap routes are retained. Analytics availability is separate from indexability; no search-ranking or field performance claim is made.
+
 ## Requested contact, cards and measurement updates — November 3, 2026
 
 The services hub now has a Winnipeg-specific title and concise local meta description. All ten service routes retain server-rendered copy, one H1, unique metadata, canonical URLs, internal links, Service/BreadcrumbList data and approved sitemap entries. Light service-card styling changes presentation without hiding names or links from HTML. Source and exported homepage/Privacy/Contact links all use the configured `infoeasytowing@gmail.com`; Organization schema uses the same address.

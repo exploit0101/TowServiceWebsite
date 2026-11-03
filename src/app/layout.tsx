@@ -18,6 +18,7 @@ import { Header } from "@/components/header";
 import { Phone, ArrowUpRight } from "@/components/icons";
 import { Consent } from "@/components/consent";
 import { trackingConfig } from '@/lib/tracking-config';
+import { hasTracking } from '@/lib/tracking';
 import {
   brand,
   isLive,
@@ -106,7 +107,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <Consent config={trackingConfig} />
+        {hasTracking(trackingConfig) && <Consent config={trackingConfig} />}
         {isLive && (
           <JsonLd
             data={{

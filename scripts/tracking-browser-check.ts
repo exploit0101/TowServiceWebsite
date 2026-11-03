@@ -30,9 +30,14 @@ async function main() {
         assert.equal(requests.length,0,'no Google request before an opt-in');
         if (!active) {
           assert.equal(await page.locator('#google-tag').count(),0);
+          await expect(page.getByRole('button',{name:'Privacy choices',exact:true})).toHaveCount(0);
+          await page.evaluate(() => sessionStorage.setItem('easytowing.measurement.v1','all'));
+          await page.reload({waitUntil:'networkidle'});
+          assert.equal(requests.length,0,'a remembered opt-in cannot enable disabled tracking');
+          await expect(page.locator('#google-tag, #measurement-preferences, .privacy-settings')).toHaveCount(0);
           await page.goto(`${origin}/privacy/`,{waitUntil:'networkidle'});
           await expect(page.locator('main')).toContainText('No Google analytics or advertising tags load');
-          console.log(`PASS ${width}px: unconfigured tracking stays off and the privacy notice matches`);
+          console.log(`PASS ${width}px: tracking stays off, no consent UI, remembered opt-in ignored and privacy notice matches`);
           continue;
         }
         const analytics = panel.locator('input[name="analytics"]');

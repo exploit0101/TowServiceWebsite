@@ -1,5 +1,15 @@
 # Verification report
 
+## Google tracking deferred — November 3, 2026
+
+The owner asked to skip Google tracking so customers do not encounter an acceptance prompt. Set `approvals.analytics=false`, removed the public GA4 repository variable and gated the consent component out of the layout when measurement is disabled. Privacy now explicitly states that Google analytics/advertising tags and the analytics consent prompt are absent. Optional integration code remains dormant for a future explicit request; Google account/property data was not deleted.
+
+Updated `config/launch.json`, `src/app/layout.tsx`, `src/app/[page]/page.tsx`, `scripts/tracking-browser-check.ts`, README, setup/prelaunch notes and QA/SEO audits. The tracking browser check now also verifies no preferences UI and no Google requests after restoring an old accepted choice. Calling, Formspree requests, WhatsApp, light service cards and technical SEO are preserved.
+
+Passed lint, typecheck, 62 unit/component/SEO tests, production build/export checks (20 pages, 92 destinations/assets, 18 sitemap URLs) and disabled-tracking browser checks at 320/390/1440px. The build deliberately received the former GA4 ID as a stale environment value; the disabled preference prevented it from appearing in the exported HTML/JS/RSC files. No Google requests or consent controls appeared, including after restoring an accepted session choice.
+
+Verification commands: `npm.cmd run lint`, `npm.cmd run typecheck`, `npm.cmd test`, production `npm.cmd run build:pages`, `npm.cmd run test:pages`, and `npm.cmd run test:tracking` against the exported artifact/public site. The Pages workflow also runs the existing responsive, service and contact suites before deployment. Google measurement is deliberately unavailable; account IDs and conversion labels are no longer outstanding requirements for this release.
+
 ## CHANGES.md: measurement, contact and light cards — November 3, 2026
 
 Implemented separate consent-based GA4/Google Ads destinations, native phone-tap micro-events, confirmed Formspree lead events, route-aware manual page views, tab-session preferences and withdrawal controls. Privacy copy uses the same validated configuration as the integration. The consent panel is hydrated only in JavaScript-enabled browsers, so it cannot block native contact access when JavaScript is disabled; a server-rendering regression test covers this fallback. Google requests stay blocked before opt-in; form fields are never attached to application measurement events. The Pages workflow forwards actual account variables when provided. The owner subsequently supplied a GA4 Measurement ID, configured through the public repository variable. Google Ads ID/labels remain missing. Account receipt and attribution cannot be established by code tests.
