@@ -21,6 +21,9 @@ function saveChoice(choice: TrackingChoice) {
 }
 export function Consent({ config }: { config: TrackingConfig }) {
   const choice = useSyncExternalStore(subscribe, snapshot, () => null);
+  // Without JavaScript there are no tags and no working consent controls.
+  // Keep the panel out of server HTML so it cannot cover the native contact form.
+  const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const [settings, setSettings] = useState(false);
   const pathname = usePathname();
   const enabled = hasTracking(config);
@@ -38,7 +41,7 @@ export function Consent({ config }: { config: TrackingConfig }) {
     return () => { document.removeEventListener('click', phone); window.removeEventListener('easytowing:lead-sent', lead); };
   }, [choice, config, enabled]);
   useEffect(() => { if (enabled) trackPageView(); }, [enabled, pathname]);
-  if (!enabled) return null;
+  if (!enabled || !hydrated) return null;
   function choose(value: TrackingChoice) { saveChoice(value); setSettings(false); }
   return <>
     <button className="privacy-settings" onClick={() => setSettings(!settings)} aria-expanded={!choice || settings} aria-controls="measurement-preferences">Privacy choices</button>

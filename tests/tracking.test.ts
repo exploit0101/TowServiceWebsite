@@ -1,8 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { hasTracking, measurementPage, parseTrackingChoice, resolveTrackingConfig, trackingPermissions } from '../src/lib/tracking';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Consent } from '../src/components/consent';
 
 const input = { live: true, approved: true, ga4Id: 'G-FIXTURE123', adsId: 'AW-123456789', phoneLabel: 'Phone_Label-1', leadLabel: 'Lead_Label-2' };
+test('without JavaScript, consent controls cannot cover the native form or contact links', () => {
+  assert.equal(renderToStaticMarkup(createElement(Consent,{config:resolveTrackingConfig(input)})),'');
+});
 test('measurement requires a live, approved build and actual valid destinations', () => {
   for (const override of [{live:false}, {approved:false}, {ga4Id:'',adsId:''}, {ga4Id:'GTM-INVALID',adsId:'AW-not-a-number'}])
     assert.equal(hasTracking(resolveTrackingConfig({...input,...override})), false);

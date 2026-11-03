@@ -2,7 +2,7 @@
 
 ## CHANGES.md: measurement, contact and light cards — November 3, 2026
 
-Implemented separate consent-based GA4/Google Ads destinations, native phone-tap micro-events, confirmed Formspree lead events, route-aware manual page views, tab-session preferences and withdrawal controls. Privacy copy uses the same validated configuration as the integration. Google requests stay blocked before opt-in; form fields are never attached to application measurement events. The Pages workflow forwards actual account variables when provided. The owner subsequently supplied a GA4 Measurement ID, configured through the public repository variable. Google Ads ID/labels remain missing. Account receipt and attribution cannot be established by code tests.
+Implemented separate consent-based GA4/Google Ads destinations, native phone-tap micro-events, confirmed Formspree lead events, route-aware manual page views, tab-session preferences and withdrawal controls. Privacy copy uses the same validated configuration as the integration. The consent panel is hydrated only in JavaScript-enabled browsers, so it cannot block native contact access when JavaScript is disabled; a server-rendering regression test covers this fallback. Google requests stay blocked before opt-in; form fields are never attached to application measurement events. The Pages workflow forwards actual account variables when provided. The owner subsequently supplied a GA4 Measurement ID, configured through the public repository variable. Google Ads ID/labels remain missing. Account receipt and attribution cannot be established by code tests.
 
 All compact homepage/related-service choices and expanded service-hub cards now use light surfaces with navy text in both themes. Mobile card sizes and the first-screen services layout are preserved. Homepage, Privacy and Contact use `infoeasytowing@gmail.com`; static checks reject inconsistent public mail links. The service-hub title and description explicitly identify Winnipeg.
 
@@ -10,7 +10,7 @@ Changed implementation files: `src/lib/tracking{,-config,-client}.ts`, `src/comp
 
 Validation:
 
-- Lint and TypeScript checks passed; 61 unit/component/SEO tests passed.
+- Lint and TypeScript checks passed; 62 unit/component/SEO tests passed.
 - Browser checks passed at 320/375/390/768/1024/1440px, including uniform light cards, contrast in both themes, first-screen services, mobile navigation, form fit and gallery keyboard controls.
 - All ten service pages passed at 320×568, 390×844, 768×900 and 1440×1000 in both themes.
 - Active measurement tested with test-only IDs at 320/390/1440px: opt-ins, reload, internal navigation, analytics-only/ads-only choices, phone events, form failure/success and withdrawal passed. All Google/Formspree requests were intercepted; no real enquiry, call or conversion was sent.
